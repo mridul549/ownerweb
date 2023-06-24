@@ -1,6 +1,6 @@
 import React from "react";
 import { MuiOtpInput } from "mui-one-time-password-input";
-import Box from "@mui/material/Box";
+import '../css/otp.css'
 
 const Otp = () => {
     const [otp, setOtp] = React.useState("");
@@ -8,9 +8,24 @@ const Otp = () => {
     const handleChange = (newValue) => {
         setOtp(newValue);
     };
-    console.log(otp);
+
+    const handleOTP = async () => {
+        
+    } 
+
     return (
-        <MuiOtpInput value={otp} style={{width: "400px", fontSize: "20px"}} onChange={handleChange} />
+        <div className="container-fluid otpContainer">
+            <h1>OTP Verification</h1>
+            <div className="container sentContainer">
+                <p style={{fontWeight: 600}}>A One time password has been sent to the email</p>
+                <p style={{fontWeight: 600, marginTop: -6}}>mridulverma478@gmail.com</p>
+            </div>
+            <div className="otp">
+                <MuiOtpInput value={otp} onChange={handleChange} />
+            </div>
+            <a className="resendLink" href="/">resend OTP in 01:59</a>
+            <button onClick={handleOTP} className="btn btn-primary submitBtn">Submit OTP</button>
+        </div>
     );
 };
 
