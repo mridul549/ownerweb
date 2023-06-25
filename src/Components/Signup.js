@@ -1,9 +1,9 @@
-import {React, useState} from "react";
+import {React, useState, useContext} from "react";
 import '../css/auth.css'
 import {Link, useNavigate} from 'react-router-dom'
 import Spinner from "./Spinner";
 
-function Signup() {
+const Signup = () => {
     const [credentials, setCredentials] = useState({ownerName:'',email: '', password: '',cpassword:''})
     const [error, setError] = useState(false)
     const [passError, setPassError] = useState(false)
