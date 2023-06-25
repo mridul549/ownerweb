@@ -1,12 +1,12 @@
-import { React, useContext } from "react";
+import { React, useContext, useState } from "react";
 import { MuiOtpInput } from "mui-one-time-password-input";
 import '../css/otp.css'
 import AuthContext from "../context/auth/authContext";
 
 const Otp = () => {
-    const [otp, setOtp] = React.useState("");
-    const { email } = useContext(AuthContext)
-
+    const [otp, setOtp] = useState("");
+    const {email} = useContext(AuthContext)
+    console.log(email);
     const handleChange = (newValue) => {
         setOtp(newValue);
     };

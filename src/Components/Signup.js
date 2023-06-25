@@ -2,6 +2,7 @@ import {React, useState, useContext} from "react";
 import '../css/auth.css'
 import {Link, useNavigate} from 'react-router-dom'
 import Spinner from "./Spinner";
+import AuthContext from "../context/auth/authContext";
 
 const Signup = () => {
     const [credentials, setCredentials] = useState({ownerName:'',email: '', password: '',cpassword:''})
@@ -9,6 +10,7 @@ const Signup = () => {
     const [passError, setPassError] = useState(false)
     const [invalidCredError, setInvalidCredError] = useState({error: false, message: ''})
     const [loading, setLoading] = useState(false)
+    const auth = useContext(AuthContext)
     let navigate = useNavigate()
     
     const handleSubmit = async (event) => {
@@ -38,6 +40,7 @@ const Signup = () => {
         const json = await response.json()
         setLoading(false)
         if(json.action==="Owner created and OTP Sent"){
+            auth.setEmail(credentials.email)
             navigate('/otp')
         } else {
             if(json.message!==undefined && json.message!==null){

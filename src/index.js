@@ -6,6 +6,7 @@ import Signup from './Components/Signup'
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Login from './Components/Login'
 import Otp from './Components/Otp';
+import AuthState from './context/auth/authState';
 
 const router = createBrowserRouter([
     {
@@ -28,6 +29,8 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")).render(
     <React.StrictMode>
-        <RouterProvider router={router} />
+        <AuthState>
+            <RouterProvider router={router} />
+        </AuthState>
     </React.StrictMode>
 );
