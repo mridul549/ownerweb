@@ -25,8 +25,7 @@ const Otp = () => {
             role:1
         })
         const json = await response.json()
-        if(json.message==="OTP Verified, you can log in now.")
-        {
+        if(json.message==="OTP Verified, you can log in now.") {
             navigate('/');
         }
     } 
