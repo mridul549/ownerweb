@@ -1,6 +1,6 @@
 import * as React from "react";
-import '../css/signup.css'
-
+import '../css/auth.css'
+import {Link} from 'react-router-dom'
 function Signup() {
     return (
         <div className="container-fluid signup">
@@ -16,11 +16,11 @@ function Signup() {
                         <div><input className="input-field shadow-sm" type="email" placeholder="Enter your email" /></div>
                         <div><input className="input-field shadow-sm" type="password" placeholder="Enter your password" /></div>
                         <div> <input className="input-field shadow-sm" type="password" placeholder="Confirm password" /></div>
-                        <div className="sign-up-div"> <button type="button" class="btn signup-btn">Sign Up</button></div>
+                        <div className="sign-up-div"> <button type="submit" class="btn signup-btn">Sign Up</button></div>
                     </form>
                     <p>or</p>
                     <div className="google-div"><button class="btn google-btn">Continue with <i class="fa-brands fa-google"></i></button></div>
-                    <a href="/login" className="login-link">Already have an account? Log in here</a>
+                    <Link to="/login" className="login-link">Already have an account? Log in here</Link>
                     </div>
             </div>
         </div>
