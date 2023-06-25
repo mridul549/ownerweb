@@ -1,4 +1,4 @@
-import { React, useContext, useState } from "react";
+import { React, useContext, useState, useEffect } from "react";
 import { MuiOtpInput } from "mui-one-time-password-input";
 import '../css/otp.css'
 import AuthContext from "../context/auth/authContext";
@@ -6,6 +6,11 @@ import AuthContext from "../context/auth/authContext";
 const Otp = () => {
     const [otp, setOtp] = useState("");
     const {email} = useContext(AuthContext)
+    const[counter,setCounter]=useState(59);
+    useEffect(() => {
+        const timer = counter>0&&setInterval(() => setCounter(counter-1), 1000);
+        return () =>clearInterval(timer);
+    },[counter]);
 
     const handleChange = (newValue) => {
         setOtp(newValue);
@@ -25,7 +30,7 @@ const Otp = () => {
             <div className="otp">
                 <MuiOtpInput value={otp} onChange={handleChange} />
             </div>
-            <a className="resendLink" href="/">resend OTP in 01:59</a>
+            <a className="resendLink" href="/">resend OTP in {counter}</a>
             <button onClick={handleOTP} className="btn btn-primary submitBtn">Submit OTP</button>
         </div>
     );
