@@ -8,14 +8,14 @@ import Otp from './Components/Otp'
 function App() {
     return (
 
-            <div className="App">
-                <Routes>
-                    <Route path='/' element={<Home/>}/>
-                    <Route path='/signup' element={<Signup /> }/>
-                    <Route path='/login' element={<Login />} />
-                    <Route path='/otp' element={<Otp />}/>
-                </Routes>
-            </div>
+        <div className="App">
+            <Routes>
+                <Route path='/' element={<Home/>}/>
+                <Route path='/signup' element={<Signup /> }/>
+                <Route path='/login' element={<Login />} />
+                <Route path='/otp' element={<Otp />}/>
+            </Routes>
+        </div>
 
     )
 }
