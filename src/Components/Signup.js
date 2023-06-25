@@ -1,7 +1,36 @@
-import * as React from "react";
+import {React, useState} from "react";
 import '../css/auth.css'
-import {Link} from 'react-router-dom'
+import {Link, useNavigate} from 'react-router-dom'
+
 function Signup() {
+    const [credentials, setCredentials] = useState({ownerName:'',email: '', password: '',cpassword:''})
+    let navigate = useNavigate()
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        // const data = new FormData(event.currentTarget);
+        
+        const {ownerName,email,password}=credentials;
+        const response = await fetch("https://flavr.tech/owner/signup", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(({ownerName,email,password}))
+        })
+        const json = await response.json()
+
+        if(json.action==="Owner created and OTP Sent"){
+            // save token and redirect to dashboard
+            navigate('/otp')
+        } else {
+            alert("Invalid credentials")
+        }
+    };
+
+    const onChange = (e) => {
+        setCredentials({...credentials, [e.target.name]: e.target.value})
+    }
+
     return (
         <div className="container-fluid signup">
             <div className="row">
@@ -11,11 +40,11 @@ function Signup() {
                 <div className="col-lg-4 form-div">
                 <h1 className="signup-head">FlavR</h1>
                     <h3>Sign Up</h3>
-                    <form action="">
-                        <div><input className="input-field shadow-sm" type="text" placeholder="Enter your name" /></div>
-                        <div><input className="input-field shadow-sm" type="email" placeholder="Enter your email" /></div>
-                        <div><input className="input-field shadow-sm" type="password" placeholder="Enter your password" /></div>
-                        <div><input className="input-field shadow-sm" type="password" placeholder="Confirm password" /></div>
+                    <form action="" onSubmit={handleSubmit}>
+                        <div><input className="input-field shadow-sm" type="text" onChange={onChange} name="ownerName" placeholder="Enter your name" /></div>
+                        <div><input className="input-field shadow-sm" type="email" onChange={onChange} name="email" placeholder="Enter your email" /></div>
+                        <div><input className="input-field shadow-sm" type="password" onChange={onChange} name="password" placeholder="Enter your password" /></div>
+                        <div><input className="input-field shadow-sm" type="password" onChange={onChange} name="cpassword" placeholder="Confirm password" /></div>
                         <div className="sign-up-div"> <button type="submit" class="btn signup-btn">Sign Up</button></div>
                     </form>
                     <p>or</p>

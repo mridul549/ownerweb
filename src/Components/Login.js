@@ -33,19 +33,19 @@ export default function SignIn() {
         setCredentials({...credentials, [e.target.name]: e.target.value})
     }
 
-  return (
-    <div className="container-fluid signup">
+    return (
+        <div className="container-fluid signup">
             <div className="row">
                 <div className="col-lg-4 form-div">
                     <h1 className="signup-head">FlavR</h1>
                     <h3>Sign In</h3>
                     <form action="" onSubmit={handleSubmit}>
-                        <div><input className="input-field shadow-sm" type="email" value={credentials.email} onChange={onChange} placeholder="Enter your email" /></div>
-                        <div><input className="input-field shadow-sm" type="password" value={credentials.password} onChange={onChange} placeholder="Enter your password" /></div>
-                        <div className="sign-up-div"> <button type="submit" class="btn signup-btn">Sign In</button></div>
+                        <div><input className="input-field shadow-sm" name='email' type="email" value={credentials.email} onChange={onChange} placeholder="Enter your email" /></div>
+                        <div><input className="input-field shadow-sm" name='password' type="password" value={credentials.password} onChange={onChange} placeholder="Enter your password" /></div>
+                        <div className="sign-up-div"> <button type="submit" className="btn signup-btn">Sign In</button></div>
                     </form>
                     <p>or</p>
-                    <div className="google-div"><button class="btn google-btn">Continue with <i class="fa-brands fa-google"></i></button></div>
+                    <div className="google-div"><button className="btn google-btn">Continue with <i className="fa-brands fa-google"></i></button></div>
                     <Link to="/signup" className="login-link">Don't have an account? Sign Up here</Link>
                 </div>
                 <div className="col-lg-8 imgCol">
@@ -53,5 +53,5 @@ export default function SignIn() {
                 </div>
             </div>
         </div>
-  );
+    );
 }
