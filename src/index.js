@@ -2,9 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
-import Signup from './Components/Login'
+import Signup from './Components/Signup'
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Login from './Components/Signup'
+import Login from './Components/Login'
 import Otp from './Components/Otp';
 
 const router = createBrowserRouter([

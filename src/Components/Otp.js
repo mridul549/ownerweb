@@ -1,28 +1,33 @@
-import React from "react";
+import { React, useContext } from "react";
 import { MuiOtpInput } from "mui-one-time-password-input";
-import Box from "@mui/material/Box";
+import '../css/otp.css'
+import AuthContext from "../context/auth/authContext";
 
 const Otp = () => {
     const [otp, setOtp] = React.useState("");
+    const { email } = useContext(AuthContext)
 
     const handleChange = (newValue) => {
         setOtp(newValue);
     };
-    console.log(otp);
+
+    const handleOTP = async () => {
+        
+    } 
+
     return (
-        <Box
-            sx={{
-                width: 300,
-                height: 300,
-                backgroundColor: "primary.dark",
-                "&:hover": {
-                    backgroundColor: "primary.main",
-                    opacity: [0.9, 0.8, 0.7],
-                },
-            }}
-        >
-            <MuiOtpInput value={otp} style={{width: "400px", fontSize: "20px"}} onChange={handleChange} />
-        </Box>
+        <div className="container-fluid otpContainer">
+            <h1>OTP Verification</h1>
+            <div className="container sentContainer">
+                <p style={{fontWeight: 600}}>A One time password has been sent to the email</p>
+                <p style={{fontWeight: 600, marginTop: -6}}>{email}</p>
+            </div>
+            <div className="otp">
+                <MuiOtpInput value={otp} onChange={handleChange} />
+            </div>
+            <a className="resendLink" href="/">resend OTP in 01:59</a>
+            <button onClick={handleOTP} className="btn btn-primary submitBtn">Submit OTP</button>
+        </div>
     );
 };
 
