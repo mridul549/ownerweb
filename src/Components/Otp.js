@@ -8,7 +8,7 @@ const Otp = () => {
     const [otp, setOtp] = useState("");
     const {email} = useContext(AuthContext)
     const navigate = useNavigate()
-    const[counter,setCounter]=useState(59);
+    const[counter,setCounter]=useState(120);
     useEffect(() => {
         const timer = counter>0&&setInterval(() => setCounter(counter-1), 1000);
         return () =>clearInterval(timer);
@@ -41,8 +41,8 @@ const Otp = () => {
             <div className="otp">
                 <MuiOtpInput value={otp} onChange={handleChange} />
             </div>
-            <a className="resendLink" href="/">resend OTP in {counter}</a>
-            <button onClick={handleOTP} className="btn btn-primary submitBtn">Submit OTP</button>
+            {counter>0? <p>resend OTP in 0{Math.floor(counter/60)}:{counter%60}</p>:""}
+          <button onClick={handleOTP} className="btn btn-primary submitBtn">Submit OTP</button>
         </div>
     );
 };
