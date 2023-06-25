@@ -6,7 +6,7 @@ import AuthContext from "../context/auth/authContext";
 const Otp = () => {
     const [otp, setOtp] = useState("");
     const {email} = useContext(AuthContext)
-    console.log(email);
+
     const handleChange = (newValue) => {
         setOtp(newValue);
     };
