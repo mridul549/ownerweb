@@ -1,0 +1,109 @@
+h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.signup {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+.imgCol {
+    padding: 0;
+}
+
+.image-1
+{
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+}
+
+.form-div
+{
+    text-align: center;
+    padding: 3% 2%;
+    display: flex;
+    flex-direction: column;
+}
+
+.signup-head
+{
+    color:#004932;
+}
+
+.input-field
+{
+    border: none;
+    margin: 0.5rem 0;
+    width: 22rem;
+    height: 3.3rem;
+    border-radius: 10px;
+    padding-left: 15px;
+    transition: 0.1s;
+    -webkit-transition: 0.1s;
+    outline: none;
+}
+
+.input-field:focus {
+    border: 1.5px solid #00865b;
+}
+
+::placeholder {
+    padding-left: 10px;
+    font-size: small;
+}
+
+.sign-up-div
+{
+    padding-top: 2rem;
+    padding-bottom: 0;
+}
+
+.signup-btn
+{
+    color: white;
+    background-color: #004932;
+    font-size: .9rem;
+    font-weight: 600;
+    width: 12rem;
+    height: 2.6rem;
+    border-radius: 10px;
+}
+
+.google-btn {
+    border-color: #004932;
+    font-size: .9rem;
+    font-weight: 600;
+    width: 12rem;
+    height: 2.6rem;
+    border-radius: 10px;
+}
+
+.btn:active, .btn:focus {
+    box-shadow: 0 0 0 0.05rem #000;
+}
+
+.google-div {
+    padding-top: 0rem;
+}
+
+.login-link {
+    padding-top: 1rem;
+}
+
+.login-link:hover {
+    color: rgb(81, 81, 81);
+}
+
+p {
+    padding-top: 0.5rem;
+}
+
+a {
+    color: black;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-decoration: none;
+}

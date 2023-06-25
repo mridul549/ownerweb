@@ -15,7 +15,7 @@ function Signup() {
                         <div><input className="input-field shadow-sm" type="text" placeholder="Enter your name" /></div>
                         <div><input className="input-field shadow-sm" type="email" placeholder="Enter your email" /></div>
                         <div><input className="input-field shadow-sm" type="password" placeholder="Enter your password" /></div>
-                        <div> <input className="input-field shadow-sm" type="password" placeholder="Confirm password" /></div>
+                        <div><input className="input-field shadow-sm" type="password" placeholder="Confirm password" /></div>
                         <div className="sign-up-div"> <button type="submit" class="btn signup-btn">Sign Up</button></div>
                     </form>
                     <p>or</p>
