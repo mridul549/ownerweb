@@ -2,10 +2,12 @@ import { React, useContext, useState, useEffect } from "react";
 import { MuiOtpInput } from "mui-one-time-password-input";
 import '../css/otp.css'
 import AuthContext from "../context/auth/authContext";
+import { useNavigate } from "react-router-dom";
 
 const Otp = () => {
     const [otp, setOtp] = useState("");
     const {email} = useContext(AuthContext)
+    const navigate = useNavigate()
     const[counter,setCounter]=useState(59);
     useEffect(() => {
         const timer = counter>0&&setInterval(() => setCounter(counter-1), 1000);
@@ -17,7 +19,16 @@ const Otp = () => {
     };
 
     const handleOTP = async () => {
-        
+        const response = await fetch("https://flavr.tech/mail/verifyotp", {
+            key:email,
+            otp:otp,
+            role:1
+        })
+        const json = await response.json()
+        if(json.message==="OTP Verified, you can log in now.")
+        {
+            navigate('/');
+        }
     } 
 
     return (
