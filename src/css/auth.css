@@ -18,6 +18,8 @@ h3 {
     margin: 0;
     padding: 0;
     height: 100vh;
+    max-height: 100%;
+    display: flex;
 }
 
 .form-div
@@ -106,4 +108,9 @@ a {
     font-size: 0.8rem;
     font-weight: 600;
     text-decoration: none;
+}
+
+.errorLabel {
+    color: red;
+    font-size: 15px;
 }
