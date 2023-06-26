@@ -7,7 +7,7 @@ import Spinner from "./Spinner";
 
 const Otp = () => {
     const [otp, setOtp] = useState("");
-    const {email} = useContext(AuthContext)
+    const {email,setAuthenticated} = useContext(AuthContext)
     const navigate = useNavigate()
     const [counter, setCounter]=useState(120);
     const [loading, setLoading] = useState(false)
@@ -34,6 +34,7 @@ const Otp = () => {
         const json = await response.json()
         setLoading(false)
         if(json.message==="OTP Verified, you can log in now.") {
+            setAuthenticated(true)
             navigate('/');
         } else {
             setError({error: true, message: json.message})
