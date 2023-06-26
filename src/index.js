@@ -12,6 +12,7 @@ import Menu from './Components/Menu'
 import Orders from './Components/Orders'
 import Outlet from './Components/Outlet'
 import  MenuItem  from './Components/MenuItem';
+import Category from './Components/Category';
 
 
 const router = createBrowserRouter([
@@ -34,6 +35,10 @@ const router = createBrowserRouter([
     {
         path: "/menuitem",
         element: <MenuItem />
+    },
+    {
+        path: "/category",
+        element: <Category />
     },
     {
         path: '/dashboard',
