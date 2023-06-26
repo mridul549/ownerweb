@@ -11,6 +11,7 @@ import Dashboard from './Components/Dashboard';
 import Menu from './Components/Menu'
 import Orders from './Components/Orders'
 import Outlet from './Components/Outlet'
+import  MenuItem  from './Components/MenuItem';
 
 
 const router = createBrowserRouter([
@@ -29,6 +30,10 @@ const router = createBrowserRouter([
     {
         path: "/otp",
         element: <Otp />,
+    },
+    {
+        path: "/menuitem",
+        element: <MenuItem />
     },
     {
         path: '/dashboard',
