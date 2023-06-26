@@ -5,6 +5,7 @@ import Login from './Components/Login'
 import Otp from './Components/Otp'
 import Dashboard from './Components/Dashboard';
 import MenuItem from './Components/MenuItem'
+import Category from './Components/Category'
 
 function App() {
     return (
@@ -17,6 +18,7 @@ function App() {
                 <Route path='/otp' element={<Otp />}/>
                 <Route path='/dashboard' element={<Dashboard />} />
                 <Route path='/menuitem' element={<MenuItem />} />
+                <Route path='/category' element={<Category />} />
             </Routes>
         </div>
 
