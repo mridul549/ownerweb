@@ -12,7 +12,7 @@ export default function ButtonAppBar() {
 
     return (
         <Box sx={{ flexGrow: 1 }}>
-            <AppBar sx={{ background: "#004932" }} position="static">
+            <AppBar sx={{ background: "#004932", boxShadow: 0, height: "3rem" }} position="static">
                 <Toolbar>
                     <Typography
                         variant="h6"

@@ -25,6 +25,7 @@ main {
     color: var(--bs-emphasis-color);
     background-color: transparent;
 }
+
 .btn-toggle:hover,
 .btn-toggle:focus {
     color: rgba(var(--bs-emphasis-color-rgb), 0.85);
@@ -75,5 +76,9 @@ main {
 }
 
 .nav-link {
+    color: black;
+}
+
+.nav-pills .nav-link.active{
     background-color: #004932;
 }
