@@ -20,7 +20,10 @@
 .resendLink {
     color: black;
     text-decoration: none;
-    margin: 20px;
+    margin: 20px 0;
+    font-size: 15px;
+    font-weight: 600;
+    border: 1px solid black;
 }
 
 .submitBtn {
@@ -30,18 +33,29 @@
     width: 10rem;
     border-radius: 10px;
     height: 2.5rem;
+    color: #fff;
 }
 
 .submitBtn:hover, .submitBtn:active, .submitBtn::selection, .submitBtn::after  {
     background: #006545;
+    color: #fff;
 }
 
 .resendLink:hover {
     color: rgb(81, 81, 81);
 }
 
+.btn:active, .btn:focus {
+    box-shadow: 0 0 0 0.05rem #000;
+}
+
 h1 {
     color: #004932;
     font-weight: bold;
     margin-bottom: 50px;
+}
+
+.errorLabel {
+    color: red;
+    font-size: 15px;
 }

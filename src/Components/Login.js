@@ -14,7 +14,11 @@ export default function SignIn() {
     const handleSubmit = async (event) => {
         event.preventDefault();
         // const data = new FormData(event.currentTarget);
-
+        if(credentials.email.length===0||credentials.password.length===0){
+            setError(true);
+            return;
+        }
+        setLoading(true);
         const response = await fetch("https://flavr.tech/owner/login", {
             method: "POST",
             headers: {
@@ -49,8 +53,15 @@ export default function SignIn() {
                     <h1 className="signup-head">FlavR</h1>
                     <h3>Sign In</h3>
                     <form action="" onSubmit={handleSubmit}>
-                        <div><input className="input-field shadow-sm" name='email' type="email" value={credentials.email} onChange={onChange} placeholder="Enter your email" /></div>
-                        <div><input className="input-field shadow-sm" name='password' type="password" value={credentials.password} onChange={onChange} placeholder="Enter your password" /></div>
+                        <div>
+                            <input className="input-field shadow-sm" name='email' type="email" value={credentials.email} onChange={onChange} placeholder="Enter your email" />
+                            { error&&credentials.email.length===0 ? <label htmlFor="" className="errorLabel">Email can't be empty</label> : "" }
+                        </div>
+                        <div>
+                            <input className="input-field shadow-sm" name='password' type="password" value={credentials.password} onChange={onChange} placeholder="Enter your password" />
+                            { error&&credentials.password.length===0 ? <label htmlFor="" className="errorLabel">Password can't be empty</label> : "" }
+                        </div>
+                        {loading && <Spinner />}
                         <div className="sign-up-div"> <button type="submit" className="btn signup-btn">Sign In</button></div>
                         {invalidCredError.error ? <label htmlFor="" style={{marginTop: "10px"}} className="errorLabel">{invalidCredError.message}</label> : ""}
                     </form>
