@@ -1,18 +1,22 @@
-.cat
-{
-    text-align: center;
+img {
+    margin-top: 10px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 55px;
+    height: 55px;
 }
 
-button
-{
+button {
     background-color: white;
     border: 0;
-    height: 30vh;
-    width: 30vh;
+    height: 6rem;
+    width: 6rem;
     border-radius: 10%;
-    box-shadow: 0rem 0.4rem 0.4rem rgb(194, 194, 194);
+    box-shadow: 0rem 0.2rem 0.2rem rgb(194, 194, 194);
 }
 
-p{
-    padding-top: 0.5rem;
+p {
+    color: #004932;
+    font-weight: 600;
 }
