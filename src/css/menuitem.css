@@ -1,0 +1,42 @@
+.feature-card
+{
+    width:50%;
+}
+
+p
+{
+    padding-top: 0;
+}
+
+.img-div
+{
+    text-align:end;
+    padding: 0;
+}
+
+.item-image
+{
+    width: 100%;
+    padding-top: 1rem;
+    padding-left: 1rem;
+}
+.veg
+{
+    padding: 0;
+    text-align: end;
+}
+.veg-img
+{
+    width: 50%;
+    padding-top: 1rem;
+}
+
+.feature-heading
+{
+    padding-top: 1rem;
+}
+
+.icon
+{
+    padding-top: 1rem;
+}
