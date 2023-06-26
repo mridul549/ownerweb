@@ -7,6 +7,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Login from './Components/Login'
 import Otp from './Components/Otp';
 import AuthState from './context/auth/authState';
+import Dashboard from './Components/Dashboard';
 
 const router = createBrowserRouter([
     {
@@ -25,6 +26,10 @@ const router = createBrowserRouter([
         path: "/otp",
         element: <Otp />,
     },
+    {
+        path: '/dashboard',
+        element: <Dashboard />
+    }
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
