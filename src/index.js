@@ -35,15 +35,15 @@ const router = createBrowserRouter([
         element: <Dashboard />,
         children:[
             {
-                path:"/dashboard/menu",
+                path:"menu",
                 element:<Menu/>
             },
             {
-                path:"/dashboard/orders",
+                path:"orders",
                 element:<Orders/>
             },
             {
-                path:"/dashboard/outlet",
+                path:"outlet",
                 element:<Outlet/>
             }
         ]

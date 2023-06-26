@@ -24,8 +24,16 @@ main {
     height: 100vh;
 }
 
+.sidebar-wrapper {
+    padding: 0;
+}
+
 .nav-link {
     color: black;
+}
+
+.nav-link:hover, .nav-link:active, .nav-link:focus {
+    color: rgb(83, 83, 83);
 }
 
 .nav-pills .nav-link.active{

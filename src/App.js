@@ -5,7 +5,6 @@ import Login from './Components/Login'
 import Otp from './Components/Otp'
 import Dashboard from './Components/Dashboard';
 
-
 function App() {
     return (
 
@@ -15,7 +14,7 @@ function App() {
                 <Route path='/signup' element={<Signup /> }/>
                 <Route path='/login' element={<Login />} />
                 <Route path='/otp' element={<Otp />}/>
-                <Route path='/dashboard' element={<Dashboard />} />
+                <Route path='/dashboard/' element={<Dashboard />} />
             </Routes>
         </div>
 
