@@ -19,22 +19,21 @@ main {
     outline: 0;
 }
 
-.scrollarea {
-    overflow-y: auto;
-}
-
-.sidebar-wrapper {
-    padding: 0;
-    margin: 0;
-}
-
 .sidebar {
     width: 35vh;
     height: 100vh;
 }
 
+.sidebar-wrapper {
+    padding: 0;
+}
+
 .nav-link {
     color: black;
+}
+
+.nav-link:hover, .nav-link:active, .nav-link:focus {
+    color: rgb(83, 83, 83);
 }
 
 .nav-pills .nav-link.active{

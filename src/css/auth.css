@@ -113,4 +113,5 @@ a {
 .errorLabel {
     color: red;
     font-size: 15px;
+    margin-top: 20px;
 }
