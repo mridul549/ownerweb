@@ -42,3 +42,11 @@ main {
 .nav-pills .nav-link.active{
     background-color: #004932;
 }
+
+.ownerName:hover {
+    color: rgb(92, 92, 92);
+}
+
+.dropdown-toggle:hover {
+    color: black;
+}

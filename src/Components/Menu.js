@@ -4,6 +4,7 @@ import Category from "./Category";
 import "../css/menu.css";
 
 export default function Menu() {
+    
     return (
         <div className="container-fluid my-5 main-div" style={{ padding: 0, margin: 0 }}>
             <div className="d-flex flex-row justify-content-start align-items-center">
