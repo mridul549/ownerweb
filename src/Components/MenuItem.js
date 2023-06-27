@@ -3,7 +3,7 @@ import "../css/menuitem.css";
 
 export default function MenuItem() {
     return (
-        <div className="card mb-3 shadow-sm" style={{maxWidth: "500px",margin: 40}}>
+        <div className="card mb-3 shadow-sm" style={{maxWidth: "500px"}}>
             <div className="row g-0">
                 <div className="col-md-4">
                     <img src="https://i.imgur.com/CkwB6CY.jpg" style={{height: "100%"}} className="img-fluid rounded-start" alt="..."/>
