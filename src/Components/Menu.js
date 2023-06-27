@@ -6,10 +6,9 @@ import "../css/menu.css";
 export default function Menu() {
     return (
         <div className="container-fluid my-5 main-div" style={{ padding: 0, margin: 0 }}>
-            <h2 className="categoryHead my-5">Categories </h2>
-            <div className="row">
-            <div className="col">
-                <button className="add">add</button>
+            <div className="d-flex flex-row justify-content-start align-items-center">
+                <h2 className="categoryHead my-5">Categories </h2>
+                <i class="fa-solid fa-circle-plus fa-2xl plus" ></i>
             </div>
             <div className="col container categoryContainer">
                 <div className="categoryScroll">
@@ -26,7 +25,6 @@ export default function Menu() {
                     <div className="categoryButton"><Category /></div>
                     <div className="categoryButton"><Category /></div>
                 </div>
-            </div>
             </div>
             <div className="categoryName d-flex flex-row justify-content-start align-items-center">
                 <h2 className="categoryHead my-5">All </h2>
