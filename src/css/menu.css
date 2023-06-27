@@ -36,3 +36,8 @@
     flex: 0 0 auto;
     margin: 10px 0;
 }
+
+.add
+{
+    display: inline;
+}
