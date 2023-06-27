@@ -5,7 +5,7 @@ import "../css/menu.css";
 
 export default function Menu() {
     return (
-        <div className="container my-5" style={{ padding: 0, margin: 0 }}>
+        <div className="container-fluid my-5" style={{ padding: 0, margin: 0, maxWidth: "100%" }}>
             <h2 className="categoryHead my-5">Categories </h2>
             <div className="container categoryContainer">
                 <div className="categoryScroll">
