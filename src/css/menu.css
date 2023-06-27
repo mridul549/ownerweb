@@ -1,0 +1,38 @@
+.main-div
+{
+    width:100%;
+}
+
+.categoryHead {
+    font-weight: 600;
+    font-size: 25px;
+    margin-right: 10px;
+}
+
+.categoryScroll {
+    display: flex;
+    flex-wrap: nowrap;
+}
+
+.categoryContainer {
+    width: 100%;
+    float: none;
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+}
+
+.editIcon {
+    width: 30px;
+    height: 30px;
+    padding-bottom: 20px;
+}
+
+.categoryName {
+    display: inline;
+}
+
+.categoryButton {
+    flex: 0 0 auto;
+    margin: 10px 0;
+}

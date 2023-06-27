@@ -20,12 +20,13 @@ main {
 }
 
 .sidebar {
-    width: 35vh;
     height: 100vh;
 }
 
 .sidebar-wrapper {
     padding: 0;
+    position: sticky;
+    top: 0;
 }
 
 .nav-link {

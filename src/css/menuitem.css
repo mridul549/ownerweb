@@ -1,42 +1,49 @@
-.feature-card
-{
-    width:50%;
+.feature-card {
+    width: 50%;
+    display: grid;
+    place-items: center;
+    border-radius: 15px;
 }
 
-p
-{
+p {
     padding-top: 0;
 }
 
-.img-div
-{
-    text-align:end;
-    padding: 0;
+.img-div {
+    position: relative;
 }
 
-.item-image
-{
-    width: 100%;
-    padding-top: 1rem;
-    padding-left: 1rem;
+.image-container {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 90%;
+    overflow: hidden;
 }
-.veg
-{
+
+.item-image {
+    width: 100%;
+    border-radius: 10px;
+}
+
+.veg {
     padding: 0;
     text-align: end;
 }
-.veg-img
-{
+.veg-img {
     width: 50%;
     padding-top: 1rem;
 }
 
-.feature-heading
-{
+.feature-heading {
     padding-top: 1rem;
 }
 
-.icon
-{
+.icon {
     padding-top: 1rem;
 }
+
+.card {
+    border-radius: 10px;
+}
+
