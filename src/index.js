@@ -13,6 +13,7 @@ import Orders from './Components/Orders'
 import Outlet from './Components/Outlet'
 import  MenuItem  from './Components/MenuItem';
 import Category from './Components/Category';
+import EditCategory from './Components/EditCategory';
 
 
 const router = createBrowserRouter([
@@ -33,10 +34,6 @@ const router = createBrowserRouter([
         element: <Otp />,
     },
     {
-        path: "/menuitem",
-        element: <MenuItem />
-    },
-    {
         path: "/category",
         element: <Category />
     },
@@ -55,7 +52,11 @@ const router = createBrowserRouter([
             {
                 path:"outlet",
                 element:<Outlet/>
-            }
+            },
+            {
+                path: "editcategory",
+                element: <EditCategory />
+            },
         ]
     }
 ]);
