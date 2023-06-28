@@ -8,7 +8,6 @@ img {
 }
 
 button {
-    background-color: white;
     border: 0;
     height: 6rem;
     width: 6rem;
@@ -19,4 +18,14 @@ button {
 p {
     color: #000;
     font-weight: 600;
+}
+
+
+.selected {
+    background-color:#a3c4b2; /* Replace with your desired color */
+}
+
+.notselected
+{
+    background-color: white;
 }
