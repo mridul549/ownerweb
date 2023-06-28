@@ -29,12 +29,13 @@ export default function Sidebar() {
                 </ul>
             <hr/>
             <div className="dropdown">
-                <a href="/dashboard" className="d-flex align-items-center link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                    <img src="https://github.com/mdo.png" alt="" style={{width: 32, height: 32}} className="rounded-circle me-2" />
-                    <strong>mdo</strong>
+                <a href="/" className="d-flex align-items-center link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                    <div className="d-flex align-items-center">
+                        <img src={localStorage.getItem('ownerProfilePic')} alt="" style={{ width: 32, height: 32, marginRight: '0.5rem' }} className="rounded-circle" />
+                        <strong className='ownerName'>{localStorage.getItem('ownerName')}</strong>
+                    </div>
                 </a>
                 <ul className="dropdown-menu text-small shadow">
-                    <li><a className="dropdown-item" href="/dashboard">New project...</a></li>
                     <li><a className="dropdown-item" href="/dashboard">Settings</a></li>
                     <li><a className="dropdown-item" href="/dashboard">Profile</a></li>
                     <li><hr className="dropdown-divider" /></li>

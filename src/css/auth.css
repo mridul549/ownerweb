@@ -13,30 +13,27 @@ h3 {
     padding: 0;
 }
 
-.image-1
-{
+.image-1 {
     margin: 0;
     padding: 0;
     height: 100vh;
     max-height: 100%;
+    width: 100%;
     display: flex;
 }
 
-.form-div
-{
+.form-div {
     text-align: center;
     padding: 3% 2%;
     display: flex;
     flex-direction: column;
 }
 
-.signup-head
-{
-    color:#004932;
+.signup-head {
+    color: #004932;
 }
 
-.input-field
-{
+.input-field {
     border: none;
     margin: 0.5rem 0;
     width: 22rem;
@@ -57,17 +54,15 @@ h3 {
     font-size: small;
 }
 
-.sign-up-div
-{
+.sign-up-div {
     padding-top: 2rem;
     padding-bottom: 0;
 }
 
-.signup-btn
-{
+.signup-btn {
     color: white;
     background-color: #004932;
-    font-size: .9rem;
+    font-size: 0.9rem;
     font-weight: 600;
     width: 12rem;
     height: 2.6rem;
@@ -76,14 +71,15 @@ h3 {
 
 .google-btn {
     border-color: #004932;
-    font-size: .9rem;
+    font-size: 0.9rem;
     font-weight: 600;
     width: 12rem;
     height: 2.6rem;
     border-radius: 10px;
 }
 
-.btn:active, .btn:focus {
+.btn:active,
+.btn:focus {
     box-shadow: 0 0 0 0.05rem #000;
 }
 

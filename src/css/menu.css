@@ -1,6 +1,5 @@
-.main-div
-{
-    width:100%;
+.main-div {
+    width: 100%;
 }
 
 .categoryHead {
@@ -37,7 +36,8 @@
     margin: 10px 0;
 }
 
-.add
-{
-    display: inline;
+.plus {
+    height:1rem;
+    width: 1rem;
+    padding-top: 6.5px;
 }

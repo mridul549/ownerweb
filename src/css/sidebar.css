@@ -21,6 +21,8 @@ main {
 
 .sidebar {
     height: 100vh;
+    position: sticky;
+    top: 0;
 }
 
 .sidebar-wrapper {
@@ -39,4 +41,12 @@ main {
 
 .nav-pills .nav-link.active{
     background-color: #004932;
+}
+
+.ownerName:hover {
+    color: rgb(92, 92, 92);
+}
+
+.dropdown-toggle:hover {
+    color: black;
 }

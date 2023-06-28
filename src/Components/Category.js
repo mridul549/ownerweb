@@ -1,12 +1,12 @@
 import React from "react";
 import "../css/category.css";
 
-export default function Category() {
+export default function Category(props) {
     return (
         <div className="cat">
             <button className="">
-                <img src="https://i.imgur.com/Ru0cbPs.png" alt="img" />
-                <p>Fries</p>
+                <img src={props.iconImage} alt="img" />
+                <p>{props.head}</p>
             </button>
         </div>
     );

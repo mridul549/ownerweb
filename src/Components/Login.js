@@ -27,12 +27,26 @@ export default function SignIn() {
             body: JSON.stringify(({email: credentials.email, password: credentials.password}))
         })
         const json = await response.json()
-        setLoading(false)
         if(json.message==="Auth successful"){
             // save token and redirect to dashboard
             localStorage.setItem('token', json.token)
-            navigate('/')
+            const userProfile = await fetch("https://flavr.tech/owner/ownerprofile", {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer " + localStorage.getItem('token')
+                }
+            })
+            const userProfileJson = await userProfile.json()
+            
+            localStorage.setItem('selectedOutlet', '646a5a0a51c3c24655b854e9')
+            localStorage.setItem('ownerEmail', userProfileJson.owner[0].email)
+            localStorage.setItem('ownerName', userProfileJson.owner[0].ownerName)
+            localStorage.setItem('ownerProfilePic', userProfileJson.owner[0].ownerProfilePic.url)
+            setLoading(false)
+            navigate('/dashboard/menu')
         } else {
+            setLoading(false)
             if(json.message!==undefined && json.message!==null){
                 setInvalidCredError({error: true, message: json.message})
             } else {
