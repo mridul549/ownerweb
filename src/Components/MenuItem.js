@@ -20,7 +20,7 @@ export default function MenuItem(props) {
                     </div>
                 </div>
                 <div className="col-md-1">
-                    <img src="https://i.imgur.com/qFC9XwF.png" style={{width: "25px", height: '25px', display: 'inline-flex'}} alt=""/>
+                    <img src={props.veg ? "https://i.imgur.com/qFC9XwF.png" : "https://i.imgur.com/ttMff3E.png"} style={{width: "25px", height: '25px', display: 'inline-flex'}} alt=""/>
                     <i className="fa-sharp fa-solid fa-pen icon fa-lg" style={{width: "25px", height: '25px'}} onClick={handleEdit}></i>
                 </div>
             </div>

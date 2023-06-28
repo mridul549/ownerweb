@@ -12,20 +12,20 @@ export default function Menu() {
     const [loadingPro, setLoadingPro] = useState(false)
     const [selectedCategory, setSelectedCategory] = useState('All');
 
-  const handleCategoryClick =  async (category) => {
+    const handleCategoryClick =  async (category) => {
         // Add your logic here
         setLoadingPro(true);
         setSelectedCategory(category);
         const response1 = await fetch(`https://flavr.tech/products/getProductsByCategory?categoryName=${category}&outletid=${localStorage.getItem('selectedOutlet')}`, {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-            })
-            const json1 = await response1.json()
-            setLoadingPro(false);
-            setProductArray(json1.categoryArray)
-      };
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            },
+        })
+        const json1 = await response1.json()
+        setLoadingPro(false);
+        setProductArray(json1.categoryArray)
+    };
 
     useEffect(() => {
         async function fetchData () {
@@ -64,10 +64,11 @@ export default function Menu() {
             {loadingCat && <Spinner />}
             <div className="col container categoryContainer">
                 <div className="categoryScroll">
-                    {!loadingCat&&
-                <div className="categoryButton">
+                    {!loadingCat&& 
+                        <div className="categoryButton">
                             <Category iconImage="https://res.cloudinary.com/dokgv4lff/image/upload/v1687859411/l54onuf6o0lyy2afrjyv.png" head="All" onClick={() => handleCategoryClick("All")} set={selectedCategory==="All"}/>
-                        </div>}
+                        </div>
+                    }
                     {categoryArray.map((category) => {
                         const isSelected = selectedCategory === category.category;
                         return <div className="categoryButton" key={category.count.icon._id}>
@@ -89,7 +90,7 @@ export default function Menu() {
                     <div className="row">
                         {productWithCat.products.map((product) => {
                             return <div className="col-lg-6">
-                                <MenuItem productImage={product.productImage.url} productName={product.productName} productPrice={product.price} description={product.description} />
+                                <MenuItem productImage={product.productImage.url} productName={product.productName} productPrice={product.price} veg={product.veg} description={product.description} />
                             </div>
                         })}
                     </div>
