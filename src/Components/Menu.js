@@ -2,6 +2,7 @@ import { React, useEffect, useState } from "react";
 import MenuItem from "./MenuItem";
 import Category from "./Category";
 import Spinner from "./Spinner";
+import {Link} from 'react-router-dom'
 import "../css/menu.css";
 
 export default function Menu() {
@@ -59,7 +60,7 @@ export default function Menu() {
         <div className="container-fluid my-5 main-div" style={{ padding: 0, margin: 0 }}>
             <div className="d-flex flex-row justify-content-start align-items-center">
                 <h2 className="categoryHead my-5">Categories </h2>
-                <i className="fa-solid fa-circle-plus fa-2xl plus" style={{color: "#004932"}} ></i>
+                <Link to={'/dashboard/editcategory'}><i className="fa-solid fa-circle-plus fa-2xl plus" style={{color: "#004932"}} ></i></Link>
             </div>
             {loadingCat && <Spinner />}
             <div className="col container categoryContainer">

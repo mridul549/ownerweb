@@ -11,10 +11,8 @@ import Dashboard from './Components/Dashboard';
 import Menu from './Components/Menu'
 import Orders from './Components/Orders'
 import Outlet from './Components/Outlet'
-import  MenuItem  from './Components/MenuItem';
 import Category from './Components/Category';
 import EditCategory from './Components/EditCategory';
-
 
 const router = createBrowserRouter([
     {
