@@ -1,9 +1,10 @@
-import { React, useEffect, useState } from "react";
+import { React, useEffect, useState, useContext } from "react";
 import MenuItem from "./MenuItem";
 import Category from "./Category";
 import Spinner from "./Spinner";
-import {Link} from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import "../css/menu.css";
+import CategoryContext from "../context/category/categoryContext";
 
 export default function Menu() {
     
@@ -12,6 +13,13 @@ export default function Menu() {
     const [loadingCat, setLoadingCat] = useState(false)
     const [loadingPro, setLoadingPro] = useState(false)
     const [selectedCategory, setSelectedCategory] = useState('All');
+    const { categoryDetails, setCategoryDetails } = useContext(CategoryContext)
+    const navigate = useNavigate()
+
+    const handleEditCategory = (id,name,iconUrl,iconId) => {
+        setCategoryDetails({id: id, name: name, iconUrl: iconUrl, iconId: iconId})
+        navigate('/dashboard/editcategory')
+    }
 
     const handleCategoryClick =  async (category) => {
         // Add your logic here
@@ -30,6 +38,7 @@ export default function Menu() {
 
     useEffect(() => {
         async function fetchData () {
+            setCategoryDetails({id: '', name: '', iconUrl: '', iconId: ''})
             setLoadingCat(true);
             setLoadingPro(true);
             const response = await fetch(`https://flavr.tech/products/getAllCategories?outletid=${localStorage.getItem('selectedOutlet')}`, {
@@ -85,8 +94,11 @@ export default function Menu() {
             {!loadingPro&&productArray.map((productWithCat) => {
                 return <>
                     <div className="categoryName d-flex flex-row justify-content-start align-items-center">
-                        <h2 className="categoryHead my-5">{productWithCat.category} </h2>
-                        <i className="fa-sharp fa-solid fa-pen icon editIcon fa-lg"></i>
+                        <h2 className="categoryHead my-5">{productWithCat.category}</h2>
+                        <i 
+                            className="fa-sharp fa-solid fa-pen icon editIcon fa-lg" 
+                            onClick={() => handleEditCategory(productWithCat.products[0].category._id, productWithCat.category, productWithCat.products[0].category.icon.icon.url, productWithCat.products[0].category.icon._id)}>
+                        </i>
                     </div>
                     <div className="row">
                         {productWithCat.products.map((product) => {

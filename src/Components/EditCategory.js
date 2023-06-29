@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import "../css/editcategory.css";
 import Category from "./Category";
 import Spinner from "./Spinner";
+import CategoryContext from "../context/category/categoryContext";
 
 export default function EditCategory(props) {
     const [productArray, setProductArray] = useState([])
@@ -13,6 +14,7 @@ export default function EditCategory(props) {
     const [successLabel, setSuccessLabel] = useState(false)
     const [loading, setLoading] = useState(false)
     const [apiError, setApiError] = useState({state: false, message: ""})
+    const { categoryDetails, setCategoryDetails } = useContext(CategoryContext)
 
     const handleVariantDeletion=(i)=>{
         const deletVal=[...variantArray]
@@ -44,6 +46,12 @@ export default function EditCategory(props) {
         setLoading(false)
         if(json.message === "Category created"){
             setSuccessLabel(true)
+            setCategoryDetails({
+                id: json.categoryId,
+                name: formData.categoryName,
+                iconId: iconSelected._id,
+                iconUrl: iconSelected.url
+            })
             setTimeout(() => {
                 setSuccessLabel(false)
             }, 5000)
@@ -64,9 +72,22 @@ export default function EditCategory(props) {
     const onChange = (e) => {
         setApiError(false)
         setFormData({categoryName: e.target.value})
+        setCategoryDetails({name: e.target.value})
     }
 
     useEffect(() => {
+        if(categoryDetails.name!==''){
+            setFormData({
+                categoryName: categoryDetails.name
+            })
+            setIconSelected({
+                value: true, 
+                url: categoryDetails.iconUrl, 
+                set: true, 
+                _id: categoryDetails.iconId
+            })
+        }
+
         async function fetchData () {
             const response = await fetch("https://flavr.tech/categoryicon/allicons", {
                 method: "GET",
@@ -76,8 +97,6 @@ export default function EditCategory(props) {
             })
             const json = await response.json()
             setCategoryIcons(json.result)
-
-
         }
         fetchData()
     }, [])
@@ -174,18 +193,28 @@ export default function EditCategory(props) {
                     <div className="row catNameAndIcon">
                         <div className="col-lg-6 categoryNameForm">
                             <h4 className="heading my-4">Category Name</h4>
-                            <input type="text" id="categoryName" name="categoryName" onChange={onChange} className="categoryNameInput shadow-sm" placeholder="Enter category name" />
+                            <input 
+                                type="text" 
+                                id="categoryName" 
+                                name="categoryName" 
+                                value={categoryDetails.name.length>0 ? categoryDetails.name : ""} 
+                                onChange={onChange} 
+                                className="categoryNameInput shadow-sm" 
+                                placeholder="Enter category name" 
+                            />
                             {error && formData.categoryName.length===0 ? <label htmlFor="" className="errorLabel">Category Name can't be empty</label> : ""}  
                         </div>
                         <div className="col-lg-6 iconChoose d-flex flex-column justify-content-start align-items-start">
                             <h4 className="heading my-4">Category Icon</h4>
-                            <button type="button" className={iconSelected.value ? "btn categoryIconSelectedBtn" : "selectIcon"} data-bs-toggle="modal" data-bs-target="#iconListModal">
-                                {iconSelected.value ? 
-                                    <Category set={false} disabled={true} iconImage={iconSelected.url} /> :
-                                    <>
-                                        <i className="fa-solid fa-circle-plus mx-1 fa-2xl" style={{color: "#ffffff", marginTop: "30px"}}></i>
-                                        <p style={{marginTop: "10px", color: "#fff"}}>Add Icon</p>
-                                    </>
+                            <button type="button" className={categoryDetails.iconId==='' ? (iconSelected.value ? "btn categoryIconSelectedBtn" : "selectIcon") : "btn categoryIconSelectedBtn"} data-bs-toggle="modal" data-bs-target="#iconListModal">
+                                {categoryDetails.iconId==='' ? 
+                                    (iconSelected.value ? 
+                                        <Category set={false} disabled={true} iconImage={iconSelected.url} /> :
+                                        <>
+                                            <i className="fa-solid fa-circle-plus mx-1 fa-2xl" style={{color: "#ffffff", marginTop: "30px"}}></i>
+                                            <p style={{marginTop: "10px", color: "#fff"}}>Add Icon</p>
+                                        </>
+                                    ) : <Category set={false} disabled={true} iconImage={categoryDetails.iconUrl} />
                                 }
                             </button>
                             {error && iconSelected._id==='' ? <label htmlFor="" className="errorLabel">No category icon selected</label> : ""}  

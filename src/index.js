@@ -7,6 +7,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Login from './Components/Login'
 import Otp from './Components/Otp';
 import AuthState from './context/auth/authState';
+import CategoryState from './context/category/categoryState';
 import Dashboard from './Components/Dashboard';
 import Menu from './Components/Menu'
 import Orders from './Components/Orders'
@@ -61,8 +62,10 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")).render(
     <React.StrictMode>
-        <AuthState>
-            <RouterProvider router={router} />
-        </AuthState>
+        <CategoryState>
+            <AuthState>
+                <RouterProvider router={router} />
+            </AuthState>
+        </CategoryState>
     </React.StrictMode>
 );
