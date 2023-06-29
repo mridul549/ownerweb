@@ -2,6 +2,7 @@ import { React, useEffect, useState } from "react";
 import MenuItem from "./MenuItem";
 import Category from "./Category";
 import Spinner from "./Spinner";
+import Navbar from "./Navbar";
 import "../css/menu.css";
 
 export default function Menu() {
@@ -56,6 +57,8 @@ export default function Menu() {
     },[])
 
     return (
+        <>
+        <Navbar/>
         <div className="container-fluid my-5 main-div" style={{ padding: 0, margin: 0 }}>
             <div className="d-flex flex-row justify-content-start align-items-center">
                 <h2 className="categoryHead my-5">Categories </h2>
@@ -97,5 +100,6 @@ export default function Menu() {
             })}
 
         </div>
+        </>
     );
 }

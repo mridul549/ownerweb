@@ -9,8 +9,7 @@ export default function Sidebar() {
             <Link to="/dashboard" className="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
                 <span className="fs-4">FlavR</span>
             </Link>
-            <hr/>
-            <ul className="nav nav-pills flex-column mb-auto">
+            <ul className="nav nav-pills flex-column mb-auto ul">
                 <li className="nav-item">
                     <Link to="/dashboard/menu" className="nav-link active custom-nav-link" aria-current="page">
                      Menu

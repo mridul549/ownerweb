@@ -8,6 +8,7 @@ import MenuItem from './Components/MenuItem'
 import Category from './Components/Category'
 import EditCategory from './Components/EditCategory';
 
+
 function App() {
     return (
 
@@ -20,7 +21,7 @@ function App() {
                 <Route path='/dashboard/*' element={<Dashboard />} />
                 <Route path='/editcategory' element={<EditCategory />} />
                 <Route path='/category' element={<Category />} />
-            </Routes>
+                </Routes>
         </div>
 
     )
