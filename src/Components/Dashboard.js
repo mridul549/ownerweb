@@ -21,6 +21,7 @@ export default function Dashboard() {
                         <Route path="/orders" element={<Orders />} />
                         <Route path="/outlet" element={<Outlet />} />
                         <Route path="/editcategory" element={<EditCategory />} />
+                        <Route path="/addcategory" element={<EditCategory />} />
                     </Routes>
                 </div>
             </div>

@@ -2,19 +2,74 @@ import React, { useEffect, useState, useContext } from "react";
 import "../css/editcategory.css";
 import Category from "./Category";
 import Spinner from "./Spinner";
+import MenuItem from "./MenuItem";
+import {Modal, Button} from 'react-bootstrap'
 import CategoryContext from "../context/category/categoryContext";
 
 export default function EditCategory(props) {
+    const [productForm, setProductForm] = useState({productName: '', productDescription: '', productPrice: 0, vegRadio: true, productImage: null})
     const [productArray, setProductArray] = useState([])
     const [variantArray, setVariantArray] = useState([])
     const [categoryIcons, setCategoryIcons] = useState([])
     const [formData, setFormData] = useState({categoryName: ''})
     const [iconSelected, setIconSelected] = useState({value: false, url: '', set: false, _id: ''})
     const [error, setError] = useState(false)
-    const [successLabel, setSuccessLabel] = useState(false)
+    const [errorProduct, setErrorProduct] = useState(false)
+    const [successLabel, setSuccessLabel] = useState({value: false, message: ''})
+    const [successLabelProduct, setSuccessLabelProduct] = useState({value: false, message: ''})
+    const [successLabelUpdel, setSuccessLabelUpdel] = useState({value: false, message: ''})
     const [loading, setLoading] = useState(false)
+    const [loadingProduct, setLoadingProduct] = useState(false)
+    const [loadingUpdelProduct, setLoadingUpdelProduct] = useState(false)
     const [apiError, setApiError] = useState({state: false, message: ""})
+    const [apiErrorProduct, setApiErrorProduct] = useState({state: false, message: ""})
+    const [apiErrorUpdel, setApiErrorUpdel] = useState({state: false, message: ""})
     const { categoryDetails, setCategoryDetails } = useContext(CategoryContext)
+    const [beforeEditCategory, setBeforeEditCategory] = useState({name: '', iconId: '', })
+    const [isConfirmModalOpen, setIsConfirmModalOpen] = useState({state: false, title: '', productid: ''});
+
+    const deleteProduct = async () => {
+        setLoadingUpdelProduct(true)
+
+        const response = await fetch("https://flavr.tech/products/deleteProduct", {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + localStorage.getItem('token')
+            },
+            body: JSON.stringify({productid: isConfirmModalOpen.productid, outletid: localStorage.getItem('selectedOutlet')})
+        })
+        const json = await response.json()
+        setLoadingUpdelProduct(false)
+        if(json.message==="Product deleled successfully"){
+            setSuccessLabelUpdel({value: true, message: json.message})
+            setTimeout(() => {
+                setSuccessLabelUpdel({value: false, message: ''})
+                handleCloseConfirmModal()
+            }, 3000)
+            fetchProducts()
+        } else {
+            setApiErrorUpdel({state: true, message: json.error})
+        }
+        setTimeout(() => {
+            handleCloseConfirmModal()
+        }, 3000)
+    }
+
+    const handleCloseConfirmModal = () => {
+        setIsConfirmModalOpen({title: '', state: false});
+    };
+
+    const handleUpDel = (action, productid) => {
+        if(action===0) {
+
+        } else if (action===1) {
+            setLoadingUpdelProduct(false)
+            setSuccessLabelUpdel({value: false, message: ''})
+            setApiErrorUpdel({state: false, message: ''})
+            setIsConfirmModalOpen({title: "Are you sure you want to delete the product", state: true, productid: productid});
+        }
+    }
 
     const handleVariantDeletion=(i)=>{
         const deletVal=[...variantArray]
@@ -25,6 +80,119 @@ export default function EditCategory(props) {
     const handleVariantAddition = () => {
         const newArray = [...variantArray, []]
         setVariantArray(newArray)
+    }
+
+    const variantOnChange = (e,i) => {
+        const { name, value } = e.target;
+
+        setVariantArray((prevVariantArray) => {
+            const updatedVariantArray = [...prevVariantArray];
+            const variantData = updatedVariantArray[i] || {};
+            variantData[name] = value;
+            updatedVariantArray[i] = variantData;
+            return updatedVariantArray;
+        });
+    }
+
+    const fetchProducts = async () => {
+        const response = await fetch(`https://flavr.tech/products/getProductsByCategory?categoryName=${categoryDetails.name}&outletid=${localStorage.getItem('selectedOutlet')}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            },
+        })
+        const json = await response.json()
+        setProductArray(json.categoryArray[0].products)
+    }
+
+    const handleProductForm = async (event) => {
+        event.preventDefault();
+
+        if(productForm.productDescription.length===0 || productForm.productName===0 || productForm.productPrice===0){
+            setErrorProduct(true)
+            return 
+        }
+
+        setLoadingProduct(true)
+        const ProductFormData = new FormData()
+        ProductFormData.append('productName', productForm.productName)
+        ProductFormData.append('description', productForm.productDescription)
+        ProductFormData.append('price', productForm.productPrice)
+        ProductFormData.append('outletid', localStorage.getItem('selectedOutlet'))
+        ProductFormData.append('categoryid', categoryDetails.id)
+        ProductFormData.append('veg', productForm.vegRadio)
+        ProductFormData.append('productImage', productForm.productImage)
+        
+        if(variantArray.length!==0){
+            let variantArrayString = '['
+            for (let i = 0; i < variantArray.length; i++) {
+                let variant = variantArray[i]
+                let json = {"variantName": variant.variantName, "price": parseInt(variant.price)}
+                variantArrayString+=JSON.stringify(json)
+                variantArrayString+=','
+            }
+            variantArrayString=variantArrayString.substring(0, variantArrayString.length-1)
+            variantArrayString+=']'
+    
+            ProductFormData.append('variants', variantArrayString)
+        }
+
+        const response = await fetch("https://flavr.tech/products/addProduct", {
+            method: "POST", 
+            headers: {
+                "Authorization": "Bearer " + localStorage.getItem('token')
+            },
+            body: ProductFormData
+        })
+        const json = await response.json()
+        setLoadingProduct(false)
+
+        if(json.message==="Product added successfully") {
+            setSuccessLabelProduct({value: true, message: json.message})
+            setTimeout(() => {
+                setSuccessLabelProduct({value: false, message: ''})
+            }, 5000)
+            fetchProducts()
+        } else {
+            if(json.message===undefined || json.message===null){
+                setApiErrorProduct({state: true, message: json.error})
+            } else {
+                setApiErrorProduct({state: true, message: json.message})
+            }
+        }
+    }
+
+    const productFormOnChange = (e) => {
+        if (e.target.name === "productImageInput") {
+            setProductForm({ ...productForm, productImage: e.target.files[0] });
+        } else {
+            setProductForm({ ...productForm, [e.target.name]: e.target.value });
+        }
+    }
+
+    const handleUpdateCategory = async () => {
+        setLoading(true)
+        const response = await fetch(`https://flavr.tech/category/updateCategory?categoryid=${categoryDetails.id}&outletid=${localStorage.getItem('selectedOutlet')}`, {
+            method: "PATCH", 
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(({name: categoryDetails.name, iconid: categoryDetails.iconId}))
+        })
+        const json = await response.json()
+        setLoading(false)
+        if(json.message === "Category updated successfully") {
+            setSuccessLabel({value: true, message: json.message})
+            setTimeout(() => {
+                setSuccessLabel({value: false, message: ''})
+            }, 5000)
+            setBeforeEditCategory({
+                name: categoryDetails.name,
+                iconId: categoryDetails.iconId
+            })
+        } else {
+            setApiError({state: true, message: json.message})
+        }
     }
 
     const handleCategoryForm = async (event) => {
@@ -45,15 +213,10 @@ export default function EditCategory(props) {
         const json = await response.json()
         setLoading(false)
         if(json.message === "Category created"){
-            setSuccessLabel(true)
-            setCategoryDetails({
-                id: json.categoryId,
-                name: formData.categoryName,
-                iconId: iconSelected._id,
-                iconUrl: iconSelected.url
-            })
+            setCategoryDetails({...categoryDetails, id: json.categoryId})
+            setSuccessLabel({value: true, message: json.message})
             setTimeout(() => {
-                setSuccessLabel(false)
+                setSuccessLabel({value: false, message: ''})
             }, 5000)
         } else {
             setApiError({state: true, message: json.message})
@@ -67,16 +230,17 @@ export default function EditCategory(props) {
             set: true, 
             _id: id
         })
+        setCategoryDetails({...categoryDetails, iconUrl: url, iconId: id})
     }
 
     const onChange = (e) => {
         setApiError(false)
         setFormData({categoryName: e.target.value})
-        setCategoryDetails({name: e.target.value})
+        setCategoryDetails({...categoryDetails, name: e.target.value})
     }
 
     useEffect(() => {
-        if(categoryDetails.name!==''){
+        if(categoryDetails.method===1){
             setFormData({
                 categoryName: categoryDetails.name
             })
@@ -86,6 +250,11 @@ export default function EditCategory(props) {
                 set: true, 
                 _id: categoryDetails.iconId
             })
+            setBeforeEditCategory({
+                name: categoryDetails.name,
+                iconId: categoryDetails.iconId
+            })
+            setProductArray(categoryDetails.productArray)
         }
 
         async function fetchData () {
@@ -103,6 +272,34 @@ export default function EditCategory(props) {
 
     return (
         <div>
+            {/* Product Updel modal */}
+            <Modal show={isConfirmModalOpen.state} onHide={handleCloseConfirmModal}>
+                <Modal.Header>
+                    <Modal.Title style={{textAlign: 'center'}}>Are you sure want to delete the product?</Modal.Title>
+                </Modal.Header>
+                <Modal.Footer className="d-flex justify-content-center">
+                    <div>
+                        <div className="d-flex justify-content-center" style={{marginTop: "-20px"}}>
+                            {loadingUpdelProduct && <Spinner />}
+                            {successLabelUpdel.value ? <label htmlFor="" className="successLabel">{successLabelUpdel.message}</label> : ""}
+                            {apiErrorUpdel.state ? <label htmlFor="" className="errorLabel">{apiErrorUpdel.message}</label> : ""}
+                        </div>
+                        <div className="row mt-3 d-flex justify-content-center">
+                            <div className="col-lg-6">
+                                <Button className="" disabled={loadingUpdelProduct} variant="secondary" onClick={handleCloseConfirmModal}>
+                                    No
+                                </Button>
+                            </div>
+                            <div className="col-lg-6">
+                                <Button disabled={loadingUpdelProduct} variant="btn" className="yesBtn" onClick={deleteProduct}>
+                                    Yes
+                                </Button>
+                            </div>
+                        </div>
+                    </div>
+                </Modal.Footer>
+            </Modal>
+
             {/* Category icon list modal */}
             <div className="modal fade" id="iconListModal" aria-labelledby="iconListModalLabel" aria-hidden="true">
                 <div className="modal-dialog">
@@ -143,20 +340,28 @@ export default function EditCategory(props) {
                                 <form action="">
                                     <div className="productImage">
                                         <label htmlFor="" className="productPic">Product Picture</label>
-                                        <input type="file" className="productPicInput"/>
+                                        <input type="file" name="productImageInput" onChange={productFormOnChange} className="productPicInput"/>
                                     </div>
                                     <div className="productDetails">
                                         <label htmlFor="" className="productPic">Product Name</label>
-                                        <input type="text" id="productName" name="productName" className="productFormInput shadow-sm" placeholder="Enter product name" />
+                                        <input type="text" id="productName" name="productName" onChange={productFormOnChange} className="productFormInput shadow-sm" placeholder="Enter product name" />
+                                        {errorProduct && productForm.productName.length===0 ? <label htmlFor="" className="errorLabel">Product Name can't be empty</label> : ""}  
+
                                         <label htmlFor="" className="productPic">Product Description</label>
-                                        <input type="text" id="productDescription" name="productDescription" className="productFormInput shadow-sm" placeholder="Enter product description" />
+                                        <input type="text" id="productDescription" name="productDescription" onChange={productFormOnChange} className="productFormInput shadow-sm" placeholder="Enter product description" />
+                                        {errorProduct && productForm.productDescription.length===0 ? <label htmlFor="" className="errorLabel">Product Description can't be empty</label> : ""}  
+
+                                        <label htmlFor="" className="productPic">Product Price</label>
+                                        <input type="number" id="productPrice" name="productPrice" onChange={productFormOnChange} className="productFormInput shadow-sm" placeholder="Enter product price" />
+                                        {errorProduct && productForm.productPrice===0 ? <label htmlFor="" className="errorLabel">Product price can't be 0</label> : ""}  
+
                                         <div className="vegRadio d-flex flex-row justify-content-center align-items-center">
                                             <div className="vegDiv">
-                                                <input className="form-check-input radioBtn" type="radio" id="veg" checked name="vegRadio" value="true"/>
+                                                <input className="form-check-input radioBtn" type="radio" id="veg" onChange={productFormOnChange} defaultChecked name="vegRadio" value={true}/>
                                                 <label htmlFor="veg">Veg</label>
                                             </div>
                                             <div className="vegDiv">
-                                                <input className="form-check-input radioBtn" type="radio" id="nonVeg" name="vegRadio" value="false"/>
+                                                <input className="form-check-input radioBtn" type="radio" onChange={productFormOnChange} id="nonVeg" name="vegRadio" value={false}/>
                                                 <label htmlFor="nonVeg">Non-Veg</label>
                                             </div>
                                         </div>
@@ -166,19 +371,22 @@ export default function EditCategory(props) {
                                         {variantArray.map((data,i) => {
                                             return <div className="variantDetails row">
                                                 <div className="col-md-5 col-sm-5 col-5">
-                                                    <input type="text" id="variantName" name="variantName" className="variantInput shadow-sm" placeholder="Enter variant name" />    
+                                                    <input type="text" id="variantName" name="variantName" value={data.variantName || ""} onChange={e=>variantOnChange(e,i)} className="variantInput shadow-sm" placeholder="Enter variant name" />    
                                                 </div>
                                                 <div className="col-md-5 col-sm-5 col-5">
-                                                    <input type="number" id="variantPrice" name="variantPrice" className="variantInput shadow-sm" placeholder="Enter variant price" />    
+                                                    <input type="number" id="price" name="price" value={data.price || ""} onChange={e=>variantOnChange(e,i)} className="variantInput shadow-sm" placeholder="Enter variant price" />    
                                                 </div>
                                                 <div className="col-md-2 col-sm-2 col-2 d-flex flex-column justify-content-center align-items-center">
-                                                    <i class="fa-solid fa-circle-minus fa-xl" onClick={() => handleVariantDeletion(i)} style={{color: "#FF0303"}}></i>
+                                                    <i className="fa-solid fa-circle-minus fa-xl" onClick={() => handleVariantDeletion(i)} style={{color: "#FF0303"}}></i>
                                                 </div>
                                             </div>
                                         })}
                                     </div>
+                                    {loadingProduct ? <Spinner /> : ""}
+                                    {successLabelProduct.value ? <label htmlFor="" className="successLabel">{successLabelProduct.message}</label> : ""}
+                                    {apiErrorProduct.state ? <label htmlFor="" className="errorLabel">{apiErrorProduct.message}</label> : ""}
                                     <div className="submitProduct d-flex flex-column justify-content-center align-items-center">
-                                        <button type="submit" className="btn addProductSubmit mt-4">Submit</button>  
+                                        <button type="submit" onClick={handleProductForm} className="btn addProductSubmit mt-4">Submit</button>  
                                     </div>
                                 </form>
                             </div>
@@ -221,25 +429,44 @@ export default function EditCategory(props) {
                         </div>
                         <div className="catSave d-flex flex-column justify-content-center align-items-center">
                             {loading ? <Spinner /> : ""} 
-                            {successLabel ? <label htmlFor="" className="successLabel">Category Created!!</label> : ""}
+                            {successLabel.value ? <label htmlFor="" className="successLabel">{successLabel.message}</label> : ""}
                             {apiError.state ? <label htmlFor="" className="errorLabel">{apiError.message}</label> : ""}
-                            <button type="submit" className="btn catSaveButton my-4">Add Category</button>
+                            {categoryDetails.method===0 ? 
+                                <button type="submit" className="btn catSaveButton my-4">Add Category</button> :
+                                <button 
+                                    type="button" 
+                                    disabled={categoryDetails.name===beforeEditCategory.name && categoryDetails.iconId===beforeEditCategory.iconId} 
+                                    onClick={handleUpdateCategory}
+                                    className="btn catSaveButton my-4"
+                                >Save Changes</button> 
+                            }
                         </div>
                     </div>
                 </div>
             </form>
 
-
+            {/* Add products section */}
             <div className="products">
                 <h4 className="heading my-4">Products</h4>
-                <button type="button" className="btn addProductButton" data-bs-toggle="modal" data-bs-target="#addProductModal">Add New Product <i className="fa-solid fa-circle-plus mx-1 fa-xl" style={{color: "#ffffff"}}></i></button>
+                <button disabled={categoryDetails.id===''} type="button" className="btn addProductButton" data-bs-toggle="modal" data-bs-target="#addProductModal">Add New Product <i className="fa-solid fa-circle-plus mx-1 fa-xl" style={{color: "#ffffff"}}></i></button>
                 <div className="allCategoryProducts row">
-                    {productArray.length===0 ? <p className="noProductLabel d-flex justify-content-center">No products Added</p> : '' }
-                    
-                    {/* <div className="col-lg-6">
-                        <MenuItem productImage='https://res.cloudinary.com/dokgv4lff/image/upload/v1687949725/jvchepuwxamzxtbnwcwh.jpg' productName="Veg Burger" productPrice="50" veg="true" description="Veg Burger" />
-                    </div> */}
-                        
+                    {productArray.length===0 ? 
+                        <p className="noProductLabel d-flex justify-content-center">No products Added</p> : 
+                        productArray.map((product) => {
+                            return <div className="col-lg-6" key={product._id}>
+                                <MenuItem 
+                                    productImage={product.productImage.url} 
+                                    productName={product.productName} 
+                                    productPrice={product.price} 
+                                    veg={product.veg} 
+                                    description={product.description} 
+                                    variants={product.variants}  
+                                    productEdit={true} 
+                                    onClick={(action) => handleUpDel(action, product._id)}
+                                />
+                            </div>
+                        })
+                    }     
                 </div>
             </div>
         </div>

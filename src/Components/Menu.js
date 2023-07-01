@@ -16,8 +16,8 @@ export default function Menu() {
     const { categoryDetails, setCategoryDetails } = useContext(CategoryContext)
     const navigate = useNavigate()
 
-    const handleEditCategory = (id,name,iconUrl,iconId) => {
-        setCategoryDetails({id: id, name: name, iconUrl: iconUrl, iconId: iconId})
+    const handleEditCategory = (id,name,iconUrl,iconId,productArray) => {
+        setCategoryDetails({id: id, name: name, iconUrl: iconUrl, iconId: iconId, method: 1, productArray: productArray})
         navigate('/dashboard/editcategory')
     }
 
@@ -38,7 +38,7 @@ export default function Menu() {
 
     useEffect(() => {
         async function fetchData () {
-            setCategoryDetails({id: '', name: '', iconUrl: '', iconId: ''})
+            setCategoryDetails({id: '', name: '', iconUrl: '', iconId: '', method: 0, productArray: []})
             setLoadingCat(true);
             setLoadingPro(true);
             const response = await fetch(`https://flavr.tech/products/getAllCategories?outletid=${localStorage.getItem('selectedOutlet')}`, {
@@ -69,7 +69,7 @@ export default function Menu() {
         <div className="container-fluid my-5 main-div" style={{ padding: 0, margin: 0 }}>
             <div className="d-flex flex-row justify-content-start align-items-center">
                 <h2 className="categoryHead my-5">Categories </h2>
-                <Link to={'/dashboard/editcategory'}><i className="fa-solid fa-circle-plus fa-2xl plus" style={{color: "#004932"}} ></i></Link>
+                <Link to={'/dashboard/addcategory'}><i className="fa-solid fa-circle-plus fa-2xl plus" style={{color: "#004932"}} ></i></Link>
             </div>
             {loadingCat && <Spinner />}
             <div className="col container categoryContainer">
@@ -97,15 +97,18 @@ export default function Menu() {
                         <h2 className="categoryHead my-5">{productWithCat.category}</h2>
                         <i 
                             className="fa-sharp fa-solid fa-pen icon editIcon fa-lg" 
-                            onClick={() => handleEditCategory(productWithCat.products[0].category._id, productWithCat.category, productWithCat.products[0].category.icon.icon.url, productWithCat.products[0].category.icon._id)}>
+                            onClick={() => handleEditCategory(productWithCat.categoryid, productWithCat.category, productWithCat.iconurl, productWithCat.iconid, productWithCat.products)}>
                         </i>
                     </div>
                     <div className="row">
-                        {productWithCat.products.map((product) => {
-                            return <div className="col-lg-6">
-                                <MenuItem productImage={product.productImage.url} productName={product.productName} productPrice={product.price} veg={product.veg} description={product.description} />
-                            </div>
-                        })}
+                        {productWithCat.products.length>0 ?
+                            (productWithCat.products.map((product) => {
+                                return <div className="col-lg-6">
+                                    <MenuItem productImage={product.productImage.url} productName={product.productName} productPrice={product.price} veg={product.veg} description={product.description} variants={product.variants} productEdit={false} />
+                                </div>
+                            })) : 
+                            <p className="d-flex justify-content-center" style={{fontWeight: 400}}>No products found for {productWithCat.category}</p>
+                        }
                     </div>
                 </>
             })}

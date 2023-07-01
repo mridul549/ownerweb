@@ -1,16 +1,39 @@
-import React from "react";
+import React, { useState } from "react";
 import "../css/menuitem.css";
 
 export default function MenuItem(props) {
-    const handleEdit = () => {
-        console.log("edit");
+
+    const [variantToggle, setVariantToggle] = useState(false)
+    const [stockToggle, setStockToggle] = useState(true)
+
+    const handleVariantButtonClick = () => {
+        setVariantToggle(!variantToggle)
+    }
+
+    const toggle = () => {
+        console.log(!stockToggle);
     }
 
     return (
+        <>
         <div className="card mb-3 shadow-sm" style={{maxWidth: "500px"}}>
-            <div className="row g-0">
+            <div className="topRow my-1 d-flex justify-content-between">
+                <div className="switch mt-1">
+                    <div class="form-check form-switch">
+                        <input class="form-check-input inStock" onChange={toggle} type="checkbox" defaultChecked id="flexSwitchCheckChecked" />
+                        <label htmlFor="">Available</label>
+                    </div>
+                </div>
+                {props.productEdit ?
+                    <div className="editRow">
+                        <i className="fa-sharp fa-solid fa-pen icon fa-lg mx-3 updel" style={{width: "20px", height: '20px'}}></i>
+                        <i class="fa-solid fa-trash fa-lg updel icon" onClick={() => props.onClick(1)} style={{width: "20px", height: '20px', color: "#ff0303"}}></i>
+                    </div> : ''
+                } 
+            </div>
+            <div className='row g-0 mainContent'>
                 <div className="col-md-4">
-                    <img src={props.productImage} style={{height: "100%", width: "100%", margin: 0}} className="img-fluid rounded-start" alt="..."/>
+                    <img src={props.productImage!=="null" ? props.productImage: "https://res.cloudinary.com/dokgv4lff/image/upload/v1688123548/Food_no_image_2_ob6aja.png"} style={{height: "100%", width: "100%", margin: 0}} className="img-fluid rounded-start" alt="..."/>
                 </div>
                 <div className="col-md-7">
                     <div className="card-body">
@@ -20,10 +43,39 @@ export default function MenuItem(props) {
                     </div>
                 </div>
                 <div className="col-md-1">
-                    <img src={props.veg ? "https://i.imgur.com/qFC9XwF.png" : "https://i.imgur.com/ttMff3E.png"} style={{width: "25px", height: '25px', display: 'inline-flex'}} alt=""/>
-                    <i className="fa-sharp fa-solid fa-pen icon fa-lg" style={{width: "25px", height: '25px'}} onClick={handleEdit}></i>
+                    <img className="mt-2" src={props.veg ? "https://i.imgur.com/qFC9XwF.png" : "https://i.imgur.com/ttMff3E.png"} style={{width: "25px", height: '25px'}} alt=""/>
                 </div>
             </div>
+            {props.variants.length!==0 ?
+                (<div className="variants my-2 mx-3">
+                    <div className="variantBtn d-flex justify-content-center">
+                        <button type="button" className="btn variantDropDownBtn shadow-sm" onClick={handleVariantButtonClick} >
+                            {!variantToggle ? 
+                                <i class="fa-solid fa-caret-down fa-xl" style={{color: '#000'}}></i> :
+                                <i class="fa-solid fa-caret-up fa-xl" style={{color: '#000'}}></i>
+                            }
+                        </button>
+                    </div>
+                    {variantToggle &&
+                        <div className={`variantsDisplay`}>
+                            <h3 className="d-flex justify-content-center my-2">Variants</h3>
+                            <div className="row">
+                                {props.variants.map((variant) => {
+                                    return <>
+                                        <div className="col-lg-6 col-md-6 col-sm-6 col-6 d-flex justify-content-center">
+                                            <h5 className="pl-3">{variant.variantName}</h5>
+                                        </div>
+                                        <div className="col-lg-6 col-md-6 col-sm-6 col-6 d-flex justify-content-center">
+                                            <h5 style={{fontWeight: 400}}>₹ {variant.price}</h5>
+                                        </div>
+                                    </>
+                                })}
+                            </div>
+                        </div>
+                    }
+                </div>) : ''
+            }
         </div>
+        </>
     );
 }

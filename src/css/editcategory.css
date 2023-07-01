@@ -59,6 +59,8 @@
     background-color: #a3c4b2;
     border: none;
     border-radius: 10px;
+    height: 6rem;
+    width: 6rem;
     box-shadow: 0rem 0.2rem 0.2rem rgb(194, 194, 194);
 }
 
@@ -216,4 +218,14 @@
     border: none;
     outline: none;
     box-shadow: 0 0 0 0;
+}
+
+.yesBtn {
+    background: #004932;
+    color: #fff;
+}
+
+.yesBtn:hover {
+    background-color: #027450;
+    color: #fff;
 }

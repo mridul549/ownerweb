@@ -51,3 +51,41 @@ p {
 {
     padding-left:2%;
 }
+
+.mainContent {
+    border-top: 0.5px solid #d7d7d7;
+    border-bottom: 0.5px solid #d7d7d7;
+    border-radius: 5px;
+}
+
+.form-switch {
+    margin-left: 10px;
+}
+
+.inStock {
+    width: 20px;
+}
+
+.inStock:checked {
+    background-color: #004932;
+    border-color: #000;
+    box-shadow: 0 0 0 0;
+}
+
+.inStock:active {
+    background-color: #fff;
+    box-shadow: 0 0 0 0;
+}
+
+.updel {
+    margin-right: 10px;
+}
+
+.variantDropDownBtn {
+    border-radius: 50%;
+    border: 0.5px solid #dfdede;
+}
+
+.icon {
+    cursor: pointer;
+}

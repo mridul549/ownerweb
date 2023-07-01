@@ -56,6 +56,10 @@ const router = createBrowserRouter([
                 path: "editcategory",
                 element: <EditCategory />
             },
+            {
+                path: "addcategory",
+                element: <EditCategory />
+            },
         ]
     }
 ]);
