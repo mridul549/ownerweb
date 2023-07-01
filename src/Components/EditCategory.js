@@ -7,26 +7,35 @@ import {Modal, Button} from 'react-bootstrap'
 import CategoryContext from "../context/category/categoryContext";
 
 export default function EditCategory(props) {
+    // Product Modal
     const [productForm, setProductForm] = useState({productName: '', productDescription: '', productPrice: 0, vegRadio: true, productImage: null})
-    const [productArray, setProductArray] = useState([])
     const [variantArray, setVariantArray] = useState([])
-    const [categoryIcons, setCategoryIcons] = useState([])
-    const [formData, setFormData] = useState({categoryName: ''})
-    const [iconSelected, setIconSelected] = useState({value: false, url: '', set: false, _id: ''})
-    const [error, setError] = useState(false)
     const [errorProduct, setErrorProduct] = useState(false)
-    const [successLabel, setSuccessLabel] = useState({value: false, message: ''})
     const [successLabelProduct, setSuccessLabelProduct] = useState({value: false, message: ''})
-    const [successLabelUpdel, setSuccessLabelUpdel] = useState({value: false, message: ''})
-    const [loading, setLoading] = useState(false)
     const [loadingProduct, setLoadingProduct] = useState(false)
-    const [loadingUpdelProduct, setLoadingUpdelProduct] = useState(false)
-    const [apiError, setApiError] = useState({state: false, message: ""})
     const [apiErrorProduct, setApiErrorProduct] = useState({state: false, message: ""})
+    
+    // Category Icon Modal
+    const [categoryIcons, setCategoryIcons] = useState([])
+    const [iconSelected, setIconSelected] = useState({value: false, url: '', set: false, _id: ''})
+    
+    // Updel Model
+    const [successLabelUpdel, setSuccessLabelUpdel] = useState({value: false, message: ''})
+    const [loadingUpdelProduct, setLoadingUpdelProduct] = useState(false)
     const [apiErrorUpdel, setApiErrorUpdel] = useState({state: false, message: ""})
+    const [isConfirmModalOpen, setIsConfirmModalOpen] = useState({state: false, title: '', productid: ''});
+    
+    // Category Component
+    const [formData, setFormData] = useState({categoryName: ''})
+    const [error, setError] = useState(false)
+    const [successLabel, setSuccessLabel] = useState({value: false, message: ''})
+    const [loading, setLoading] = useState(false)
+    const [apiError, setApiError] = useState({state: false, message: ""})
     const { categoryDetails, setCategoryDetails } = useContext(CategoryContext)
     const [beforeEditCategory, setBeforeEditCategory] = useState({name: '', iconId: '', })
-    const [isConfirmModalOpen, setIsConfirmModalOpen] = useState({state: false, title: '', productid: ''});
+    
+    // Products Component
+    const [productArray, setProductArray] = useState([])
 
     const deleteProduct = async () => {
         setLoadingUpdelProduct(true)
@@ -67,7 +76,7 @@ export default function EditCategory(props) {
             setLoadingUpdelProduct(false)
             setSuccessLabelUpdel({value: false, message: ''})
             setApiErrorUpdel({state: false, message: ''})
-            setIsConfirmModalOpen({title: "Are you sure you want to delete the product", state: true, productid: productid});
+            setIsConfirmModalOpen({title: "Are you sure you want to delete the product?", state: true, productid: productid});
         }
     }
 
@@ -275,7 +284,7 @@ export default function EditCategory(props) {
             {/* Product Updel modal */}
             <Modal show={isConfirmModalOpen.state} onHide={handleCloseConfirmModal}>
                 <Modal.Header>
-                    <Modal.Title style={{textAlign: 'center'}}>Are you sure want to delete the product?</Modal.Title>
+                    <Modal.Title style={{textAlign: 'center'}}>{isConfirmModalOpen.title}</Modal.Title>
                 </Modal.Header>
                 <Modal.Footer className="d-flex justify-content-center">
                     <div>

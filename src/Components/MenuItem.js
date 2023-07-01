@@ -26,7 +26,7 @@ export default function MenuItem(props) {
                 </div>
                 {props.productEdit ?
                     <div className="editRow">
-                        <i className="fa-sharp fa-solid fa-pen icon fa-lg mx-3 updel" style={{width: "20px", height: '20px'}}></i>
+                        <i className="fa-sharp fa-solid fa-pen icon fa-lg mx-3 updel" onClick={() => props.onClick(0)} style={{width: "20px", height: '20px'}}></i>
                         <i class="fa-solid fa-trash fa-lg updel icon" onClick={() => props.onClick(1)} style={{width: "20px", height: '20px', color: "#ff0303"}}></i>
                     </div> : ''
                 } 
