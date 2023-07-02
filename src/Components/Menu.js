@@ -68,7 +68,6 @@ export default function Menu() {
 
     return (
         <>
-        <Navbar/>
         <div className="container-fluid main-div" style={{ padding: 0, margin: 0 }}>
             <div className="d-flex flex-row justify-content-start align-items-center">
                 <h2 className="categoryHead my-5">Categories </h2>
@@ -107,7 +106,17 @@ export default function Menu() {
                         {productWithCat.products.length>0 ?
                             (productWithCat.products.map((product) => {
                                 return <div className="col-lg-6" key={product._id}>
-                                    <MenuItem productImage={product.productImage.url} productName={product.productName} productPrice={product.price} veg={product.veg} description={product.description} variants={product.variants} productEdit={false} />
+                                    <MenuItem 
+                                        productImage={product.productImage.url} 
+                                        productName={product.productName} 
+                                        productPrice={product.price} 
+                                        veg={product.veg} 
+                                        description={product.description} 
+                                        variants={product.variants} 
+                                        productEdit={false} 
+                                        productid={product._id} 
+                                        instock={product.inStock} 
+                                    />
                                 </div>
                             })) : 
                             <p className="d-flex justify-content-center" style={{fontWeight: 400}}>No products found for {productWithCat.category}</p>

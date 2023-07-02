@@ -15,6 +15,8 @@ import Outlet from './Components/Outlet'
 import Category from './Components/Category';
 import EditCategory from './Components/EditCategory';
 import Outletdetails from './Components/Outletdetails';
+import { ToastContainer } from 'react-toastify';
+
 
 const router = createBrowserRouter([
     {
@@ -60,7 +62,8 @@ const router = createBrowserRouter([
             {
                 path:"outletdetails",
                 element:<Outletdetails/>
-            }
+            },
+            {
                 path: "addcategory",
                 element: <EditCategory />
             },
@@ -70,6 +73,7 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")).render(
     <React.StrictMode>
+        <ToastContainer closeOnClick draggable pauseOnHover/>
         <CategoryState>
             <AuthState>
                 <RouterProvider router={router} />

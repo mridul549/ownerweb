@@ -1,26 +1,17 @@
-.add-new
-{
+.add-new {
     color: white;
     background-color: #004932;
-    padding: 1% 2%;
-    font-size:medium;
+    font-size: medium;
 }
 
-.header-sec
-{
+.header-sec {
     padding-bottom: 4%;
 }
 
-.outer-div{
-    padding:0% 3%;
-}
-
-.inner-div
-{
+.inner-div {
     padding: 6% 0%;
 }
 
-.modal-head
-{ 
-    font-weight: 600; 
+.modal-head {
+    font-weight: 600;
 }

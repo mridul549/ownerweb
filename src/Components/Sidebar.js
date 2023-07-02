@@ -4,15 +4,19 @@ import {Link} from 'react-router-dom'
 
 export default function Sidebar() {
   return (
-    <div className='sidebar-wrapper container-fluid'>
+    <>
+    <div className='sidebar-wrapper container-fluid' id='sidebar'>
         <div className="d-flex flex-column flex-shrink-0 p-3 bg-body-tertiary sidebar shadow">
             <Link to="/dashboard" className="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
                 <span className="fs-4">FlavR</span>
             </Link>
             <ul className="nav nav-pills flex-column mb-auto ul">
                 <li className="nav-item">
+                    
+                </li>
+                <li className="nav-item">
                     <Link to="/dashboard/menu" className="nav-link active custom-nav-link" aria-current="page">
-                     Menu
+                        Menu
                     </Link>
                 </li>
                 <li>
@@ -22,7 +26,7 @@ export default function Sidebar() {
                 </li>
                 <li>
                     <Link to="/dashboard/outlet" className="nav-link link-body-emphasis">
-                     Outlet
+                        Outlet
                     </Link>
                 </li>
                 </ul>
@@ -43,5 +47,6 @@ export default function Sidebar() {
             </div>
         </div>
     </div>
+    </>
   )
 }

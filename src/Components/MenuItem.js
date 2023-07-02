@@ -1,17 +1,61 @@
 import React, { useState } from "react";
 import "../css/menuitem.css";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function MenuItem(props) {
 
     const [variantToggle, setVariantToggle] = useState(false)
-    const [stockToggle, setStockToggle] = useState(true)
+    const [isChecked, setIsChecked] = useState(props.instock)
 
     const handleVariantButtonClick = () => {
         setVariantToggle(!variantToggle)
     }
 
-    const toggle = () => {
-        console.log(!stockToggle);
+    const checkedToggle = async (e, productid) => {
+        setIsChecked(!isChecked)
+
+        // const response = await fetch("https://flavr.tech/products/instock", {
+        //     method: "PATCH", 
+        //     headers: {
+        //         "Content-Type": "application/json",
+        //         "Authorization": "Bearer " + localStorage.getItem('token')
+        //     },
+        //     body: JSON.stringify({productid: productid, instock: !isChecked})
+        // }) 
+        // const json = await response.json()
+
+        // toast.success(json.message, {
+        //     closeOnClick: true,
+        //     pauseOnHover: true,
+        // })
+
+        toast.promise(
+            fetch("https://flavr.tech/products/instock", {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: "Bearer " + localStorage.getItem("token"),
+                },
+                body: JSON.stringify({
+                    productid: productid,
+                    instock: !isChecked,
+                }),
+            }).then((response) => response.json()),
+            {
+                pending: {
+                    render() {
+                        return "Please wait...";
+                    },
+                    icon: true,
+                },
+                success: {
+                    render({ data }) {
+                        return data.message;
+                    },
+                },
+            }
+        );
     }
 
     return (
@@ -20,7 +64,7 @@ export default function MenuItem(props) {
             <div className="topRow my-1 d-flex justify-content-between">
                 <div className="switch mt-1">
                     <div className="form-check form-switch">
-                        <input className="form-check-input inStock" onChange={toggle} type="checkbox" defaultChecked id="flexSwitchCheckChecked" />
+                        <input className="form-check-input inStock" onChange={(e) => checkedToggle(e, props.productid)} type="checkbox" checked={isChecked} key={props.productid} />
                         <label htmlFor="">Available</label>
                     </div>
                 </div>
@@ -57,7 +101,7 @@ export default function MenuItem(props) {
                         </button>
                     </div>
                     {variantToggle &&
-                        <div className={`variantsDisplay`}>
+                        <div className={`variantsDisplay `} >
                             <h3 className="d-flex justify-content-center my-2">Variants</h3>
                             <div className="row">
                                 {props.variants.map((variant) => {

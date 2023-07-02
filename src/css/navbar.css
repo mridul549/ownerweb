@@ -1,31 +1,37 @@
-.navbar
-{
+.navbar {
     background-color: #004932;
-    top:0;
+    top: 0;
 }
 
-.home
-{
+.home {
     color: white;
 }
 
-.navbar-brand
-{
+.navbar-brand, .navbar-brand:hover {
     color: white;
+    margin-left: 10px;
 }
 
-.outlet-btn{
-    background-color: white;
-    color: #004932;
+.outlet-btn {
+    background-color: transparent;
+    color: #fff;
     font-size: smaller;
     font-weight: 500;
+    border: none;
+    text-decoration: underline;
+    outline: none;
+    box-shadow: 0 0 0 0;
 }
 
-.outlet-btn:hover{
-    background-color:#beefdf;
-    color: #004932;
+.outlet-btn:hover,
+.outlet-btn:focus,
+.outlet-btn:active {
+    color: #d3d3d3;
+    border: none;
+    outline: none;
+    box-shadow: 0 0 0 0;
 }
 
-.modal-seting{
+.modal-seting {
     max-width: 580px;
 }
