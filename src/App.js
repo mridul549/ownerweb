@@ -19,9 +19,7 @@ function App() {
                 <Route path='/login' element={<Login />} />
                 <Route path='/otp' element={<Otp />}/>
                 <Route path='/dashboard/*' element={<Dashboard />} />
-                <Route path='/editcategory' element={<EditCategory />} />
-                <Route path='/category' element={<Category />} />
-                </Routes>
+            </Routes>
         </div>
 
     )

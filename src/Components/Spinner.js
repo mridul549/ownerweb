@@ -3,7 +3,7 @@ import spinner from '../Spinner.gif'
 
 function Spinner () {
   return (
-    <div>
+    <div className='d-flex justify-content-center'>
         <img src={spinner} alt="spin" style={{width: "50px", marginTop: "20px"}} />
     </div>
   )

@@ -1,3 +1,233 @@
-.catName {
+.heading {
     font-weight: 600;
+    color: #004932;
+}
+
+.categoryNameInput {
+    width: 80%;
+    height: 7vh;
+    border: none;
+    outline: none;
+    padding-left: 20px;
+    border-radius: 10px;
+    transition: 0.1s;
+    -webkit-transition: 0.1s;
+}
+
+.categoryNameInput:focus {
+    border: 1.5px solid #004932;
+}
+
+.addProductButton {
+    background-color: #004932;
+    color: #fff;
+    width: 15rem;
+    height: 3rem;
+    border-radius: 10px;
+}
+
+.addProductButton:hover {
+    background-color: #026948;
+    color: #fff;
+}
+
+.productItem {
+    margin-top: 40px;
+}
+
+.allCategoryProducts {
+    margin-top: 35px;
+}
+
+.catSaveButton {
+    background-color: #004932;
+    color: #fff;
+    width: 15rem;
+    height: 3rem;
+    border-radius: 10px;
+}
+
+.catSaveButton:hover, .catSaveButton:focus {
+    background-color: #027450;
+    color: #fff;
+    border: none;
+    outline: none;
+    box-shadow: 0 0 0 0;
+}
+
+.selectIcon {
+    background-color: #a3c4b2;
+    border: none;
+    border-radius: 10px;
+    height: 6rem;
+    width: 6rem;
+    box-shadow: 0rem 0.2rem 0.2rem rgb(194, 194, 194);
+}
+
+.selectIcon:focus, .selectIcon:active {
+    border: none;
+    outline: none;
+    box-shadow: 0;
+}
+
+.iconRow {
+    margin-top: 20px;
+}
+
+.modal-body {
+    margin-bottom: 20px;
+    padding-top: 0;
+}
+
+.headNClose {
+    margin-top: 20px;
+    
+}
+
+.modal-title {
+    color: #004932;
+    font-weight: 600;
+}
+
+.modal-content {
+    border-radius: 10px;
+    border: none;
+    padding: 0 15px;
+}
+
+.btn-close {
+    margin-top: 12px;
+}
+
+.btn-close:focus {
+    outline: none;
+    border: none;
+    box-shadow: 0 0 0 0;
+}
+
+.categoryIconSelectedBtn, .categoryIconSelectedBtn:focus {
+    background: "#fff";
+    border: none;
+    outline: none;
+    box-shadow: 0 0 0 0;
+}
+
+.errorLabel {
+    color: red;
+    font-size: 15px;
+    margin-top: 20px;
+}
+
+.successLabel {
+    color: #2db01e;
+    font-size: 20px;
+    margin-top: 20px;
+}
+
+.noProductLabel {
+    font-weight: 400;
+    margin-top: 5rem;
+    color: grey;
+}
+
+.productPic {
+    font-weight: 600;
+    margin-top: 20px;
+}
+
+.productPicInput {
+    margin-top: -19px;
+    display: none;
+    color: transparent;
+}
+
+.productPicInput::file-selector-button {
+    background-color: #004932;
+    color: #fff;
+    width: 17vh;
+    border: none;
+    outline: none;
+    display: none;
+    border-radius: 5px;
+}
+
+.productPicInput::file-selector-button:hover {
+    background-color: #027450;
+}
+
+.vegRadio {
+    margin-top: 1rem;
+}
+
+.radioBtn {
+    margin-right: 10px;
+}
+
+.radioBtn:checked, .radioBtn:active {
+    background-color: #004932;
+    box-shadow: 0 0 0 0;
+    outline: none;
+    border: none;
+}
+
+.vegDiv {
+    padding-right: 20px;
+}
+
+.productFormInput {
+    width: 100%;
+    height: 7vh;
+    border: none;
+    outline: none;
+    padding-left: 20px;
+    border-radius: 10px;
+    transition: 0.1s;
+    -webkit-transition: 0.1s;
+}
+
+.variantInput {
+    width: 105%;
+    height: 7vh;
+    border: none;
+    outline: none;
+    padding-left: 10px;
+    border-radius: 10px;
+    transition: 0.1s;
+    -webkit-transition: 0.1s;
+}
+
+.variantDetails {
+    margin-top: 10px;
+}
+
+.addProductSubmit {
+    background-color: #004932;
+    color: #fff;
+    width: 20vh;
+    border-radius: 10px;
+    border: none;
+    outline: none;
+}
+
+.addProductSubmit:hover {
+    background-color: #027450;
+    color: #fff;
+    border: none;
+    outline: none;
+}
+
+.addProductSubmit:focus, .addProductSubmit:active {
+    border: none;
+    outline: none;
+    box-shadow: 0 0 0 0;
+}
+
+.yesBtn {
+    background: #004932;
+    color: #fff;
+}
+
+.yesBtn:hover {
+    background-color: #027450;
+    color: #fff;
 }

@@ -23,6 +23,7 @@ export default function Dashboard() {
                         <Route path="/outlet" element={<Outlet />} />
                         <Route path="/editcategory" element={<EditCategory />} />
                         <Route path="/outletdetails" element={<Outletdetails/>}/>
+                        <Route path="/addcategory" element={<EditCategory />} />
                     </Routes>
                 </div>
             </div>

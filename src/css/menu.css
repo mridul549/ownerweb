@@ -1,5 +1,6 @@
 .main-div {
     width: 100%;
+    margin-top: 0;
 }
 
 .categoryHead {
@@ -27,6 +28,10 @@
     padding-bottom: 20px;
 }
 
+.editIcon:hover {
+    color: #545454;
+}
+
 .categoryName {
     display: inline;
 }
@@ -40,4 +45,12 @@
     height:1rem;
     width: 1rem;
     padding-top: 6.5px;
+}
+
+.plus:hover {
+    color: #11bb85;
+}
+
+.productUpdel {
+    margin-top: 7px;
 }

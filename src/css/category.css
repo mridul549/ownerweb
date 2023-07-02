@@ -1,4 +1,4 @@
-img {
+.iconImage {
     margin-top: 10px;
     display: block;
     margin-left: auto;
@@ -7,7 +7,7 @@ img {
     height: 55px;
 }
 
-.cat-btn {
+.button {
     border: 0;
     height: 6rem;
     width: 6rem;
