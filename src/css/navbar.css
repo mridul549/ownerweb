@@ -1,0 +1,31 @@
+.navbar
+{
+    background-color: #004932;
+    top:0;
+}
+
+.home
+{
+    color: white;
+}
+
+.navbar-brand
+{
+    color: white;
+}
+
+.outlet-btn{
+    background-color: white;
+    color: #004932;
+    font-size: smaller;
+    font-weight: 500;
+}
+
+.outlet-btn:hover{
+    background-color:#beefdf;
+    color: #004932;
+}
+
+.modal-seting{
+    max-width: 580px;
+}

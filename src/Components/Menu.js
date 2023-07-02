@@ -2,6 +2,7 @@ import { React, useEffect, useState, useContext } from "react";
 import MenuItem from "./MenuItem";
 import Category from "./Category";
 import Spinner from "./Spinner";
+import Navbar from "./Navbar";
 import { Link, useNavigate } from 'react-router-dom'
 import "../css/menu.css";
 import CategoryContext from "../context/category/categoryContext";
@@ -66,6 +67,8 @@ export default function Menu() {
     },[])
 
     return (
+        <>
+        <Navbar/>
         <div className="container-fluid main-div" style={{ padding: 0, margin: 0 }}>
             <div className="d-flex flex-row justify-content-start align-items-center">
                 <h2 className="categoryHead my-5">Categories </h2>
@@ -114,5 +117,6 @@ export default function Menu() {
             })}
 
         </div>
+        </>
     );
 }

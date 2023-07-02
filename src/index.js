@@ -14,6 +14,7 @@ import Orders from './Components/Orders'
 import Outlet from './Components/Outlet'
 import Category from './Components/Category';
 import EditCategory from './Components/EditCategory';
+import Outletdetails from './Components/Outletdetails';
 
 const router = createBrowserRouter([
     {
@@ -57,6 +58,9 @@ const router = createBrowserRouter([
                 element: <EditCategory />
             },
             {
+                path:"outletdetails",
+                element:<Outletdetails/>
+            }
                 path: "addcategory",
                 element: <EditCategory />
             },

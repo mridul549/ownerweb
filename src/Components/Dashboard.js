@@ -6,6 +6,7 @@ import Orders from "./Orders";
 import Outlet from "./Outlet";
 import '../css/dashboard.css'
 import EditCategory from "./EditCategory";
+import Outletdetails from "./Outletdetails";
 
 export default function Dashboard() {
     return (
@@ -21,6 +22,7 @@ export default function Dashboard() {
                         <Route path="/orders" element={<Orders />} />
                         <Route path="/outlet" element={<Outlet />} />
                         <Route path="/editcategory" element={<EditCategory />} />
+                        <Route path="/outletdetails" element={<Outletdetails/>}/>
                         <Route path="/addcategory" element={<EditCategory />} />
                     </Routes>
                 </div>

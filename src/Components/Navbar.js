@@ -1,68 +1,66 @@
-import {React, useContext} from "react";
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
-import { Link } from 'react-router-dom'
-import AuthContext from '../context/auth/authContext'
+import { React, useState } from "react";
+import { Link } from "react-router-dom";
+import AddOutlet from "./AddOutlet";
+import "../css/navbar.css";
 
-export default function ButtonAppBar() {
-    const { authenticated } = useContext(AuthContext)
+export default function Navbar() {
+  const [modal, setModal] = useState(false);
 
-    return (
-        <Box sx={{ flexGrow: 1 }}>
-            <AppBar sx={{ background: "#004932", boxShadow: 0, height: "3rem" }} position="static">
-                <Toolbar>
-                    <Typography
-                        variant="h6"
-                        component="div"
-                        sx={{ flexGrow: 1 }}
-                    >
-                        FlavR
-                    </Typography>
-                    {!authenticated ? 
-                        <div className="auth">
-                            <Link to={'/login'}>
-                                <Button
-                                    className="login"
-                                    sx={{
-                                        margin: "10px",
-                                        background: "#004932", 
-                                        color: "#fff",
-                                        ":hover": {
-                                            background: "#fff",
-                                            color: "#000",
-                                        },
-                                    }}
-                                    variant="outlined"
-                                    color="inherit"
-                                >
-                                    Login
-                                </Button>
-                            </Link>
-                            <Link to={'/signup'}>
-                                <Button
-                                    className="signup"
-                                    sx={{ 
-                                        background: "#fff", 
-                                        color: "#000",
-                                        ":hover": {
-                                            background: "#004932",
-                                            color: "#fff",
-                                        },
-                                    }}
-                                    variant="outlined"
-                                    color="inherit"
-                                >
-                                    SignUp
-                                </Button>
-                            </Link>
-                        </div> : 
-                        <button className="btn btn-primary">Hi</button>
-                    }   
-                </Toolbar>
-            </AppBar>
-        </Box>
-    );
+  const toggleModal = () => {
+    setModal(!modal);
+  };
+  return (
+    <>
+      <nav className="navbar navbar-expand-lg fixed-top bg-body-tertiary">
+        <div className="container-fluid">
+          <Link className="navbar-brand" to="#">
+           FlavR
+          </Link>
+          <button
+            className="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span className="navbar-toggler-icon"></span>
+          </button>
+          <div className="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+              <li className="nav-item">
+                <Link className="nav-link active home" aria-current="page" to="#">
+                  Home
+                </Link>
+              </li>
+              </ul>
+              <button
+                type="button"
+                className="btn outlet-btn"
+                data-bs-toggle="modal"
+                data-bs-target="#exampleModal"
+              >
+                Outlets
+              </button>
+          </div>
+        </div>
+      </nav>
+      <div
+                className="modal fade"
+                id="exampleModal"
+                tabindex="-1"
+                aria-labelledby="exampleModalLabel"
+                aria-hidden="true"
+              >
+                <div className="modal-dialog modal-dialog-scrollable modal-seting">
+                  <div className="modal-content ">
+                    <div className="modal-body">
+                        <AddOutlet/>
+                    </div>
+                  </div>
+                </div>
+              </div>
+    </>
+  );
 }
