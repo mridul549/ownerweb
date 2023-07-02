@@ -89,7 +89,7 @@
     font-weight: 600;
 }
 
-.popup {
+.modal-content {
     border-radius: 10px;
     border: none;
     padding: 0 15px;
@@ -136,8 +136,9 @@
 }
 
 .productPicInput {
-    margin-top: 10px;
-
+    margin-top: -19px;
+    display: none;
+    color: transparent;
 }
 
 .productPicInput::file-selector-button {
@@ -146,6 +147,7 @@
     width: 17vh;
     border: none;
     outline: none;
+    display: none;
     border-radius: 5px;
 }
 

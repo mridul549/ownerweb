@@ -1,12 +1,16 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useRef } from "react";
 import "../css/editcategory.css";
 import Category from "./Category";
 import Spinner from "./Spinner";
 import MenuItem from "./MenuItem";
 import {Modal, Button} from 'react-bootstrap'
 import CategoryContext from "../context/category/categoryContext";
+import { useLocation } from "react-router-dom";
 
 export default function EditCategory(props) {
+
+    const inputRef = useRef(null)
+
     // Product Modal
     const [productForm, setProductForm] = useState({productName: '', productDescription: '', productPrice: 0, vegRadio: true, productImage: null})
     const [variantArray, setVariantArray] = useState([])
@@ -14,7 +18,9 @@ export default function EditCategory(props) {
     const [successLabelProduct, setSuccessLabelProduct] = useState({value: false, message: ''})
     const [loadingProduct, setLoadingProduct] = useState(false)
     const [apiErrorProduct, setApiErrorProduct] = useState({state: false, message: ""})
-    
+    const [image, setImage] = useState('')
+    const [isProductModalOpen, setIsProductModalOpen] = useState({state: false, title: '', action: "add", productid: ''})
+
     // Category Icon Modal
     const [categoryIcons, setCategoryIcons] = useState([])
     const [iconSelected, setIconSelected] = useState({value: false, url: '', set: false, _id: ''})
@@ -23,7 +29,7 @@ export default function EditCategory(props) {
     const [successLabelUpdel, setSuccessLabelUpdel] = useState({value: false, message: ''})
     const [loadingUpdelProduct, setLoadingUpdelProduct] = useState(false)
     const [apiErrorUpdel, setApiErrorUpdel] = useState({state: false, message: ""})
-    const [isConfirmModalOpen, setIsConfirmModalOpen] = useState({state: false, title: '', productid: ''});
+    const [isConfirmModalOpen, setIsConfirmModalOpen] = useState({state: false, title: '', productid: '', product: ''});
     
     // Category Component
     const [formData, setFormData] = useState({categoryName: ''})
@@ -36,6 +42,21 @@ export default function EditCategory(props) {
     
     // Products Component
     const [productArray, setProductArray] = useState([])
+
+    const handleOpenProductModal = () => {
+        setImage('')
+        setProductForm({productName: '', productDescription: '', productPrice: 0, vegRadio: true, productImage: null})
+        setVariantArray([])
+        setIsProductModalOpen({state: true, title: "Add Product", action: "add", productid: ''})
+    }
+
+    const handleCloseProductModal = () => {
+        setIsProductModalOpen({state: false})
+    }
+
+    const handleImageClick = () => {
+        inputRef.current.click()
+    }
 
     const deleteProduct = async () => {
         setLoadingUpdelProduct(true)
@@ -69,14 +90,35 @@ export default function EditCategory(props) {
         setIsConfirmModalOpen({title: '', state: false});
     };
 
-    const handleUpDel = (action, productid) => {
+    const handleUpDel = async (action, productid, name, desc, price, veg, variants, imageUrl) => {
+        const productDetails = {
+            id: productid,
+            name: name, 
+            description: desc,
+            price: price, 
+            veg: veg,
+            variants: variants,
+            url: imageUrl
+        }
         if(action===0) {
+            setIsProductModalOpen({state: true, title: "Update product", action: "update", productid: productid})
+            setProductForm({productName: name, productDescription: desc, productPrice: price, vegRadio: veg})
+            const variantsToEditArray = []
+            for (let i = 0; i < variants.length; i++) {
+                const variant = variants[i];
+                const array = []
+                array["variantName"]=variant.variantName
+                array["price"]=`${variant.price}`
+                variantsToEditArray.push(array)
+            }
+            setImage(imageUrl)
+            setVariantArray(variantsToEditArray)
 
         } else if (action===1) {
             setLoadingUpdelProduct(false)
             setSuccessLabelUpdel({value: false, message: ''})
             setApiErrorUpdel({state: false, message: ''})
-            setIsConfirmModalOpen({title: "Are you sure you want to delete the product?", state: true, productid: productid});
+            setIsConfirmModalOpen({title: "Are you sure you want to delete the product?", state: true, productid: productid, product: productDetails});
         }
     }
 
@@ -101,6 +143,8 @@ export default function EditCategory(props) {
             updatedVariantArray[i] = variantData;
             return updatedVariantArray;
         });
+
+        console.log(variantArray);
     }
 
     const fetchProducts = async () => {
@@ -127,10 +171,11 @@ export default function EditCategory(props) {
         ProductFormData.append('productName', productForm.productName)
         ProductFormData.append('description', productForm.productDescription)
         ProductFormData.append('price', productForm.productPrice)
-        ProductFormData.append('outletid', localStorage.getItem('selectedOutlet'))
-        ProductFormData.append('categoryid', categoryDetails.id)
         ProductFormData.append('veg', productForm.vegRadio)
-        ProductFormData.append('productImage', productForm.productImage)
+
+        if(productForm.productImage){
+            ProductFormData.append('productImage', productForm.productImage)
+        } 
         
         if(variantArray.length!==0){
             let variantArrayString = '['
@@ -142,37 +187,72 @@ export default function EditCategory(props) {
             }
             variantArrayString=variantArrayString.substring(0, variantArrayString.length-1)
             variantArrayString+=']'
-    
+            
             ProductFormData.append('variants', variantArrayString)
         }
+        
+        if(isProductModalOpen.action==='add'){
+            ProductFormData.append('outletid', localStorage.getItem('selectedOutlet'))
+            ProductFormData.append('categoryid', categoryDetails.id)
 
-        const response = await fetch("https://flavr.tech/products/addProduct", {
-            method: "POST", 
-            headers: {
-                "Authorization": "Bearer " + localStorage.getItem('token')
-            },
-            body: ProductFormData
-        })
-        const json = await response.json()
-        setLoadingProduct(false)
-
-        if(json.message==="Product added successfully") {
-            setSuccessLabelProduct({value: true, message: json.message})
-            setTimeout(() => {
-                setSuccessLabelProduct({value: false, message: ''})
-            }, 5000)
-            fetchProducts()
-        } else {
-            if(json.message===undefined || json.message===null){
-                setApiErrorProduct({state: true, message: json.error})
+            const response = await fetch("https://flavr.tech/products/addProduct", {
+                method: "POST", 
+                headers: {
+                    "Authorization": "Bearer " + localStorage.getItem('token')
+                },
+                body: ProductFormData
+            })
+            const json = await response.json()
+            setLoadingProduct(false)
+    
+            if(json.message==="Product added successfully") {
+                setSuccessLabelProduct({value: true, message: json.message})
+                setTimeout(() => {
+                    setSuccessLabelProduct({value: false, message: ''})
+                    fetchProducts()
+                    setIsProductModalOpen({...isProductModalOpen, state: false})
+                }, 1000)
             } else {
-                setApiErrorProduct({state: true, message: json.message})
+                if(json.message===undefined || json.message===null){
+                    setApiErrorProduct({state: true, message: json.error})
+                } else {
+                    setApiErrorProduct({state: true, message: json.message})
+                }
+            }
+            console.log("hi from edit req to api");
+
+        } else {
+            const response = await fetch(`https://flavr.tech/products/updateProduct/${isProductModalOpen.productid}`, {
+                method: "PATCH", 
+                headers: {
+                    "Authorization": "Bearer " + localStorage.getItem('token')
+                },
+                body: ProductFormData
+            })
+            const json = await response.json()
+            setLoadingProduct(false)
+    
+            if(json.message==="Product updated successfully") {
+                setSuccessLabelProduct({value: true, message: json.message})
+                setTimeout(() => {
+                    setSuccessLabelProduct({value: false, message: ''})
+                    fetchProducts()
+                    setIsProductModalOpen({...isProductModalOpen, state: false})
+                }, 1000)
+            } else {
+                if(json.message===undefined || json.message===null){
+                    setApiErrorProduct({state: true, message: json.error})
+                } else {
+                    setApiErrorProduct({state: true, message: json.message})
+                }
             }
         }
+
     }
 
     const productFormOnChange = (e) => {
         if (e.target.name === "productImageInput") {
+            setImage(e.target.files[0])
             setProductForm({ ...productForm, productImage: e.target.files[0] });
         } else {
             setProductForm({ ...productForm, [e.target.name]: e.target.value });
@@ -334,6 +414,95 @@ export default function EditCategory(props) {
                     </div>
                 </div>
             </div>
+            
+            <Modal show={isProductModalOpen.state} onHide={handleCloseProductModal} className="shadow-xl" style={{borderRadius: "30px"}}>
+                <Modal.Body >
+                    <div className="headNClose d-flex justify-content-between">
+                        <p></p> {/* Added p tag to use flexbox properly */}
+                        <h2 className="modal-title" id="iconListModalLabel"> {isProductModalOpen.title} </h2>
+                        <button type="button" className="btn-close" onClick={handleCloseProductModal}></button>
+                    </div>
+                    <div className="form d-flex flex-column justify-content-start align-items-start">
+                        <form action="">
+                            <label htmlFor="" className="productPic">Product Picture</label>
+                            <div className="productImage d-flex flex-column align-items-center justify-content-center" onClick={handleImageClick}>
+                                <label htmlFor="productImageInput">{image ? image.name : "Choose an image"} </label>
+                                {image ? 
+                                    (typeof image === 'string' ? 
+                                        <img className="mt-1" style={{width: "150px", borderRadius: "10px"}} src={image} alt="" /> : 
+                                        <img className="mt-1" style={{width: "150px", borderRadius: "10px"}} src={URL.createObjectURL(image)} alt="" />
+                                    ) :
+                                    <img className="mt-1" style={{width: "150px", borderRadius: "10px"}} src="https://res.cloudinary.com/dokgv4lff/image/upload/v1688220885/no_image_frvfpb.jpg" alt="" />
+                                }
+                                <input type="file" name="productImageInput" ref={inputRef} onChange={productFormOnChange} className="productPicInput d-flex justify-content-center"/>
+                            </div>
+                            <div className="productDetails">
+                                <label htmlFor="" className="productPic">Product Name</label>
+                                <input type="text" id="productName" value={productForm.productName} name="productName" onChange={productFormOnChange} className="productFormInput shadow-sm" placeholder="Enter product name" />
+                                {errorProduct && productForm.productName.length===0 ? <label htmlFor="" className="errorLabel">Product Name can't be empty</label> : ""}  
+
+                                <label htmlFor="" className="productPic">Product Description</label>
+                                <input type="text" id="productDescription" name="productDescription" value={productForm.productDescription} onChange={productFormOnChange} className="productFormInput shadow-sm" placeholder="Enter product description" />
+                                {errorProduct && productForm.productDescription.length===0 ? <label htmlFor="" className="errorLabel">Product Description can't be empty</label> : ""}  
+
+                                <label htmlFor="" className="productPic">Product Price</label>
+                                <input type="number" id="productPrice" name="productPrice" value={productForm.productPrice} onChange={productFormOnChange} className="productFormInput shadow-sm" placeholder="Enter product price" />
+                                {errorProduct && productForm.productPrice===0 ? <label htmlFor="" className="errorLabel">Product price can't be 0</label> : ""}  
+
+                                <div className="vegRadio d-flex flex-row justify-content-center align-items-center">
+                                    {productForm.vegRadio ? 
+                                        (<>
+                                            <div className="vegDiv">
+                                                <input className="form-check-input radioBtn" type="radio" id="veg" onChange={productFormOnChange} checked name="vegRadio" value={true}/>
+                                                <label htmlFor="veg">Veg</label>
+                                            </div>
+                                            <div className="vegDiv">
+                                                <input className="form-check-input radioBtn" type="radio" onChange={productFormOnChange} id="nonVeg" name="vegRadio" value={false}/>
+                                                <label htmlFor="nonVeg">Non-Veg</label>
+                                            </div>
+                                        </>) :
+                                        (<>
+                                            <div className="vegDiv">
+                                                <input className="form-check-input radioBtn" type="radio" id="veg" onChange={productFormOnChange}  name="vegRadio" value={true}/>
+                                                <label htmlFor="veg">Veg</label>
+                                            </div>
+                                            <div className="vegDiv">
+                                                <input className="form-check-input radioBtn" type="radio" onChange={productFormOnChange} checked id="nonVeg" name="vegRadio" value={false}/>
+                                                <label htmlFor="nonVeg">Non-Veg</label>
+                                            </div>
+                                        </>) 
+                                    }
+                                </div>
+                            </div>
+                            <div className="variants d-flex flex-column justify-content-start align-items-start">
+                                <label htmlFor="" className="productPic">Variants <i className="fa-solid fa-circle-plus mx-1 fa-xl" onClick={handleVariantAddition} style={{color: "#004932"}}></i></label>
+                                {variantArray.map((data,i) => {
+                                    return <div className="variantDetails row" key={i}>
+                                        <div className="col-md-5 col-sm-5 col-5">
+                                            <input type="text" id="variantName" name="variantName" value={data.variantName || ""} onChange={e=>variantOnChange(e,i)} className="variantInput shadow-sm" placeholder="Enter variant name" />    
+                                        </div>
+                                        <div className="col-md-5 col-sm-5 col-5">
+                                            <input type="number" id="price" name="price" value={data.price || ""} onChange={e=>variantOnChange(e,i)} className="variantInput shadow-sm" placeholder="Enter variant price" />    
+                                        </div>
+                                        <div className="col-md-2 col-sm-2 col-2 d-flex flex-column justify-content-center align-items-center">
+                                            <i className="fa-solid fa-circle-minus fa-xl" onClick={() => handleVariantDeletion(i)} style={{color: "#FF0303"}}></i>
+                                        </div>
+                                    </div>
+                                })}
+                            </div>
+                            <div className="submitProduct d-flex flex-column justify-content-center align-items-center">
+                                {loadingProduct ? <Spinner /> : ""}
+                                {successLabelProduct.value ? <label htmlFor="" className="successLabel">{successLabelProduct.message}</label> : ""}
+                                {apiErrorProduct.state ? <label htmlFor="" className="errorLabel">{apiErrorProduct.message}</label> : ""}
+                                {isProductModalOpen.action==="add" ? 
+                                    <button type="submit" onClick={handleProductForm} className="btn addProductSubmit mt-4">Submit</button>  :
+                                    <button type="submit" onClick={handleProductForm} className="btn addProductSubmit mt-4">Save Changes</button>  
+                                }
+                            </div>
+                        </form>
+                    </div>
+                </Modal.Body>               
+            </Modal>
 
             {/* Add product modal */}
             <div className="modal fade" id="addProductModal" aria-labelledby="addProductModalLabel" aria-hidden="true">
@@ -347,38 +516,60 @@ export default function EditCategory(props) {
                             </div>
                             <div className="form d-flex flex-column justify-content-start align-items-start">
                                 <form action="">
-                                    <div className="productImage">
-                                        <label htmlFor="" className="productPic">Product Picture</label>
-                                        <input type="file" name="productImageInput" onChange={productFormOnChange} className="productPicInput"/>
+                                    <label htmlFor="" className="productPic">Product Picture</label>
+                                    <div className="productImage d-flex flex-column align-items-center justify-content-center" onClick={handleImageClick}>
+                                        <label htmlFor="productImageInput">{image ? image.name : "Choose an image"} </label>
+                                        {image ? 
+                                            (typeof image === 'string' ? 
+                                                <img className="mt-1" style={{width: "150px", borderRadius: "10px"}} src={image} alt="" /> : 
+                                                <img className="mt-1" style={{width: "150px", borderRadius: "10px"}} src={URL.createObjectURL(image)} alt="" />
+                                            ) :
+                                            <img className="mt-1" style={{width: "150px", borderRadius: "10px"}} src="https://res.cloudinary.com/dokgv4lff/image/upload/v1688220885/no_image_frvfpb.jpg" alt="" />
+                                        }
+                                        <input type="file" name="productImageInput" ref={inputRef} onChange={productFormOnChange} className="productPicInput d-flex justify-content-center"/>
                                     </div>
                                     <div className="productDetails">
                                         <label htmlFor="" className="productPic">Product Name</label>
-                                        <input type="text" id="productName" name="productName" onChange={productFormOnChange} className="productFormInput shadow-sm" placeholder="Enter product name" />
+                                        <input type="text" id="productName" value={productForm.productName} name="productName" onChange={productFormOnChange} className="productFormInput shadow-sm" placeholder="Enter product name" />
                                         {errorProduct && productForm.productName.length===0 ? <label htmlFor="" className="errorLabel">Product Name can't be empty</label> : ""}  
 
                                         <label htmlFor="" className="productPic">Product Description</label>
-                                        <input type="text" id="productDescription" name="productDescription" onChange={productFormOnChange} className="productFormInput shadow-sm" placeholder="Enter product description" />
+                                        <input type="text" id="productDescription" name="productDescription" value={productForm.productDescription} onChange={productFormOnChange} className="productFormInput shadow-sm" placeholder="Enter product description" />
                                         {errorProduct && productForm.productDescription.length===0 ? <label htmlFor="" className="errorLabel">Product Description can't be empty</label> : ""}  
 
                                         <label htmlFor="" className="productPic">Product Price</label>
-                                        <input type="number" id="productPrice" name="productPrice" onChange={productFormOnChange} className="productFormInput shadow-sm" placeholder="Enter product price" />
+                                        <input type="number" id="productPrice" name="productPrice" value={productForm.productPrice} onChange={productFormOnChange} className="productFormInput shadow-sm" placeholder="Enter product price" />
                                         {errorProduct && productForm.productPrice===0 ? <label htmlFor="" className="errorLabel">Product price can't be 0</label> : ""}  
 
                                         <div className="vegRadio d-flex flex-row justify-content-center align-items-center">
-                                            <div className="vegDiv">
-                                                <input className="form-check-input radioBtn" type="radio" id="veg" onChange={productFormOnChange} defaultChecked name="vegRadio" value={true}/>
-                                                <label htmlFor="veg">Veg</label>
-                                            </div>
-                                            <div className="vegDiv">
-                                                <input className="form-check-input radioBtn" type="radio" onChange={productFormOnChange} id="nonVeg" name="vegRadio" value={false}/>
-                                                <label htmlFor="nonVeg">Non-Veg</label>
-                                            </div>
+                                            {productForm.vegRadio ? 
+                                                (<>
+                                                    <div className="vegDiv">
+                                                        <input className="form-check-input radioBtn" type="radio" id="veg" onChange={productFormOnChange} checked name="vegRadio" value={true}/>
+                                                        <label htmlFor="veg">Veg</label>
+                                                    </div>
+                                                    <div className="vegDiv">
+                                                        <input className="form-check-input radioBtn" type="radio" onChange={productFormOnChange} id="nonVeg" name="vegRadio" value={false}/>
+                                                        <label htmlFor="nonVeg">Non-Veg</label>
+                                                    </div>
+                                                </>) :
+                                                (<>
+                                                    <div className="vegDiv">
+                                                        <input className="form-check-input radioBtn" type="radio" id="veg" onChange={productFormOnChange}  name="vegRadio" value={true}/>
+                                                        <label htmlFor="veg">Veg</label>
+                                                    </div>
+                                                    <div className="vegDiv">
+                                                        <input className="form-check-input radioBtn" type="radio" onChange={productFormOnChange} checked id="nonVeg" name="vegRadio" value={false}/>
+                                                        <label htmlFor="nonVeg">Non-Veg</label>
+                                                    </div>
+                                                </>) 
+                                            }
                                         </div>
                                     </div>
                                     <div className="variants d-flex flex-column justify-content-start align-items-start">
                                         <label htmlFor="" className="productPic">Variants <i className="fa-solid fa-circle-plus mx-1 fa-xl" onClick={handleVariantAddition} style={{color: "#004932"}}></i></label>
                                         {variantArray.map((data,i) => {
-                                            return <div className="variantDetails row">
+                                            return <div className="variantDetails row" key={i}>
                                                 <div className="col-md-5 col-sm-5 col-5">
                                                     <input type="text" id="variantName" name="variantName" value={data.variantName || ""} onChange={e=>variantOnChange(e,i)} className="variantInput shadow-sm" placeholder="Enter variant name" />    
                                                 </div>
@@ -457,7 +648,8 @@ export default function EditCategory(props) {
             {/* Add products section */}
             <div className="products">
                 <h4 className="heading my-4">Products</h4>
-                <button disabled={categoryDetails.id===''} type="button" className="btn addProductButton" data-bs-toggle="modal" data-bs-target="#addProductModal">Add New Product <i className="fa-solid fa-circle-plus mx-1 fa-xl" style={{color: "#ffffff"}}></i></button>
+                {/* <button disabled={categoryDetails.id===''} type="button" className="btn addProductButton" data-bs-toggle="modal" data-bs-target="#addProductModal">Add New Product <i className="fa-solid fa-circle-plus mx-1 fa-xl" style={{color: "#ffffff"}}></i></button> */}
+                <button disabled={categoryDetails.id===''} type="button" className="btn addProductButton" onClick={handleOpenProductModal}>Add New Product <i className="fa-solid fa-circle-plus mx-1 fa-xl" style={{color: "#ffffff"}}></i></button>
                 <div className="allCategoryProducts row">
                     {productArray.length===0 ? 
                         <p className="noProductLabel d-flex justify-content-center">No products Added</p> : 
@@ -471,7 +663,7 @@ export default function EditCategory(props) {
                                     description={product.description} 
                                     variants={product.variants}  
                                     productEdit={true} 
-                                    onClick={(action) => handleUpDel(action, product._id)}
+                                    onClick={(action) => handleUpDel(action, product._id, product.productName, product.description, product.price, product.veg, product.variants, product.productImage.url)}
                                 />
                             </div>
                         })

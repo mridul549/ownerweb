@@ -66,7 +66,7 @@ export default function Menu() {
     },[])
 
     return (
-        <div className="container-fluid my-5 main-div" style={{ padding: 0, margin: 0 }}>
+        <div className="container-fluid main-div" style={{ padding: 0, margin: 0 }}>
             <div className="d-flex flex-row justify-content-start align-items-center">
                 <h2 className="categoryHead my-5">Categories </h2>
                 <Link to={'/dashboard/addcategory'}><i className="fa-solid fa-circle-plus fa-2xl plus" style={{color: "#004932"}} ></i></Link>
@@ -93,7 +93,7 @@ export default function Menu() {
             {loadingPro && <Spinner />}
             {!loadingPro&&productArray.map((productWithCat) => {
                 return <>
-                    <div className="categoryName d-flex flex-row justify-content-start align-items-center">
+                    <div className="categoryName d-flex flex-row justify-content-start align-items-center" key={productWithCat.categoryid}>
                         <h2 className="categoryHead my-5">{productWithCat.category}</h2>
                         <i 
                             className="fa-sharp fa-solid fa-pen icon editIcon fa-lg" 
@@ -103,7 +103,7 @@ export default function Menu() {
                     <div className="row">
                         {productWithCat.products.length>0 ?
                             (productWithCat.products.map((product) => {
-                                return <div className="col-lg-6">
+                                return <div className="col-lg-6" key={product._id}>
                                     <MenuItem productImage={product.productImage.url} productName={product.productName} productPrice={product.price} veg={product.veg} description={product.description} variants={product.variants} productEdit={false} />
                                 </div>
                             })) : 

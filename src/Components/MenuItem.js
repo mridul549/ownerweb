@@ -19,15 +19,15 @@ export default function MenuItem(props) {
         <div className="card mb-3 shadow-sm" style={{maxWidth: "500px"}}>
             <div className="topRow my-1 d-flex justify-content-between">
                 <div className="switch mt-1">
-                    <div class="form-check form-switch">
-                        <input class="form-check-input inStock" onChange={toggle} type="checkbox" defaultChecked id="flexSwitchCheckChecked" />
+                    <div className="form-check form-switch">
+                        <input className="form-check-input inStock" onChange={toggle} type="checkbox" defaultChecked id="flexSwitchCheckChecked" />
                         <label htmlFor="">Available</label>
                     </div>
                 </div>
                 {props.productEdit ?
                     <div className="editRow">
                         <i className="fa-sharp fa-solid fa-pen icon fa-lg mx-3 updel" onClick={() => props.onClick(0)} style={{width: "20px", height: '20px'}}></i>
-                        <i class="fa-solid fa-trash fa-lg updel icon" onClick={() => props.onClick(1)} style={{width: "20px", height: '20px', color: "#ff0303"}}></i>
+                        <i className="fa-solid fa-trash fa-lg updel icon" onClick={() => props.onClick(1)} style={{width: "20px", height: '20px', color: "#ff0303"}}></i>
                     </div> : ''
                 } 
             </div>
@@ -51,8 +51,8 @@ export default function MenuItem(props) {
                     <div className="variantBtn d-flex justify-content-center">
                         <button type="button" className="btn variantDropDownBtn shadow-sm" onClick={handleVariantButtonClick} >
                             {!variantToggle ? 
-                                <i class="fa-solid fa-caret-down fa-xl" style={{color: '#000'}}></i> :
-                                <i class="fa-solid fa-caret-up fa-xl" style={{color: '#000'}}></i>
+                                <i className="fa-solid fa-caret-down fa-xl" style={{color: '#000'}}></i> :
+                                <i className="fa-solid fa-caret-up fa-xl" style={{color: '#000'}}></i>
                             }
                         </button>
                     </div>
@@ -62,10 +62,10 @@ export default function MenuItem(props) {
                             <div className="row">
                                 {props.variants.map((variant) => {
                                     return <>
-                                        <div className="col-lg-6 col-md-6 col-sm-6 col-6 d-flex justify-content-center">
+                                        <div className="col-lg-6 col-md-6 col-sm-6 col-6 d-flex justify-content-center" key={variant.variantName}>
                                             <h5 className="pl-3">{variant.variantName}</h5>
                                         </div>
-                                        <div className="col-lg-6 col-md-6 col-sm-6 col-6 d-flex justify-content-center">
+                                        <div className="col-lg-6 col-md-6 col-sm-6 col-6 d-flex justify-content-center" key={variant.price}>
                                             <h5 style={{fontWeight: 400}}>₹ {variant.price}</h5>
                                         </div>
                                     </>
