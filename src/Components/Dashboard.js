@@ -17,7 +17,7 @@ export default function Dashboard() {
                 <div className="col-lg-2 sidebar">
                     <Sidebar />
                 </div>
-                <div className="col-lg-10 div-2 mt-5">
+                <div className="col-lg-10 container-fluid div-2 mt-5">
                     <Routes>
                         <Route path="/" element={<Menu />} />
                         <Route path="/menu" element={<Menu />} />
