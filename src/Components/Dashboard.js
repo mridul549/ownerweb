@@ -12,7 +12,7 @@ import Navbar from "./Navbar";
 export default function Dashboard() {
     return (
         <div className="container-fluid">
-            <Navbar/>
+            {/* <Navbar/> */}
             <div className="row">
                 <div className="col-lg-2 sidebar">
                     <Sidebar />

@@ -1,52 +1,99 @@
-import React from 'react'
-import '../css/sidebar.css'
-import {Link} from 'react-router-dom'
+import React, { useState } from 'react';
+import '../css/sidebar.css';
+import { Link } from 'react-router-dom';
 
 export default function Sidebar() {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  const handleMenuBtnClick = () => {
+    setSidebarOpen(!sidebarOpen);
+  };
+
   return (
     <>
-    <div className='sidebar-wrapper container-fluid' id='sidebar'>
-        <div className="d-flex flex-column flex-shrink-0 p-3 bg-body-tertiary sidebar shadow">
-            <Link to="/dashboard" className="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
-                <span className="fs-4">FlavR</span>
-            </Link>
-            <ul className="nav nav-pills flex-column mb-auto ul">
-                <li className="nav-item">
-                    
-                </li>
-                <li className="nav-item">
-                    <Link to="/dashboard/menu" className="nav-link active custom-nav-link" aria-current="page">
-                        Menu
-                    </Link>
-                </li>
-                <li>
-                    <Link to="/dashboard/orders" className="nav-link link-body-emphasis">
-                        Orders
-                    </Link>
-                </li>
-                <li>
-                    <Link to="/dashboard/outlet" className="nav-link link-body-emphasis">
-                        Outlet
-                    </Link>
-                </li>
-                </ul>
-            <hr/>
-            <div className="dropdown">
-                <a href="/" className="d-flex align-items-center link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                    <div className="d-flex align-items-center">
-                        <img src={localStorage.getItem('ownerProfilePic')} alt="" style={{ width: 32, height: 32, marginRight: '0.5rem' }} className="rounded-circle" />
-                        <strong className='ownerName'>{localStorage.getItem('ownerName')}</strong>
-                    </div>
-                </a>
-                <ul className="dropdown-menu text-small shadow">
-                    <li><a className="dropdown-item" href="/dashboard">Settings</a></li>
-                    <li><a className="dropdown-item" href="/dashboard">Profile</a></li>
-                    <li><hr className="dropdown-divider" /></li>
-                    <li><a className="dropdown-item" href="/dashboard">Sign out</a></li>
-                </ul>
-            </div>
+      <div className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
+        <div className="logo-details">
+          <i className="bx bxl-c-plus-plus icon"></i>
+          <div className="logo_name">CodingLab</div>
+          <i className={`bx ${sidebarOpen ? 'bx-menu-alt-right' : 'bx-menu'}`} id="btn" onClick={handleMenuBtnClick}></i>
         </div>
-    </div>
+        <ul className="nav-list">
+          <li>
+            <i className="bx bx-search"></i>
+            <input type="text" placeholder="Search..." />
+            <span className="tooltip">Search</span>
+          </li>
+          <li>
+            <a href="#">
+              <i className="bx bx-grid-alt"></i>
+              <span className="links_name">Dashboard</span>
+            </a>
+            <span className="tooltip">Dashboard</span>
+          </li>
+          <li>
+            <a href="#">
+              <i className="bx bx-user"></i>
+              <span className="links_name">User</span>
+            </a>
+            <span className="tooltip">User</span>
+          </li>
+          <li>
+            <a href="#">
+              <i className="bx bx-chat"></i>
+              <span className="links_name">Messages</span>
+            </a>
+            <span className="tooltip">Messages</span>
+          </li>
+          <li>
+            <a href="#">
+              <i className="bx bx-pie-chart-alt-2"></i>
+              <span className="links_name">Analytics</span>
+            </a>
+            <span className="tooltip">Analytics</span>
+          </li>
+          <li>
+            <a href="#">
+              <i className="bx bx-folder"></i>
+              <span className="links_name">File Manager</span>
+            </a>
+            <span className="tooltip">Files</span>
+          </li>
+          <li>
+            <a href="#">
+              <i className="bx bx-cart-alt"></i>
+              <span className="links_name">Order</span>
+            </a>
+            <span className="tooltip">Order</span>
+          </li>
+          <li>
+            <a href="#">
+              <i className="bx bx-heart"></i>
+              <span className="links_name">Saved</span>
+            </a>
+            <span className="tooltip">Saved</span>
+          </li>
+          <li>
+            <a href="#">
+              <i className="bx bx-cog"></i>
+              <span className="links_name">Setting</span>
+            </a>
+            <span className="tooltip">Setting</span>
+          </li>
+          <li className="profile">
+            <div className="profile-details">
+              <img src="profile.jpg" alt="profileImg" />
+              <div className="name_job">
+                <div className="name">Prem Shahi</div>
+                <div className="job">Web designer</div>
+              </div>
+            </div>
+            <i className="bx bx-log-out" id="log_out"></i>
+          </li>
+        </ul>
+      </div>
+      <section className="home-section">
+        <div className="text">Dashboard</div>
+      </section>
     </>
-  )
+  );
 }
