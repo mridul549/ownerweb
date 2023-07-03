@@ -5,18 +5,18 @@ import SidebarContext from "../context/sidebar/sidebarContext";
 
 export default function Sidebar() {
     const { sidebarOpen, setSidebarOpen } = useContext(SidebarContext)
+
     const handleMenuBtnClick = () => {
         setSidebarOpen(!sidebarOpen);
     };
 
     return (
         <>
-            <div className={`sidebar ${sidebarOpen ? "open" : ""}`}>
+            <div className={`sidebar shadow ${sidebarOpen ? "open" : ""}`}>
                 <div className="logo-details">
-                    <i className="bx bxl-c-plus-plus icon"></i>
-                    <div className="logo_name">CodingLab</div>
+                    <div className="logo_name mx-3">FlavR</div>
                     <i
-                        className={`bx ${
+                        className={`bx mx-2 ${
                             sidebarOpen ? "bx-menu-alt-right" : "bx-menu"
                         }`}
                         id="btn"
@@ -25,67 +25,32 @@ export default function Sidebar() {
                 </div>
                 <ul className="nav-list">
                     <li>
-                        <a href="#">
+                        <Link to="/dashboard/menu">
                             <i className="bx bx-grid-alt"></i>
-                            <span className="links_name">Dashboard</span>
-                        </a>
-                        <span className="tooltip">Dashboard</span>
+                            <span className="links_name">Menu</span>
+                        </Link>
+                        <span className="tooltip">Menu</span>
                     </li>
                     <li>
-                        <a href="#">
-                            <i className="bx bx-user"></i>
-                            <span className="links_name">User</span>
-                        </a>
-                        <span className="tooltip">User</span>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <i className="bx bx-chat"></i>
-                            <span className="links_name">Messages</span>
-                        </a>
-                        <span className="tooltip">Messages</span>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <i className="bx bx-pie-chart-alt-2"></i>
-                            <span className="links_name">Analytics</span>
-                        </a>
-                        <span className="tooltip">Analytics</span>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <i className="bx bx-folder"></i>
-                            <span className="links_name">File Manager</span>
-                        </a>
-                        <span className="tooltip">Files</span>
-                    </li>
-                    <li>
-                        <a href="#">
+                        <Link to="/dashboard/orders">
                             <i className="bx bx-cart-alt"></i>
-                            <span className="links_name">Order</span>
-                        </a>
-                        <span className="tooltip">Order</span>
+                            <span className="links_name">Orders</span>
+                        </Link>
+                        <span className="tooltip">Orders</span>
                     </li>
                     <li>
-                        <a href="#">
-                            <i className="bx bx-heart"></i>
-                            <span className="links_name">Saved</span>
-                        </a>
-                        <span className="tooltip">Saved</span>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <i className="bx bx-cog"></i>
-                            <span className="links_name">Setting</span>
-                        </a>
-                        <span className="tooltip">Setting</span>
+                        <Link to="/dashboard/outlet">
+                            <i className="bx bx-chat"></i>
+                            <span className="links_name">Outlet</span>
+                        </Link>
+                        <span className="tooltip">Outlet</span>
                     </li>
                     <li className="profile">
                         <div className="profile-details">
-                            <img src="profile.jpg" alt="profileImg" />
+                            <img src={localStorage.getItem('ownerProfilePic')} alt="profileImg" />
                             <div className="name_job">
-                                <div className="name">Prem Shahi</div>
-                                <div className="job">Web designer</div>
+                                <div className="name">{localStorage.getItem('ownerName')} </div>
+                                <div className="job">Owner</div>
                             </div>
                         </div>
                         <i className="bx bx-log-out" id="log_out"></i>

@@ -16,7 +16,7 @@ import Category from './Components/Category';
 import EditCategory from './Components/EditCategory';
 import Outletdetails from './Components/Outletdetails';
 import { ToastContainer } from 'react-toastify';
-
+import SidebarState from './context/sidebar/sidebarState'
 
 const router = createBrowserRouter([
     {
@@ -74,10 +74,12 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById("root")).render(
     <React.StrictMode>
         <ToastContainer closeOnClick draggable pauseOnHover/>
-        <CategoryState>
-            <AuthState>
-                <RouterProvider router={router} />
-            </AuthState>
-        </CategoryState>
+        <SidebarState>
+            <CategoryState>
+                <AuthState>
+                    <RouterProvider router={router} />
+                </AuthState>
+            </CategoryState>
+        </SidebarState>
     </React.StrictMode>
 );
