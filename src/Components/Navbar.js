@@ -37,9 +37,6 @@ export default function Navbar() {
                         <div className="col-lg-6">   
                             <img src="https://res.cloudinary.com/dokgv4lff/image/upload/v1688365848/flavr_l4bspc.png" style={{width: "100px"}} alt="" />
                         </div>
-                        <div className="col-lg-6">
-                            <p style={{color: "#fff", marginLeft: "30px"}}></p>
-                        </div>
                     </div>
                     <div>
                         <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
