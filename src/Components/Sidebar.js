@@ -16,11 +16,12 @@ export default function Sidebar() {
                 <div className="logo-details">
                     <div className="logo_name mx-3">FlavR</div>
                     <i
-                        className={`bx mx-2 ${
+                        className={`bx menuBtn mx-2 ${
                             sidebarOpen ? "bx-menu-alt-right" : "bx-menu"
                         }`}
                         id="btn"
                         onClick={handleMenuBtnClick}
+                        style={{color: "#fff"}}
                     ></i>
                 </div>
                 <ul className="nav-list">

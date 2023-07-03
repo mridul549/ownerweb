@@ -3,6 +3,14 @@
     top: 0;
 }
 
+.navbaropen {
+    margin-left: 250px;
+}
+
+.navbarclose {
+    margin-left: 78px;
+}
+
 .home {
     color: white;
 }

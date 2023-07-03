@@ -14,12 +14,12 @@ export default function Dashboard() {
     const { sidebarOpen } = useContext(SidebarContext)
     return (
         <div className="container-fluid">
-            {/* <Navbar/> */}
             <div className="row">
                 <div className="col-lg-2 sidebar">
                     <Sidebar />
                 </div>
-                <div className={`col-lg-10 container-fluid div-2 mt-5 ${sidebarOpen ? 'sidebaropen' : 'sidebarclose'}`}>
+                <div className={`col-lg-10 container-fluid div-2 mt-3 ${sidebarOpen ? 'sidebaropen' : 'sidebarclose'}`}>
+                    <Navbar/>
                     <Routes>
                         <Route path="/" element={<Menu />} />
                         <Route path="/menu" element={<Menu />} />

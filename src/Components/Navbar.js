@@ -1,27 +1,20 @@
-import { React, useState } from "react";
+import { React, useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import AddOutlet from "./AddOutlet";
 import "../css/navbar.css";
+import SidebarContext from "../context/sidebar/sidebarContext";
 
 export default function Navbar() {
     const [modal, setModal] = useState(false);
-
+    const { sidebarOpen } = useContext(SidebarContext)
     const toggleModal = () => {
         setModal(!modal);
     };
 
     return (
         <>
-            <nav className="navbar navbar-expand-lg fixed-top bg-body-tertiary">
-                <div className="container-fluid d-flex justify-content-between">
-                    <div>
-                        <a data-toggle="collapse" href="#sidebar" role="button" aria-expanded="false" aria-controls="sidebar"><i class="fa-solid fa-xmark fa-2xl mx-3" style={{color: "#fff"}}></i></a>
-                    </div>
-                    <div>
-                        <Link className="navbar-brand" to="#">
-                            FlavR
-                        </Link>
-                    </div>
+            <nav className={`navbar navbar-expand-lg fixed-top bg-body-tertiary ${!sidebarOpen ? 'navbarclose' : 'navbaropen'}`}>
+                <div className="container-fluid d-flex justify-content-end">
                     <div>
                         <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                             <span className="navbar-toggler-icon"></span>
