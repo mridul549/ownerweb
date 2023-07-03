@@ -3,6 +3,11 @@
     margin-top: 0;
 }
 
+hr {
+    color: #000;
+    width: 100%;
+}
+
 .categoryHead {
     font-weight: 600;
     font-size: 25px;

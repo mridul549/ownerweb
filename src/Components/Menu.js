@@ -68,6 +68,7 @@ export default function Menu() {
 
     return (
         <>
+        <Navbar/>
         <div className="container-fluid main-div" style={{ padding: 0, margin: 0 }}>
             <div className="d-flex flex-row justify-content-start align-items-center">
                 <h2 className="categoryHead my-5">Categories </h2>

@@ -1,9 +1,10 @@
 import React from 'react'
-
+import Navbar from './Navbar'
 export default function Orders() {
   return (
     <div>
-      <h1>orders</h1>
+      <Navbar />
+      <h1 className='mt-3'>orders</h1>
     </div>
   )
 }
