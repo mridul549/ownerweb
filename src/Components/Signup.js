@@ -3,6 +3,7 @@ import '../css/auth.css'
 import {Link, useNavigate} from 'react-router-dom'
 import Spinner from "./Spinner";
 import AuthContext from "../context/auth/authContext";
+import imageSignup from '../images/Scene-43.jpg'
 
 const Signup = () => {
     const [credentials, setCredentials] = useState({ownerName:'',email: '', password: '',cpassword:''})
@@ -67,7 +68,7 @@ const Signup = () => {
         <div className="container-fluid signup">
             <div className="row">
                 <div className="col-lg-8 imgCol">
-                    <img src="https://i.imgur.com/bAaPDCL.jpg" alt="abc" className="img-fluid image-1" />
+                    <img src={imageSignup} alt="abc" className="img-fluid image-1" />
                 </div>
                 <div className="col-lg-4 form-div">
                 <h1 className="signup-head">FlavR</h1>

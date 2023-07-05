@@ -1,58 +1,65 @@
-import {React, useContext } from 'react'
-import '../css/sidebar.css'
-import {Link} from 'react-router-dom'
-import SidebarContext from '../context/sidebar/sidebarContext'
+
+import React, { useState, useContext } from "react";
+import "../css/sidebar.css";
+import { Link } from "react-router-dom";
+import SidebarContext from "../context/sidebar/sidebarContext";
 
 export default function Sidebar() {
-    const { sidebarOpen, setSidebarOpen} = useContext(SidebarContext)
+    const { sidebarOpen, setSidebarOpen } = useContext(SidebarContext)
+
+    const handleMenuBtnClick = () => {
+        setSidebarOpen(!sidebarOpen);
+    };
 
     return (
         <>
-        {sidebarOpen ? 
-            <div className='sidebar-wrapper container-fluid' id='sidebar'>
-                <div className="d-flex flex-column flex-shrink-0 p-3 bg-body-tertiary sidebar shadow">
-                    <Link to="/dashboard" className="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
-                        <span className="fs-4">FlavR</span>
-                    </Link>
-                    <ul className="nav nav-pills flex-column mb-auto ul">
-                        <li className="nav-item">
-                            
-                        </li>
-                        <li className="nav-item">
-                            <Link to="/dashboard/menu" className="nav-link active custom-nav-link" aria-current="page">
-                                Menu
-                            </Link>
-                        </li>
-                        <li>
-                            <Link to="/dashboard/orders" className="nav-link link-body-emphasis">
-                                Orders
-                            </Link>
-                        </li>
-                        <li>
-                            <Link to="/dashboard/outlet" className="nav-link link-body-emphasis">
-                                Outlet
-                            </Link>
-                        </li>
-                        </ul>
-                    <hr/>
-                    <div className="dropdown">
-                        <a href="/" className="d-flex align-items-center link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                            <div className="d-flex align-items-center">
-                                <img src={localStorage.getItem('ownerProfilePic')} alt="" style={{ width: 32, height: 32, marginRight: '0.5rem' }} className="rounded-circle" />
-                                <strong className='ownerName'>{localStorage.getItem('ownerName')}</strong>
-                            </div>
-                        </a>
-                        <ul className="dropdown-menu text-small shadow">
-                            <li><a className="dropdown-item" href="/dashboard">Settings</a></li>
-                            <li><a className="dropdown-item" href="/dashboard">Profile</a></li>
-                            <li><hr className="dropdown-divider" /></li>
-                            <li><a className="dropdown-item" href="/dashboard">Sign out</a></li>
-                        </ul>
-                    </div>
+            <div className={`sidebar shadow ${sidebarOpen ? "open" : ""}`}>
+                <div className="logo-details">
+                    <div className="logo_name mx-4 mt-4"><img src="https://res.cloudinary.com/dokgv4lff/image/upload/v1688365848/flavr_l4bspc.png" style={{width: "70px"}} alt="" /></div>
+                    {/* <div className="logo_name mx-3">FlavR</div> */}
+                    <i
+                        className={`bx menuBtn mx-2 ${
+                            sidebarOpen ? "bx-menu-alt-right" : "bx-menu"
+                        }`}
+                        id="btn"
+                        onClick={handleMenuBtnClick}
+                    ></i>
                 </div>
-            </div> : ""
-            
-        }
+                <ul className="nav-list">
+                    <li>
+                        <Link to="/dashboard/menu">
+                            <i className='bx bx-food-menu' ></i>
+                            <span className="links_name">Menu</span>
+                        </Link>
+                        <span className="tooltip">Menu</span>
+                    </li>
+                    <li>
+                        <Link to="/dashboard/orders">
+                            <i className="bx bx-cart-alt"></i>
+                            <span className="links_name">Orders</span>
+                        </Link>
+                        <span className="tooltip">Orders</span>
+                    </li>
+                    <li>
+                        <Link to="/dashboard/outlet">
+                            <i className='bx bx-store-alt'></i>
+                            <span className="links_name">Outlet</span>
+                        </Link>
+                        <span className="tooltip">Outlet</span>
+                    </li>
+                    <li className="profile">
+                        <div className="profile-details">
+                            <img src={localStorage.getItem('ownerProfilePic')} alt="profileImg" />
+                            <div className="name_job">
+                                <div className="name">{localStorage.getItem('ownerName')} </div>
+                                <div className="job">Owner</div>
+                            </div>
+                        </div>
+                        <i className="bx bx-log-out" id="log_out"></i>
+                    </li>
+                </ul>
+            </div>
         </>
-    )
+    );
 }
+

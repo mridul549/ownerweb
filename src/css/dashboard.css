@@ -3,12 +3,27 @@
     margin: 0;
 }
 
-.sidebar
-{
-    padding:0;
+.sidebar {
+    padding: 0;
+    transition: margin-left 2s cubic-bezier(0.075, 0.82, 0.165, 1);
 }
 
-.div-2
-{
-    padding:2% 5% ;
+.div-2 {
+    padding: 2% 5%;
+    transition-property: width;
+    transition-duration: 2s;
+    transition-timing-function: cubic-bezier(0.68, -0.55, 0.27, 1.55);
+}
+
+.div-21 {
+    padding: 2% 5%;
+    
+    transition-property: width;
+    transition-duration: 2s;
+    transition-timing-function: cubic-bezier(0.68, -0.55, 0.27, 1.55);
+}
+
+.sidebaropen {
+    margin-left: 16.5%;
+    overflow-x: hidden;
 }

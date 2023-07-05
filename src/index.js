@@ -17,6 +17,8 @@ import EditCategory from './Components/EditCategory';
 import Outletdetails from './Components/Outletdetails';
 import { ToastContainer } from 'react-toastify';
 import SidebarState from './context/sidebar/sidebarState'
+import OrderItem from './Components/OrderItem';
+import OrderState from './context/orders/orderState';
 
 const router = createBrowserRouter([
     {
@@ -38,6 +40,10 @@ const router = createBrowserRouter([
     {
         path: "/category",
         element: <Category />
+    },
+    {
+        path: "/orderitem",
+        element: <OrderItem />
     },
     {
         path: '/dashboard',
@@ -74,12 +80,14 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById("root")).render(
     <React.StrictMode>
         <ToastContainer closeOnClick draggable pauseOnHover/>
-        <SidebarState>
-            <CategoryState>
-                <AuthState>
-                    <RouterProvider router={router} />
-                </AuthState>
-            </CategoryState>
-        </SidebarState>
+        <OrderState>
+            <SidebarState>
+                <CategoryState>
+                    <AuthState>
+                        <RouterProvider router={router} />
+                    </AuthState>
+                </CategoryState>
+            </SidebarState>
+        </OrderState>
     </React.StrictMode>
 );

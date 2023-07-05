@@ -1,27 +1,56 @@
-import { React, useState, useContext } from "react";
+import { React, useContext, useEffect, useState } from "react";
+
 import { Link } from "react-router-dom";
 import AddOutlet from "./AddOutlet";
 import SidebarContext from "../context/sidebar/sidebarContext";
 import "../css/navbar.css";
+import SidebarContext from "../context/sidebar/sidebarContext";
 
 export default function Navbar() {
-    const { sidebarOpen, setSidebarOpen} = useContext(SidebarContext)
+    const [modal, setModal] = useState(false);
+    const [greetingMsg, setGreetingMsg] = useState('')
+    const { sidebarOpen, setSidebarOpen } = useContext(SidebarContext)
 
     const handleSidebarOps = () => {
         setSidebarOpen(!sidebarOpen)
     }
 
+    useEffect(() => {
+        const currentHour = new Date().getHours();
+
+        if (currentHour >= 5 && currentHour < 12) {
+            setGreetingMsg("Good Morning!");
+        } else if (currentHour >= 12 && currentHour < 18) {
+            setGreetingMsg("Good Afternoon!");
+        } else {
+            setGreetingMsg("Good Evening!");
+        }
+    }, [])
+
+    useEffect(() => {
+        const currentHour = new Date().getHours();
+
+        if (currentHour >= 5 && currentHour < 12) {
+            setGreetingMsg("Good Morning!");
+        } else if (currentHour >= 12 && currentHour < 18) {
+            setGreetingMsg("Good Afternoon!");
+        } else {
+            setGreetingMsg("Good Evening!");
+        }
+    }, [])
+
     return (
         <>
-            <nav className="navbar navbar-expand-lg fixed-top bg-body-tertiary">
-                <div className="container-fluid d-flex justify-content-between">
-                    <div>
-                        <button className="btn" onClick={handleSidebarOps}><i class="fa-solid fa-xmark fa-2xl mx-3" style={{color: "#fff"}}></i></button>
+            <nav className={`navbar glassElement navbar-expand-lg fixed-top bg-body-tertiary mt-2 ${!sidebarOpen ? 'navbarclose' : 'navbaropen'}`}>
+                <div className="container-fluid">
+                    <div className="greeting">
+                        <h5 style={{color: '#027450'}}>{greetingMsg}</h5>
+                        <h3 style={{color: '#004932', fontSize: '25px'}}>{localStorage.getItem('ownerName')} Verma</h3>
                     </div>
-                    <div>
-                        <Link className="navbar-brand" to="#">
-                            FlavR
-                        </Link>
+                    <div className="row">
+                        <div className="col-lg-6">   
+                            <img src="https://res.cloudinary.com/dokgv4lff/image/upload/v1688365848/flavr_l4bspc.png" style={{width: "100px"}} alt="" />
+                        </div>
                     </div>
                     <div>
                         <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -29,7 +58,7 @@ export default function Navbar() {
                         </button>
                         <div className="collapse navbar-collapse d-flex justify-content-end" id="navbarSupportedContent">
                             <button type="button" className="btn outlet-btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                                Outlets <i className="fa-solid fa-caret-down mx-1"></i>
+                                Nescafe NITJ <i className="fa-solid fa-caret-down mx-1"></i>
                             </button>
                         </div>
                     </div>

@@ -1,0 +1,36 @@
+.orderCard {
+    width: 20rem;
+    border: 1px solid black;
+}
+
+.orderitem {
+    margin: 0;
+}
+
+.actionBtns {
+    width: 8.5rem;
+}
+
+.itemsHeading {
+    padding: 0 16px;
+}
+
+.confirmBtn {
+    background-color: #73a288;
+    color: white;
+}
+
+.confirmBtn:hover {
+    color: white;
+    background-color: #87bea0;
+}
+
+.rejectBtn {
+    background-color: #f95a5a;
+    color: white;
+}
+
+.rejectBtn:hover {
+    background-color: #f68585;
+    color: white;
+}
