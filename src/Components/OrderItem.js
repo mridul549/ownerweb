@@ -127,13 +127,13 @@ export default function OrderItem(props) {
                 </div>
                 <div className="itemsHeading my-1 d-flex justify-content-between">
                     <div>
-                        <p>₹ {props.totalAmount} </p>
+                        <p style={{color: "#004932"}}>₹ {props.totalAmount} </p>
                     </div>
                     <div>
                         <h5>Items</h5> 
                     </div>
                     <div>
-                        <p>x {props.totalQuantity} </p>
+                        <p style={{color: "#004932"}}>x {props.totalQuantity} </p>
                     </div>
                 </div>
                 <div className="orderItems">
