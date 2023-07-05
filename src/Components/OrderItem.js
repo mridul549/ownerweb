@@ -3,11 +3,22 @@ import "../css/orderitem.css";
 import {db} from '../config/firebase'
 import { collection, query, where, onSnapshot } from "firebase/firestore";
 import OrderContext from "../context/orders/orderContext";
+import {Modal} from 'react-bootstrap'
 
 export default function OrderItem(props) {
     const [loadingInBtn, setLoadingInBtn] = useState({state: false, role: 0})
     const orderCollection = collection(db, 'Order')
     const { setActiveOrders, setReadyOrders, setLastOrderDelivered } = useContext(OrderContext)
+
+    const [isRejectionModal, setIsRejectionModal] = useState({state: false})
+
+    const handleOpenRejectionModal = () => {
+        setIsRejectionModal({state: true})
+    }
+
+    const handleCloseRejectionModal = () => {
+        setIsRejectionModal({state: false})
+    }
 
     const q2Listener = () => {
         const q2 = query(orderCollection, where("outlet", "==", localStorage.getItem('selectedOutlet')), where("status", "==", "ORDER_CONFIRMED"));
@@ -47,13 +58,17 @@ export default function OrderItem(props) {
     }
 
     const confirmHandler = async (isConfirm, role) => {
-        setLoadingInBtn({state: true, role: role})
+        // setLoadingInBtn({state: true, role: role})
         // q2Listener()
         // q3Listener()
 
-        setTimeout(() => {
-            setLoadingInBtn({state: false, role: 0})
-        }, 3000)
+        if(!isConfirm){
+            setIsRejectionModal({state: true})
+        }
+
+        // setTimeout(() => {
+        //     setLoadingInBtn({state: false, role: 0})
+        // }, 3000)
         // const response = await fetch("https://flavr.tech/orders/orderconfrej", {
         //     method: "PATCH",
         //     headers: {
@@ -115,7 +130,44 @@ export default function OrderItem(props) {
 
     return (
         <div>
-            
+            <Modal show={isRejectionModal.state} onHide={handleCloseRejectionModal}>
+                <Modal.Header className="d-flex justify-content-between">
+                    <div><p></p></div>
+                    <div>
+                        <Modal.Title style={{textAlign: 'center'}}>Reject Order</Modal.Title>
+                    </div>
+                    <div>
+                        <button type="button" className="btn-close" onClick={handleCloseRejectionModal}></button>
+                    </div>
+                </Modal.Header>
+                <Modal.Body>
+                    <div className="rejectBody d-flex flex-column justify-content-center align-items-center">
+                        <div className="rejectHead my-3">
+                            <h3>Reason for rejection</h3>
+                        </div>
+                        <div className="reasonBody">
+                            <form action="">
+                                <div className="row reasons">
+                                    <div className="col-md-2">
+                                        <input class="form-check-input" type="radio"  name="reason1" id="reason1" />
+                                    </div>
+                                    <div className="col-md-10">
+                                        <label htmlFor="">Outlet not accepting order</label>
+                                    </div>
+                                    <div className="col-md-2">
+                                        <input class="form-check-input" type="radio" name="reason2" id="reason2" />
+                                    </div>
+                                    <div className="col-md-10">
+                                        <label htmlFor="">One or more items not available</label>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </Modal.Body>
+            </Modal>
+
+
             <div className="card container orderCard">
                 <div className="header d-flex mt-3 mx-2 justify-content-between">
                     <div className="orderNumber">
@@ -138,15 +190,37 @@ export default function OrderItem(props) {
                 </div>
                 <div className="orderItems">
                     <div className="row orderitem d-flex justify-content-between">
-                        {props.products && props.products.map((product) => {
-                            return <>
+                        {/* If left over items are not to be shown */}
+
+                        {props.products && props.leftOver && props.products.map((product,i) => {
+                            if(i<=2) {
+                                return (<>
+                                    <div className="col-lg-10" key={product.productName}>
+                                        <h5>{product.productName} {product.variant !== 'default' && `(${product.variant})`}</h5>
+                                    </div>
+                                    <div className="col-lg-2">
+                                        <h5>x {product.quantity} </h5>
+                                    </div>
+                                </> )
+                            }
+                            else if(i===3) {
+                                return <button className="btn leftItems" onClick={props.leftItemsHandler} style={{width: "50%"}}>
+                                    +{props.products.length-3} more items...
+                                </button>
+                            }
+                            return null
+                        })}
+
+                        {/* If left over items are to be shown */}
+                        {props.products && !props.leftOver && props.products.map((product,i) => {
+                            return (<>
                                 <div className="col-lg-10" key={product.productName}>
                                     <h5>{product.productName} {product.variant !== 'default' && `(${product.variant})`}</h5>
                                 </div>
                                 <div className="col-lg-2">
                                     <h5>x {product.quantity} </h5>
                                 </div>
-                            </>
+                            </> )
                         })}
                     </div>
                 </div>
