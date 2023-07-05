@@ -9,15 +9,71 @@ export default function OrderItem(props) {
     const [loadingInBtn, setLoadingInBtn] = useState({state: false, role: 0})
     const orderCollection = collection(db, 'Order')
     const { setActiveOrders, setReadyOrders, setLastOrderDelivered } = useContext(OrderContext)
-
+    const [rejectionError, setRejectionError] = useState({state: false, message: ''})
     const [isRejectionModal, setIsRejectionModal] = useState({state: false})
+    const [selectedReason, setSelectedReason] = useState('');
+    const [selectedItems, setSelectedItems] = useState([]);
 
-    const handleOpenRejectionModal = () => {
-        setIsRejectionModal({state: true})
-    }
+    const handleReasonChange = (event) => {
+        setRejectionError({state: false, message: ''})
+        setSelectedReason(event.target.value);
+    };
 
     const handleCloseRejectionModal = () => {
         setIsRejectionModal({state: false})
+    }
+
+    const handleRejectionFormSubmit = async (e) => {
+        e.preventDefault()
+
+        if(selectedReason !== "reason1" && selectedReason !== "reason2") {
+            setRejectionError({state: true, message: "Select a reason"})
+            return
+        }
+
+        if(selectedReason === "reason2" && selectedItems.length===0){
+            setRejectionError({state: true, message: "Select items that are not available"})
+            return
+        }
+
+        setLoadingInBtn({state: true, role: 1})
+        handleCloseRejectionModal()
+        let rejectionReason = {}
+        if(selectedReason === 'reason1') {
+            rejectionReason = {
+                reason: "Outlet not accepting orders",
+                products: []
+            }
+        } else {
+            rejectionReason = {
+                reason: "One or more items not available",
+                products: selectedItems
+            }
+        }
+
+        const response = await fetch("https://flavr.tech/orders/orderconfrej", {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + localStorage.getItem('token')
+            },
+            body: JSON.stringify({orderid: props.orderid, outletid: localStorage.getItem('selectedOutlet'), isConfirm: false, rejectReason: rejectionReason})
+        })
+        const json = await response.json()
+        setLoadingInBtn({state: false, role: 0})
+        if(json.message === "Order rejected and refund or coupon has been successfully initiated.") {}
+    }
+
+    const handleCheckboxChange = (event) => {
+        const itemObtained = JSON.parse(event.target.value);
+        setRejectionError({state: false, message: ''})
+        if (event.target.checked) {
+            setSelectedItems((prevSelectedItems) => [...prevSelectedItems, itemObtained]);
+        } else {
+            setSelectedItems((prevSelectedItems) =>
+                prevSelectedItems.filter((item) => item.item !== itemObtained.item)
+            );
+        }
     }
 
     const q2Listener = () => {
@@ -57,33 +113,28 @@ export default function OrderItem(props) {
 
     }
 
-    const confirmHandler = async (isConfirm, role) => {
-        // setLoadingInBtn({state: true, role: role})
-        // q2Listener()
-        // q3Listener()
+    const rejectHandler = async (role) => {
+        setIsRejectionModal({state: true})
+    }
 
-        if(!isConfirm){
-            setIsRejectionModal({state: true})
+    const confirmHandler = async () => {
+        setLoadingInBtn({state: true, role: 0})
+        q2Listener()
+        q3Listener()
+
+        const response = await fetch("https://flavr.tech/orders/orderconfrej", {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + localStorage.getItem('token')
+            },
+            body: JSON.stringify({orderid: props.orderid, outletid: localStorage.getItem('selectedOutlet'), isConfirm: true})
+        })
+        const json = await response.json()
+
+        if(json.message === "Order successfully confirmed and sent for futher processing."){
+            setLoadingInBtn({state: false, role: 0})
         }
-
-        // setTimeout(() => {
-        //     setLoadingInBtn({state: false, role: 0})
-        // }, 3000)
-        // const response = await fetch("https://flavr.tech/orders/orderconfrej", {
-        //     method: "PATCH",
-        //     headers: {
-        //         "Content-Type": "application/json",
-        //         "Authorization": "Bearer " + localStorage.getItem('token')
-        //     },
-        //     body: JSON.stringify({orderid: props.orderid, outletid: localStorage.getItem('selectedOutlet'), isConfirm: isConfirm})
-        // })
-        // const json = await response.json()
-
-        // if(json.message === "Order successfully confirmed and sent for futher processing."){
-        //     setTimeout(() => {
-        //         setLoadingInBtn({state: false, role: 0})
-        //     }, 1000)
-        // }
     }
 
     const readyHandler = async (role) => {
@@ -102,9 +153,7 @@ export default function OrderItem(props) {
         const json = await response.json()
 
         if(json.message === "Order marked ready and shifted from active to ready in outlet"){
-            setTimeout(() => {
-                setLoadingInBtn({state: false, role: 0})
-            }, 1000)
+            setLoadingInBtn({state: false, role: 0})
         }
     }
 
@@ -134,32 +183,73 @@ export default function OrderItem(props) {
                 <Modal.Header className="d-flex justify-content-between">
                     <div><p></p></div>
                     <div>
-                        <Modal.Title style={{textAlign: 'center'}}>Reject Order</Modal.Title>
+                        <Modal.Title style={{textAlign: 'center'}}>Reason for rejection</Modal.Title>
                     </div>
                     <div>
                         <button type="button" className="btn-close" onClick={handleCloseRejectionModal}></button>
                     </div>
                 </Modal.Header>
                 <Modal.Body>
-                    <div className="rejectBody d-flex flex-column justify-content-center align-items-center">
-                        <div className="rejectHead my-3">
-                            <h3>Reason for rejection</h3>
-                        </div>
+                    <div className="rejectBody d-flex flex-column mt-3 justify-content-center align-items-center">
                         <div className="reasonBody">
-                            <form action="">
+                            <form action="" onSubmit={handleRejectionFormSubmit}>
                                 <div className="row reasons">
                                     <div className="col-md-2">
-                                        <input class="form-check-input" type="radio"  name="reason1" id="reason1" />
+                                        <input 
+                                            class="form-check-input radioBtn" 
+                                            type="radio" 
+                                            value="reason1" 
+                                            name="reason1" 
+                                            id="reason1" 
+                                            checked={selectedReason === 'reason1'} 
+                                            onChange={handleReasonChange} 
+                                        />
                                     </div>
                                     <div className="col-md-10">
                                         <label htmlFor="">Outlet not accepting order</label>
                                     </div>
                                     <div className="col-md-2">
-                                        <input class="form-check-input" type="radio" name="reason2" id="reason2" />
+                                        <input 
+                                            class="form-check-input radioBtn" 
+                                            type="radio" 
+                                            value="reason2" 
+                                            name="reason2" 
+                                            id="reason2" 
+                                            checked={selectedReason === 'reason2'} 
+                                            onChange={handleReasonChange}
+                                        />
                                     </div>
                                     <div className="col-md-10">
                                         <label htmlFor="">One or more items not available</label>
                                     </div>
+                                    <div className="Checkboxes mt-2">
+                                        {selectedReason === 'reason2' && (
+                                            <div className="row">
+                                                {props.products && props.products.map((product) => {
+                                                    return <>
+                                                        <div className="col-md-2">
+                                                            <input 
+                                                                className="itemCheckbox"
+                                                                type="checkbox" 
+                                                                value={JSON.stringify({item: product.productid, quantity: product.quantity, variant: product.variant})} 
+                                                                onChange={handleCheckboxChange} 
+                                                            />
+                                                        </div>
+                                                        <div className="col-md-8">
+                                                            <label htmlFor="">{product.productName} {product.variant !== 'default' && `(${product.variant})`}</label>
+                                                        </div>
+                                                        <div className="col-md-2">
+                                                            <label htmlFor="">x {product.quantity}</label>
+                                                        </div>
+                                                    </>
+                                                })}
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+                                <div className="d-flex flex-column align-items-center justify-content-center">
+                                    {rejectionError.state}<label className="errorLabel1" htmlFor="">{rejectionError.message} </label>
+                                    <button type="submit" className="btn rejectSubmit mt-2">Submit</button>
                                 </div>
                             </form>
                         </div>
@@ -204,8 +294,8 @@ export default function OrderItem(props) {
                                 </> )
                             }
                             else if(i===3) {
-                                return <button className="btn leftItems" onClick={props.leftItemsHandler} style={{width: "50%"}}>
-                                    +{props.products.length-3} more items...
+                                return <button className="btn leftItems" onClick={props.leftItemsHandler} style={{width: "60%"}}>
+                                    +{props.products.length-3} more item(s)...
                                 </button>
                             }
                             return null
@@ -228,13 +318,13 @@ export default function OrderItem(props) {
                     {props.action === 0 ?
                         <div className="d-flex justify-content-between">
                             <div className="">
-                                <button disabled={loadingInBtn.state && (loadingInBtn.role===0 || loadingInBtn.role===1)} className="btn actionBtns confirmBtn" onClick={() => confirmHandler(true, 0)}>
+                                <button disabled={loadingInBtn.state && (loadingInBtn.role===0 || loadingInBtn.role===1)} className="btn actionBtns confirmBtn" onClick={confirmHandler}>
                                     {loadingInBtn.state && loadingInBtn.role===0 && <span class="spinner-border spinner-border-sm mx-1" role="status" aria-hidden="true"></span>}
                                     Confirm 
                                 </button>
                             </div>
                             <div className="">
-                                <button disabled={loadingInBtn.state && (loadingInBtn.role===0 || loadingInBtn.role===1)} className="btn actionBtns rejectBtn" onClick={() => confirmHandler(false, 1)}>
+                                <button disabled={loadingInBtn.state && (loadingInBtn.role===0 || loadingInBtn.role===1)} className="btn actionBtns rejectBtn" onClick={rejectHandler}>
                                     {loadingInBtn.state && loadingInBtn.role===1 && <span class="spinner-border spinner-border-sm mx-1" role="status" aria-hidden="true"></span>}
                                     Reject 
                                 </button>

@@ -55,3 +55,38 @@
 .reasons {
     padding: 0;
 }
+
+.Checkboxes {
+    padding: 0 15%;
+}
+
+.rejectSubmit {
+    background: #004932;
+    color: white;
+    border-radius: 10px;
+    width: 8rem;
+}
+
+.rejectSubmit:hover {
+    background-color: #036e4c;
+    color: white;
+}
+
+.radioBtn:checked, .radioBtn:active {
+    background-color: #004932;
+    box-shadow: 0 0 0 0;
+    outline: none;
+    border: none;
+}
+
+.itemCheckbox {
+    width: 15px;
+    height: 15px;
+    accent-color: #004932;
+}
+
+.errorLabel1 {
+    color: red;
+    font-size: 15px;
+    margin-top: 10px;
+}

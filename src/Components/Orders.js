@@ -133,7 +133,7 @@ export default function Orders() {
     },[])
     
     return (
-        <div>
+        <div className="orders">
             {/* Complete order modal */}
             <Modal show={isFullOrderModal.state} onHide={handleCloseFullOrderModal}>
                 <Modal.Header className="d-flex justify-content-between">
@@ -161,12 +161,10 @@ export default function Orders() {
                 </Modal.Body>
             </Modal>
 
-
-
             <div className="topRow d-flex justify-content-between">
                 <div className="currentOrderNo d-flex justify-content-between">
                     <p className="mx-2">Last Order delivered: </p> 
-                    <h4 style={{marginTop: "-2px"}}>#{lastOrderDelivered} </h4>
+                    <h4 style={{marginTop: "-2px", color: "#004932"}}>#{lastOrderDelivered} </h4>
                 </div>
                 <div>
                     <img src="https://res.cloudinary.com/dokgv4lff/image/upload/v1688365848/flavr_l4bspc.png" style={{width: "85px", marginTop: "-30px"}} alt="" />
@@ -212,8 +210,12 @@ export default function Orders() {
                                         orderNumber={orderitem.orderNumber} 
                                         createdAt={orderitem.createdAt}
                                         products={orderitem.products}
+                                        totalQuantity={orderitem.totalQuantity}
+                                        totalAmount={orderitem.totalPrice}
                                         action={1}
                                         orderid={orderitem.orderid}
+                                        leftOver={true}
+                                        leftItemsHandler={() => handleOpenFullOrderModal(orderitem.orderNumber, orderitem.createdAt, orderitem.products, 1, orderitem.totalQuantity, orderitem.totalPrice, orderitem.orderid)}
                                     />
                                 </div>
                             }) : <p className="d-flex justify-content-center" style={{fontWeight: "400", marginTop: "40vh"}}>No active orders</p>}
@@ -232,8 +234,12 @@ export default function Orders() {
                                         orderNumber={orderitem.orderNumber} 
                                         createdAt={orderitem.createdAt}
                                         products={orderitem.products}
+                                        totalQuantity={orderitem.totalQuantity}
+                                        totalAmount={orderitem.totalPrice}
                                         action={2}
                                         orderid={orderitem.orderid}
+                                        leftOver={true}
+                                        leftItemsHandler={() => handleOpenFullOrderModal(orderitem.orderNumber, orderitem.createdAt, orderitem.products, 2, orderitem.totalQuantity, orderitem.totalPrice, orderitem.orderid)}
                                     />
                                 </div>
                             }) : <p className="d-flex justify-content-center" style={{fontWeight: "400", marginTop: "40vh"}}>No orders ready for delivery</p>}
