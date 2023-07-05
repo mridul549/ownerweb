@@ -13,7 +13,14 @@
     transition-property: width;
     transition-duration: 2s;
     transition-timing-function: cubic-bezier(0.68, -0.55, 0.27, 1.55);
+}
+
+.div-21 {
+    padding: 2% 5%;
     
+    transition-property: width;
+    transition-duration: 2s;
+    transition-timing-function: cubic-bezier(0.68, -0.55, 0.27, 1.55);
 }
 
 .sidebaropen {

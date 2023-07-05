@@ -1,4 +1,4 @@
-import { React, useContext, useEffect } from "react";
+import { React, useContext } from "react";
 import { Route, Routes } from "react-router-dom";
 import Sidebar from "./Sidebar";
 import Menu from "./Menu";
@@ -7,12 +7,10 @@ import Outlet from "./Outlet";
 import '../css/dashboard.css'
 import EditCategory from "./EditCategory";
 import Outletdetails from "./Outletdetails";
-import Navbar from "./Navbar";
 import SidebarContext from "../context/sidebar/sidebarContext";
 
 export default function Dashboard() {
     const { sidebarOpen } = useContext(SidebarContext)
-
 
     return (
         <div className="container-fluid">
@@ -20,7 +18,7 @@ export default function Dashboard() {
                 <div className="col-lg-2 sidebar">
                     <Sidebar />
                 </div>
-                <div className={`col-lg-10 container-fluid div-2 mt-5 ${sidebarOpen ? 'sidebaropen' : 'sidebarclose'}`}>
+                <div className={`col-lg-10 container-fluid div-2 ${sidebarOpen ? 'sidebaropen' : 'sidebarclose'}`}>
                     <Routes>
                         <Route path="/" element={<Menu />} />
                         <Route path="/menu" element={<Menu />} />

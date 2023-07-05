@@ -41,6 +41,7 @@ export default function SignIn() {
             const userProfileJson = await userProfile.json()
             
             localStorage.setItem('selectedOutlet', '646a5a0a51c3c24655b854e9')
+            localStorage.setItem('selectedOutletName', 'Nescafe NITJ')
             localStorage.setItem('ownerEmail', userProfileJson.owner[0].email)
             localStorage.setItem('ownerName', userProfileJson.owner[0].ownerName)
             localStorage.setItem('ownerProfilePic', userProfileJson.owner[0].ownerProfilePic.url)

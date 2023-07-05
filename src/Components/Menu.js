@@ -14,7 +14,7 @@ export default function Menu() {
     const [loadingCat, setLoadingCat] = useState(false)
     const [loadingPro, setLoadingPro] = useState(false)
     const [selectedCategory, setSelectedCategory] = useState('All');
-    const { categoryDetails, setCategoryDetails } = useContext(CategoryContext)
+    const { setCategoryDetails } = useContext(CategoryContext)
     const navigate = useNavigate()
 
     const handleEditCategory = (id,name,iconUrl,iconId,productArray) => {
@@ -69,7 +69,7 @@ export default function Menu() {
     return (
         <>
         <Navbar/>
-        <div className="container-fluid main-div" style={{ padding: 0, margin: 0 }}>
+        <div className="container-fluid main-div mt-5" style={{ padding: 0, margin: 0 }}>
             <div className="d-flex flex-row justify-content-start align-items-center">
                 <h2 className="categoryHead my-5">Categories </h2>
                 <Link to={'/dashboard/addcategory'}><i className="fa-solid fa-circle-plus fa-2xl plus" style={{color: "#004932"}} ></i></Link>

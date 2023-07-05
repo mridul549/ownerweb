@@ -14,7 +14,7 @@ export default function Sidebar() {
         <>
             <div className={`sidebar shadow ${sidebarOpen ? "open" : ""}`}>
                 <div className="logo-details">
-                    <div className="logo_name mx-4 mt-3"><img src="https://res.cloudinary.com/dokgv4lff/image/upload/v1688365848/flavr_l4bspc.png" style={{width: "70px"}} alt="" /></div>
+                    <div className="logo_name mx-4 mt-4"><img src="https://res.cloudinary.com/dokgv4lff/image/upload/v1688365848/flavr_l4bspc.png" style={{width: "70px"}} alt="" /></div>
                     {/* <div className="logo_name mx-3">FlavR</div> */}
                     <i
                         className={`bx menuBtn mx-2 ${
@@ -27,7 +27,7 @@ export default function Sidebar() {
                 <ul className="nav-list">
                     <li>
                         <Link to="/dashboard/menu">
-                            <i class='bx bx-food-menu' ></i>
+                            <i className='bx bx-food-menu' ></i>
                             <span className="links_name">Menu</span>
                         </Link>
                         <span className="tooltip">Menu</span>
@@ -41,7 +41,7 @@ export default function Sidebar() {
                     </li>
                     <li>
                         <Link to="/dashboard/outlet">
-                            <i class='bx bx-store-alt'></i>
+                            <i className='bx bx-store-alt'></i>
                             <span className="links_name">Outlet</span>
                         </Link>
                         <span className="tooltip">Outlet</span>
