@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import "../css/sidebar.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import SidebarContext from "../context/sidebar/sidebarContext";
 
 export default function Sidebar() {
@@ -9,6 +9,11 @@ export default function Sidebar() {
     const handleMenuBtnClick = () => {
         setSidebarOpen(!sidebarOpen);
     };
+    const navigate = useNavigate()
+    const handleSignOut = () => {
+        localStorage.clear()
+        navigate('/')
+    }
 
     return (
         <>
@@ -54,7 +59,8 @@ export default function Sidebar() {
                                 <div className="job">Owner</div>
                             </div>
                         </div>
-                        <i className="bx bx-log-out" id="log_out"></i>
+                        <button className="btn" onClick={handleSignOut} ><i className="bx bx-log-out" id="log_out"></i></button> 
+                        <span className="tooltip">Outlet</span>
                     </li>
                 </ul>
             </div>

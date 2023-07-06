@@ -260,8 +260,8 @@ export default function OrderItem(props) {
 
             <div className="card container orderCard">
                 <div className="header d-flex mt-3 mx-2 justify-content-between">
-                    <div className="orderNumber">
-                        <h5>Order #{props.orderNumber === 0 ? '-' : props.orderNumber} </h5>
+                    <div className="orderNumber d-flex flex-row justify-content-between">
+                        <h5>Order #<span style={{color: "red"}}>{props.orderNumber === 0 ? '-' : props.orderNumber}</span></h5> 
                     </div>
                     <div className="time">
                         <p>{props.createdAt}</p>
@@ -320,7 +320,7 @@ export default function OrderItem(props) {
                             <div className="">
                                 <button disabled={loadingInBtn.state && (loadingInBtn.role===0 || loadingInBtn.role===1)} className="btn actionBtns confirmBtn" onClick={confirmHandler}>
                                     {loadingInBtn.state && loadingInBtn.role===0 && <span class="spinner-border spinner-border-sm mx-1" role="status" aria-hidden="true"></span>}
-                                    Confirm 
+                                    Confirm
                                 </button>
                             </div>
                             <div className="">

@@ -164,7 +164,7 @@ export default function Orders() {
             <div className="topRow d-flex justify-content-between">
                 <div className="currentOrderNo d-flex justify-content-between">
                     <p className="mx-2">Last Order delivered: </p> 
-                    <h4 style={{marginTop: "-2px", color: "#004932"}}>#{lastOrderDelivered} </h4>
+                    <h4 style={{marginTop: "-2px"}}>#<span style={{color: "red"}}>{lastOrderDelivered}</span> </h4>
                 </div>
                 <div>
                     <img src="https://res.cloudinary.com/dokgv4lff/image/upload/v1688365848/flavr_l4bspc.png" style={{width: "85px", marginTop: "-30px"}} alt="" />
@@ -177,7 +177,7 @@ export default function Orders() {
                 <div className="orderPartition shadow-sm col-md-4 d-flex justify-content-center">
                     <div>
                         <div className="d-flex justify-content-center">
-                            <h3 className="orderHeading">Pending Confimation ({pendinConfOrders.length}) </h3>
+                            <h3 className="orderHeading">Pending Confimation ({pendinConfOrders.length})</h3>
                         </div>
                         <div className="d-flex flex-column justify-content-center">
                             {pendinConfOrders.length!==0 ? pendinConfOrders.map((orderitem) => {
