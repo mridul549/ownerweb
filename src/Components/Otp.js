@@ -4,14 +4,16 @@ import '../css/otp.css'
 import AuthContext from "../context/auth/authContext";
 import { useNavigate } from "react-router-dom";
 import Spinner from "./Spinner";
+import { EventEmitter } from 'events';
 
-const Otp = () => {
+const Otp = (props) => {
     const [otp, setOtp] = useState("");
-    const {email,setAuthenticated} = useContext(AuthContext)
+    const {email,otpFor,setOtpVerified} = useContext(AuthContext)
     const navigate = useNavigate()
     const [counter, setCounter]=useState(120);
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState({error: false, message: ''})
+    const eventEmitter = new EventEmitter();
 
     useEffect(() => {
         const timer = counter>0&&setInterval(() => setCounter(counter-1), 1000);
@@ -33,9 +35,13 @@ const Otp = () => {
         })
         const json = await response.json()
         setLoading(false)
-        if(json.message==="OTP Verified, you can log in now.") {
-            setAuthenticated(true)
-            navigate('/');
+        if(json.message==="OTP Verified, you can log in now.") {    
+            setOtpVerified(true)
+            if(otpFor === 'signup'){
+                navigate('/');
+            } else {
+                props.afterVerify()
+            }
         } else {
             setError({error: true, message: json.message})
         }

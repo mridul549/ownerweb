@@ -8,12 +8,15 @@ export default function Navbar() {
     const [modal, setModal] = useState(false);
     const [greetingMsg, setGreetingMsg] = useState('')
     const { sidebarOpen } = useContext(SidebarContext)
-
-    const toggleModal = () => {
-        setModal(!modal);
-    };
+    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+    const isMobile = windowWidth <= 768;
 
     useEffect(() => {
+        const handleResize = () => {
+            setWindowWidth(window.innerWidth);
+        };
+        window.addEventListener('resize', handleResize);
+
         const currentHour = new Date().getHours();
 
         if (currentHour >= 5 && currentHour < 12) {
@@ -31,11 +34,12 @@ export default function Navbar() {
                 <div className="container-fluid">
                     <div className="greeting">
                         <h5 style={{color: '#027450'}}>{greetingMsg}</h5>
-                        <h3 style={{color: '#004932', fontSize: '25px'}}>{localStorage.getItem('ownerName')} Verma</h3>
+                        <h3 style={{color: '#004932', fontSize: '25px'}}>{localStorage.getItem('ownerName')}</h3>
                     </div>
                     <div className="row">
                         <div className="col-lg-6">   
                             <img src="https://res.cloudinary.com/dokgv4lff/image/upload/v1688365848/flavr_l4bspc.png" style={{width: "100px"}} alt="" />
+                            {isMobile && "hi"}
                         </div>
                     </div>
                     <div>

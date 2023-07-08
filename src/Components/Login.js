@@ -31,7 +31,7 @@ export default function SignIn() {
         if(json.message==="Auth successful"){
             // save token and redirect to dashboard
             localStorage.setItem('token', json.token)
-            const userProfile = await fetch("https://flavr.tech/owner/ownerprofile", {
+            const userProfile = await fetch(`https://flavr.tech/owner/ownerprofile?ownermail=${credentials.email}`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",

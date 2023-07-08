@@ -181,7 +181,7 @@ export default function Orders() {
                         </div>
                         <div className="d-flex flex-column justify-content-center">
                             {pendinConfOrders.length!==0 ? pendinConfOrders.map((orderitem) => {
-                                return <div className="orderitem my-2">
+                                return <div className="orderitem my-2 d-flex flex-column justify-content-center">
                                     <OrderItem 
                                         orderNumber={orderitem.orderNumber} 
                                         createdAt={orderitem.createdAt}
@@ -203,7 +203,7 @@ export default function Orders() {
                         <div className="d-flex justify-content-center">
                             <h3 className="orderHeading">Active Orders ({activeOrders.length}) </h3>
                         </div>
-                        <div className="d-flex flex-column justify-content-center">
+                        <div className="d-flex flex-column justify-content-center align-items-center">
                             {activeOrders.length!==0 ? activeOrders.map((orderitem) => {
                                 return <div className="orderitem my-2">
                                     <OrderItem 

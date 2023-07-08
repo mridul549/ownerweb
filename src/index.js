@@ -19,6 +19,8 @@ import { ToastContainer } from 'react-toastify';
 import SidebarState from './context/sidebar/sidebarState'
 import OrderItem from './Components/OrderItem';
 import OrderState from './context/orders/orderState';
+import Profile from './Components/Profile';
+import Analytics from './Components/Analytics';
 
 const router = createBrowserRouter([
     {
@@ -72,6 +74,14 @@ const router = createBrowserRouter([
             {
                 path: "addcategory",
                 element: <EditCategory />
+            },
+            {
+                path: "profile",
+                element: <Profile />
+            },
+            {
+                path: "analytics",
+                element: <Analytics />
             },
         ]
     }

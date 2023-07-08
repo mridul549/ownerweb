@@ -8,6 +8,8 @@ import '../css/dashboard.css'
 import EditCategory from "./EditCategory";
 import Outletdetails from "./Outletdetails";
 import SidebarContext from "../context/sidebar/sidebarContext";
+import Profile from "./Profile";
+import Analytics from "./Analytics";
 
 export default function Dashboard() {
     const { sidebarOpen } = useContext(SidebarContext)
@@ -27,6 +29,8 @@ export default function Dashboard() {
                         <Route path="/editcategory" element={<EditCategory />} />
                         <Route path="/outletdetails" element={<Outletdetails/>}/>
                         <Route path="/addcategory" element={<EditCategory />} />
+                        <Route path="/profile" element={<Profile />} />
+                        <Route path="/analytics" element={<Analytics />} />
                     </Routes>
                 </div>
             </div>

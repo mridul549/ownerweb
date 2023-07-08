@@ -257,8 +257,7 @@ export default function OrderItem(props) {
                 </Modal.Body>
             </Modal>
 
-
-            <div className="card container orderCard">
+            <div className="card container orderCard" style={{marginLeft: 'auto', marginRight: 'auto'}}>
                 <div className="header d-flex mt-3 mx-2 justify-content-between">
                     <div className="orderNumber d-flex flex-row justify-content-between">
                         <h5>Order #<span style={{color: "red"}}>{props.orderNumber === 0 ? '-' : props.orderNumber}</span></h5> 
@@ -269,13 +268,13 @@ export default function OrderItem(props) {
                 </div>
                 <div className="itemsHeading my-1 d-flex justify-content-between">
                     <div>
-                        <p style={{color: "#004932"}}>₹ {props.totalAmount} </p>
+                        <p>₹ <span style={{color: '#004932'}}>{props.totalAmount}</span> </p>
                     </div>
                     <div>
                         <h5>Items</h5> 
                     </div>
                     <div>
-                        <p style={{color: "#004932"}}>x {props.totalQuantity} </p>
+                        <p>x <span style={{color: "#004932"}}>{props.totalQuantity}</span> </p>
                     </div>
                 </div>
                 <div className="orderItems">
@@ -289,12 +288,12 @@ export default function OrderItem(props) {
                                         <h5>{product.productName} {product.variant !== 'default' && `(${product.variant})`}</h5>
                                     </div>
                                     <div className="col-lg-2">
-                                        <h5>x {product.quantity} </h5>
+                                        <h5 style={{textAlign: 'center'}}>x {product.quantity} </h5>
                                     </div>
                                 </> )
                             }
                             else if(i===3) {
-                                return <button className="btn leftItems" onClick={props.leftItemsHandler} style={{width: "60%"}}>
+                                return <button className="btn leftItems" onClick={props.leftItemsHandler} style={{width: "60%", textAlign: 'start'}}>
                                     +{props.products.length-3} more item(s)...
                                 </button>
                             }
@@ -308,7 +307,7 @@ export default function OrderItem(props) {
                                     <h5>{product.productName} {product.variant !== 'default' && `(${product.variant})`}</h5>
                                 </div>
                                 <div className="col-lg-2">
-                                    <h5>x {product.quantity} </h5>
+                                    <h5 style={{textAlign: 'center'}}>x {product.quantity} </h5>
                                 </div>
                             </> )
                         })}

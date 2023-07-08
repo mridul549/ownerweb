@@ -6,10 +6,14 @@ import SidebarContext from "../context/sidebar/sidebarContext";
 export default function Sidebar() {
     const { sidebarOpen, setSidebarOpen } = useContext(SidebarContext)
 
+    const navigate = useNavigate()
+    const handleOwnerProfile = () => {
+        navigate('/dashboard/profile')
+    }
+
     const handleMenuBtnClick = () => {
         setSidebarOpen(!sidebarOpen);
     };
-    const navigate = useNavigate()
     const handleSignOut = () => {
         localStorage.clear()
         navigate('/')
@@ -45,6 +49,13 @@ export default function Sidebar() {
                         <span className="tooltip">Orders</span>
                     </li>
                     <li>
+                        <Link to="/dashboard/analytics">
+                            <i class='bx bx-line-chart'></i>
+                            <span className="links_name">Analytics</span>
+                        </Link>
+                        <span className="tooltip">Analytics</span>
+                    </li>
+                    <li>
                         <Link to="/dashboard/outlet">
                             <i className='bx bx-store-alt'></i>
                             <span className="links_name">Outlet</span>
@@ -53,7 +64,9 @@ export default function Sidebar() {
                     </li>
                     <li className="profile">
                         <div className="profile-details">
-                            <img src={localStorage.getItem('ownerProfilePic')} alt="profileImg" />
+                            <div onClick={handleOwnerProfile} style={{cursor: "pointer"}}>
+                                <img src={localStorage.getItem('ownerProfilePic')!=="null" ? localStorage.getItem('ownerProfilePic') : "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"} alt="profileImg" />
+                            </div>
                             <div className="name_job">
                                 <div className="name">{localStorage.getItem('ownerName')} </div>
                                 <div className="job">Owner</div>
