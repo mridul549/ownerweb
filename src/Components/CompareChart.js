@@ -44,11 +44,13 @@ export default function Analytics() {
                 label: 'Comparison',
                 data: chart2?.data?.result?.map((set) => set.totalPrice ) ,
                 backgroundColor: [
-                    '#FF7878',
-                    '#FFD966',
-                    '#B6E2A1',
-                    '#AEE2FF',
-                    '#ECC5FB'
+                    'rgb(255, 99, 132)',
+                    'rgb(54, 162, 235)',
+                    'rgb(255, 205, 86)',
+                    'rgb(255, 159, 64)',
+                    'rgb(75, 192, 192)',
+                    'rgb(153, 102, 255)',
+                    'rgb(201, 203, 207)'
                 ],
                 borderColor: '#fff',
                 fill: true

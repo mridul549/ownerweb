@@ -18,7 +18,7 @@ export default function Analytics() {
                     <CompareChart />
                 </div>
             </div>
-            <div className="mt-3 shadow-sm" style={{width: "100%", borderRadius: "10px"}}>
+            <div className="mt-3 shadow-sm" style={{width: "98.5%", borderRadius: "10px"}}>
                 <ProductChart />
             </div>
         </div>
