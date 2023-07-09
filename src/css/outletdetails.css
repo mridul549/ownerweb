@@ -1,14 +1,48 @@
-.first-div
-{
-    text-align: center;
+.outermost-div {
+    padding: 0 6%;
 }
 
-.form-heading
-{
+.first-div {
+    text-align: center;
+}
+.form-heading {
     color: #004932;
 }
 
-.main-label
-{
+.main-label {
     font-weight: 700;
+}
+
+.outlet-input {
+    border: none;
+    border-radius: 10px;
+    padding-left: 15px;
+    transition: 0.1s;
+    -webkit-transition: 0.1s;
+    outline: none;
+}
+
+.outlet-input:focus {
+    border: 1.5px solid #00865b;
+}
+
+.submit-div {
+    padding: 2% 0;
+    text-align: center;
+}
+
+.submit-btn {
+    background-color: #004932;
+    color: white;
+}
+
+.required::after {
+    content: " *";
+    color: red;
+}
+
+::placeholder {
+    padding-left: 10px;
+    font-size: small;
+    color: rgb(197, 195, 195);
 }
