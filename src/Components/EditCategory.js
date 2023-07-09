@@ -404,8 +404,8 @@ export default function EditCategory(props) {
                                     return <div className="col-lg-3 iconRow col-md-4 col-sm-4 col-6" key={categoryIcon._id}>
                                         <Category 
                                             set={iconSelected.set && iconSelected._id === categoryIcon._id} 
-                                            iconImage={categoryIcon.icon.url} 
-                                            onClick={() => handleCategoryClick(categoryIcon.icon.url, categoryIcon._id)}
+                                            iconImage={categoryIcon.icon?.url} 
+                                            onClick={() => handleCategoryClick(categoryIcon.icon?.url, categoryIcon._id)}
                                         />
                                     </div>
                                 })}
@@ -617,7 +617,7 @@ export default function EditCategory(props) {
                             <button type="button" className={categoryDetails.iconId==='' ? (iconSelected.value ? "btn categoryIconSelectedBtn" : "selectIcon") : "btn categoryIconSelectedBtn"} data-bs-toggle="modal" data-bs-target="#iconListModal">
                                 {categoryDetails.iconId==='' ? 
                                     (iconSelected.value ? 
-                                        <Category set={false} disabled={true} iconImage={iconSelected.url} /> :
+                                        <Category set={false} disabled={true} iconImage={iconSelected?.url} /> :
                                         <>
                                             <i className="fa-solid fa-circle-plus mx-1 fa-2xl" style={{color: "#ffffff", marginTop: "30px"}}></i>
                                             <p style={{marginTop: "10px", color: "#fff"}}>Add Icon</p>
@@ -656,7 +656,7 @@ export default function EditCategory(props) {
                         productArray.map((product) => {
                             return <div className="col-lg-6" key={product._id}>
                                 <MenuItem 
-                                    productImage={product.productImage.url} 
+                                    productImage={product.productImage?.url} 
                                     productName={product.productName} 
                                     productPrice={product.price} 
                                     veg={product.veg} 
@@ -665,7 +665,7 @@ export default function EditCategory(props) {
                                     productEdit={true} 
                                     productid={product._id}
                                     instock={product.inStock}
-                                    onClick={(action) => handleUpDel(action, product._id, product.productName, product.description, product.price, product.veg, product.variants, product.productImage.url)}
+                                    onClick={(action) => handleUpDel(action, product._id, product.productName, product.description, product.price, product.veg, product.variants, product.productImage?.url)}
                                 />
                             </div>
                         })

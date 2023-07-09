@@ -14,7 +14,7 @@ return (
                 <div className="col-md-8">
                     <div className="card-body">
                         <h5 className="card-title">{props.head}</h5>
-                        <p className="card-text" style={{color: "grey", fontWeight: "500",textAlign: 'justify', fontSize: "14px"}}>{props.address.addressLine1}, {props.address.city}, {props.address.state}-{props.address.zipCode}</p>
+                        <p className="card-text" style={{color: "grey", fontWeight: "500",textAlign: 'justify', fontSize: "14px"}}>{props.address?.addressLine1}, {props.address?.city}, {props.address?.state}-{props.address?.zipCode}</p>
                     </div>
                 </div>
             </div>

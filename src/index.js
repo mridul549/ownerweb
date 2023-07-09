@@ -21,6 +21,7 @@ import OrderItem from './Components/OrderItem';
 import OrderState from './context/orders/orderState';
 import Profile from './Components/Profile';
 import Analytics from './Components/Analytics';
+import ChartState from './context/chart/chartState';
 
 const router = createBrowserRouter([
     {
@@ -90,14 +91,16 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById("root")).render(
     <React.StrictMode>
         <ToastContainer closeOnClick draggable pauseOnHover/>
-        <OrderState>
-            <SidebarState>
-                <CategoryState>
-                    <AuthState>
-                        <RouterProvider router={router} />
-                    </AuthState>
-                </CategoryState>
-            </SidebarState>
-        </OrderState>
+        <ChartState>
+            <OrderState>
+                <SidebarState>
+                    <CategoryState>
+                        <AuthState>
+                            <RouterProvider router={router} />
+                        </AuthState>
+                    </CategoryState>
+                </SidebarState>
+            </OrderState>
+        </ChartState>
     </React.StrictMode>
 );

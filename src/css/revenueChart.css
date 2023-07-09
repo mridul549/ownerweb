@@ -1,0 +1,28 @@
+.menuBtnToggle {
+    background-color: white;
+    color: black;
+    border: 1px solid rgb(228, 227, 227);
+}
+
+.menuBtnToggle:hover, .menuBtnToggle:focus, .menuBtnToggle:active{
+    background-color: white;
+    color: black;
+    border: 1px solid rgb(199, 197, 197);
+    box-shadow: 0 0 0 0;
+}
+
+.menuItem:active, .menuItem:focus {
+    background-color: #004932;
+}
+
+#dropdown-basic:active, #dropdown-basic:focus  {
+    background-color: inherit;
+    color: black;
+    box-shadow: 0 0 0 0;
+    border: 1px solid rgb(228, 227, 227);
+}
+
+.doughnut {
+    width: 50%;
+    height: 50%;
+}

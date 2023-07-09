@@ -85,7 +85,7 @@ export default function Menu() {
                     {categoryArray.map((category) => {
                         const isSelected = selectedCategory === category.category;
                         return <div className="categoryButton" key={category.count.icon._id}>
-                            <Category iconImage={category.count.icon.icon.url} head={category.category} onClick={() => handleCategoryClick(category.category)} set={isSelected}/>
+                            <Category iconImage={category.count?.icon?.icon?.url} head={category.category} onClick={() => handleCategoryClick(category.category)} set={isSelected}/>
                         </div>
                     })}
                 </div>
@@ -108,7 +108,7 @@ export default function Menu() {
                             (productWithCat.products.map((product) => {
                                 return <div className="col-lg-6" key={product._id}>
                                     <MenuItem 
-                                        productImage={product.productImage.url} 
+                                        productImage={product.productImage?.url} 
                                         productName={product.productName} 
                                         productPrice={product.price} 
                                         veg={product.veg} 
