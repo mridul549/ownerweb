@@ -1,8 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
+import { useNavigate } from "react-router-dom";
+import Spinner from "./Spinner";
 import "../css/outletdetails.css";
 
 export default function Outletdetails() {
     const [days, setdays] = useState([]);
+    const [image, setImage] = useState('')
+    const inputRef = useRef(null)
+    const [loading, setLoading] = useState(false)
+    const navigate=useNavigate()
+
+    const handleImageClick = () => {
+        inputRef.current.click()
+    }
 
     const [formstate, setformstate] = useState({
         outletname: "",
@@ -25,15 +35,20 @@ export default function Outletdetails() {
         satclose: "",
         sunopen: "",
         sunclose: "",
+        outletImage: null
     });
 
-    const onsubmit = () => {
+
+    const onsubmit = async(e) => {
+
+        e.preventDefault();
+        setLoading(true);
         const address = {
-            addressLine1: formstate.addressline1,
-            city: formstate.city,
-            state: formstate.state,
-            zipCode: formstate.pincode,
-            country: formstate.country,
+            addressLine1: formstate.addressline1[0],
+            city: formstate.city[0],
+            state: formstate.state[0],
+            zipCode: formstate.pincode[0],
+            country: formstate.country[0],
         };
 
         let daysopen = {
@@ -50,15 +65,70 @@ export default function Outletdetails() {
         for (let i = 0; i < days.length; i++) {
             daysopen.daysOpen[days[i].day] = true;
         }
-        console.log(daysopen);
+        
+        let timings={
+            monday:{
+                open:formstate.monopen.length===1?formstate.monopen[0]:"",
+                close:formstate.monclose.length===1?formstate.monclose[0]:""
+            },
+            tuesday:{
+                open:formstate.tueopen.length===1?formstate.tueopen[0]:"",
+                close:formstate.tueclose.length===1?formstate.tueclose[0]:""
+            },
+            wednesday:{
+                open:formstate.wedopen.length===1?formstate.wedopen[0]:"",
+                close:formstate.wedclose.length===1?formstate.wedclose[0]:""
+            },
+            thursday:{
+                open:formstate.thuropen.length===1?formstate.thuropen[0]:"",
+                close:formstate.thurclose.length===1?formstate.thurclose[0]:""
+            },
+            friday:{
+                open:formstate.friopen.length===1?formstate.friopen[0]:"",
+                close:formstate.friclose.length===1?formstate.friclose[0]:""
+            },
+            saturday:{
+                open:formstate.satopen.length===1?formstate.satopen[0]:"",
+                close:formstate.satclose.length===1?formstate.satclose[0]:""
+            },
+            sunday:{
+                open:formstate.sunopen.length===1?formstate.sunopen[0]:"",
+                close:formstate.sunclose.length===1?formstate.sunclose[0]:""
+            }
+        }
+        const outletFormData = new FormData()
+        outletFormData.append('outletName', formstate.outletname)
+        outletFormData.append('address',JSON.stringify(address))
+        outletFormData.append('timings',JSON.stringify(timings))
+        outletFormData.append('daysOpen',JSON.stringify(daysopen))
+        if(formstate.outletImage){
+            outletFormData.append('outletImage',formstate.outletImage)
+        } 
+        const response = await fetch(`https://flavr.tech/outlet/addOutlet`, {
+                method: "POST", 
+                headers: {
+                    "Authorization": "Bearer " + localStorage.getItem('token')
+                },
+                body: outletFormData
+            })
+            const json = await response.json()
+            setLoading(false);
+        if(json.message==="Outlet added successfully")
+        {
+            navigate('/dashboard/menu')
+        }
+
     };
 
     const onchange = (e) => {
-        if (e.target.name === "mondayopen" || e.target.name === "mondayclose") {
-            console.log(e.target.value);
-            console.log(typeof e.target.value);
+        if (e.target.name === "outletImageInput") {
+            setImage(e.target.files[0])
+            setformstate({ ...formstate, outletImage: e.target.files[0] });
         }
+        else
+        {
         setformstate({ ...formstate, [e.target.name]: [e.target.value] });
+        }
     };
 
     const checkboxOnChange = (event) => {
@@ -85,10 +155,10 @@ export default function Outletdetails() {
                 <div className="first-div">
                     <h1 className="form-heading">Add Outlet</h1>
                 </div>
-                <form>
+                <form onSubmit={onsubmit}> 
                     <div className="mb-3">
                         <label
-                            for="outletName"
+                            htmlFor="outletName"
                             className="form-label main-label required"
                         >
                             Outlet Name
@@ -103,12 +173,12 @@ export default function Outletdetails() {
                         />
                     </div>
                     <div className="mb-3">
-                        <label for="address" className="form-label main-label">
+                        <label htmlFor="address" className="form-label main-label">
                             Address
                         </label>
                         <div className="mb-3 row">
                             <label
-                                for="addressline1"
+                                htmlFor="addressline1"
                                 className="col-sm-2 col-form-label required"
                             >
                                 Address Line 1
@@ -126,7 +196,7 @@ export default function Outletdetails() {
                         </div>
                         <div className="mb-3 row">
                             <label
-                                for="City"
+                                htmlFor="City"
                                 className="col-sm-2 col-form-label required"
                             >
                                 City
@@ -144,7 +214,7 @@ export default function Outletdetails() {
                         </div>
                         <div className="mb-3 row">
                             <label
-                                for="Pincode"
+                                htmlFor="Pincode"
                                 className="col-sm-2 col-form-label required"
                             >
                                 Pincode
@@ -162,7 +232,7 @@ export default function Outletdetails() {
                         </div>
                         <div className="mb-3 row">
                             <label
-                                for="state"
+                                htmlFor="state"
                                 className="col-sm-2 col-form-label required"
                             >
                                 State
@@ -180,7 +250,7 @@ export default function Outletdetails() {
                         </div>
                         <div className="mb-3 row">
                             <label
-                                for="country"
+                                htmlFor="country"
                                 className="col-sm-2 col-form-label required"
                             >
                                 Country
@@ -198,12 +268,12 @@ export default function Outletdetails() {
                         </div>
                     </div>
                     <div className="mb-3">
-                        <label for="address" className="form-label main-label">
+                        <label htmlFor="address" className="form-label main-label">
                             Timings
                         </label>
                         <div className="mb-3 row">
                             <label
-                                for="Monday"
+                                htmlFor="Monday"
                                 className="col-sm-2 col-form-label"
                             >
                                 Monday
@@ -231,7 +301,7 @@ export default function Outletdetails() {
                         </div>
                         <div className="mb-3 row">
                             <label
-                                for="Tuesday"
+                                htmlFor="Tuesday"
                                 className="col-sm-2 col-form-label"
                             >
                                 Tuesday
@@ -259,7 +329,7 @@ export default function Outletdetails() {
                         </div>
                         <div className="mb-3 row">
                             <label
-                                for="Wednesday"
+                                htmlFor="Wednesday"
                                 className="col-sm-2 col-form-label"
                             >
                                 Wednesday
@@ -287,7 +357,7 @@ export default function Outletdetails() {
                         </div>
                         <div className="mb-3 row">
                             <label
-                                for="Thursday"
+                                htmlFor="Thursday"
                                 className="col-sm-2 col-form-label"
                             >
                                 Thursday
@@ -315,7 +385,7 @@ export default function Outletdetails() {
                         </div>
                         <div className="mb-3 row">
                             <label
-                                for="Friday"
+                                htmlFor="Friday"
                                 className="col-sm-2 col-form-label"
                             >
                                 Friday
@@ -343,7 +413,7 @@ export default function Outletdetails() {
                         </div>
                         <div className="mb-3 row">
                             <label
-                                for="Saturday"
+                                htmlFor="Saturday"
                                 className="col-sm-2 col-form-label"
                             >
                                 Saturday
@@ -371,7 +441,7 @@ export default function Outletdetails() {
                         </div>
                         <div className="mb-3 row">
                             <label
-                                for="Sunday"
+                                htmlFor="Sunday"
                                 className="col-sm-2 col-form-label"
                             >
                                 Sunday
@@ -401,14 +471,14 @@ export default function Outletdetails() {
 
                     <div className="mb-3">
                         <label
-                            for="outletName"
+                            htmlFor="outletName"
                             className="form-label main-label"
                         >
                             Days Open
                         </label>
-                        <div class="form-check">
+                        <div className="form-check">
                             <input
-                                class="form-check-input "
+                                className="form-check-input "
                                 onChange={checkboxOnChange}
                                 name="monday"
                                 value={JSON.stringify({ day: "monday" })}
@@ -416,15 +486,15 @@ export default function Outletdetails() {
                                 id="flexCheckDefault"
                             />
                             <label
-                                class="form-check-label"
-                                for="flexCheckDefault"
+                                className="form-check-label"
+                                htmlFor="flexCheckDefault"
                             >
                                 Monday
                             </label>
                         </div>
-                        <div class="form-check">
+                        <div className="form-check">
                             <input
-                                class="form-check-input "
+                                className="form-check-input "
                                 onChange={checkboxOnChange}
                                 name="tuesday"
                                 value={JSON.stringify({ day: "tuesday" })}
@@ -432,15 +502,15 @@ export default function Outletdetails() {
                                 id="flexCheckDefault"
                             />
                             <label
-                                class="form-check-label"
-                                for="flexCheckDefault"
+                                className="form-check-label"
+                                htmlFor="flexCheckDefault"
                             >
                                 Tuesday
                             </label>
                         </div>
-                        <div class="form-check">
+                        <div className="form-check">
                             <input
-                                class="form-check-input"
+                                className="form-check-input"
                                 onChange={checkboxOnChange}
                                 name="wednesday"
                                 value={JSON.stringify({ day: "wednesday" })}
@@ -448,15 +518,15 @@ export default function Outletdetails() {
                                 id="flexCheckDefault"
                             />
                             <label
-                                class="form-check-label"
-                                for="flexCheckDefault"
+                                className="form-check-label"
+                                htmlFor="flexCheckDefault"
                             >
                                 Wednesday
                             </label>
                         </div>
-                        <div class="form-check">
+                        <div className="form-check">
                             <input
-                                class="form-check-input"
+                                className="form-check-input"
                                 onChange={checkboxOnChange}
                                 name="thursday"
                                 value={JSON.stringify({ day: "thursday" })}
@@ -464,15 +534,15 @@ export default function Outletdetails() {
                                 id="flexCheckDefault"
                             />
                             <label
-                                class="form-check-label"
-                                for="flexCheckDefault"
+                                className="form-check-label"
+                                htmlFor="flexCheckDefault"
                             >
                                 Thursday
                             </label>
                         </div>
-                        <div class="form-check">
+                        <div className="form-check">
                             <input
-                                class="form-check-input"
+                                className="form-check-input"
                                 onChange={checkboxOnChange}
                                 name="friday"
                                 value={JSON.stringify({ day: "friday" })}
@@ -480,15 +550,15 @@ export default function Outletdetails() {
                                 id="flexCheckDefault"
                             />
                             <label
-                                class="form-check-label"
-                                for="flexCheckDefault"
+                                className="form-check-label"
+                                htmlFor="flexCheckDefault"
                             >
                                 Friday
                             </label>
                         </div>
-                        <div class="form-check">
+                        <div className="form-check">
                             <input
-                                class="form-check-input"
+                                className="form-check-input"
                                 onChange={checkboxOnChange}
                                 name="saturday"
                                 value={JSON.stringify({ day: "saturday" })}
@@ -496,15 +566,15 @@ export default function Outletdetails() {
                                 id="flexCheckDefault"
                             />
                             <label
-                                class="form-check-label"
-                                for="flexCheckDefault"
+                                className="form-check-label"
+                                htmlFor="flexCheckDefault"
                             >
                                 Saturday
                             </label>
                         </div>
-                        <div class="form-check">
+                        <div className="form-check">
                             <input
-                                class="form-check-input"
+                                className="form-check-input"
                                 onChange={checkboxOnChange}
                                 name="sunday"
                                 value={JSON.stringify({ day: "sunday" })}
@@ -512,8 +582,8 @@ export default function Outletdetails() {
                                 id="flexCheckDefault"
                             />
                             <label
-                                class="form-check-label"
-                                for="flexCheckDefault"
+                                className="form-check-label"
+                                htmlFor="flexCheckDefault"
                             >
                                 Sunday
                             </label>
@@ -521,22 +591,22 @@ export default function Outletdetails() {
                     </div>
 
                     <div className="mb-3">
-                        <label
-                            for="outletName"
-                            className="form-label main-label"
-                        >
-                            Outlet Image
-                        </label>
-                        <input
-                            className="form-control shadow-sm outlet-input"
-                            type="file"
-                            id="formFile"
-                        ></input>
+                        <div className="productImage d-flex flex-column align-items-center justify-content-center" onClick={handleImageClick}>
+                            <label htmlFor="outletImageInput">{image ? image.name : "Choose an image"} </label>
+                            {image ? 
+                                (typeof image === 'string' ? 
+                                    <img className="mt-3" style={{width: "200px", height: "200px",borderRadius: "50%"}} src={image} alt="" /> : 
+                                    <img className="mt-3" style={{width: "200px", height: "200px",borderRadius: "50%"}} src={URL.createObjectURL(image)} alt="" />
+                                ) :
+                                <img className="mt-3" style={{width: "200px", height: "200px"}} src="https://cdn-icons-png.flaticon.com/512/679/679845.png" alt="" />
+                            }
+                            <input type="file" name="outletImageInput" ref={inputRef} onChange={onchange} className="productPicInput d-flex justify-content-center"/>
+                        </div>
                     </div>
                     <div className="submit-div">
+                    {loading && <Spinner />}
                         <button
                             type="submit"
-                            onClick={onsubmit}
                             className="btn submit-btn"
                         >
                             Submit

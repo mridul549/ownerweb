@@ -48,7 +48,7 @@ export default function Navbar() {
                         </button>
                         <div className="collapse navbar-collapse d-flex justify-content-end" id="navbarSupportedContent">
                             <button type="button" className="btn outlet-btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                                Nescafe NITJ <i className="fa-solid fa-caret-down mx-1"></i>
+                                {localStorage.getItem('selectedOutletName').length===0?'No outlet selected':localStorage.getItem('selectedOutletName')} <i className="fa-solid fa-caret-down mx-1"></i>
                             </button>
                         </div>
                     </div>

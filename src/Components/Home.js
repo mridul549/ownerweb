@@ -7,6 +7,7 @@ export default function Home() {
     useEffect(() => {
         localStorage.setItem('token', '')
         localStorage.setItem('selectedOutlet', '')
+        localStorage.setItem('selectedOutletName', '')
         localStorage.setItem('ownerEmail', '')
         localStorage.setItem('ownerName', '')
         localStorage.setItem('ownerProfilePic', '')

@@ -63,7 +63,10 @@ export default function Menu() {
             setLoadingPro(false);
             setProductArray(json1.categoryArray)
         }
-        fetchData()
+        if(localStorage.getItem('selectedOutlet')!==null&&localStorage.getItem('selectedOutlet')!==undefined&&localStorage.getItem('selectedOutlet').length!==0)
+        {
+            fetchData()
+        }
     },[])
 
     return (
