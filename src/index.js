@@ -11,7 +11,6 @@ import CategoryState from './context/category/categoryState';
 import Dashboard from './Components/Dashboard';
 import Menu from './Components/Menu'
 import Orders from './Components/Orders'
-import Outlet from './Components/Outlet'
 import Category from './Components/Category';
 import EditCategory from './Components/EditCategory';
 import Outletdetails from './Components/Outletdetails';
@@ -22,6 +21,7 @@ import OrderState from './context/orders/orderState';
 import Profile from './Components/Profile';
 import Analytics from './Components/Analytics';
 import ChartState from './context/chart/chartState';
+import OutletState from './context/outlet/outletState';
 
 const router = createBrowserRouter([
     {
@@ -61,8 +61,8 @@ const router = createBrowserRouter([
                 element:<Orders/>
             },
             {
-                path:"outlet",
-                element:<Outlet/>
+                path:"outlet/edit",
+                element:<Outletdetails/>
             },
             {
                 path: "editcategory",
@@ -89,18 +89,20 @@ const router = createBrowserRouter([
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-    <React.StrictMode>
-        <ToastContainer closeOnClick draggable pauseOnHover/>
-        <ChartState>
-            <OrderState>
-                <SidebarState>
-                    <CategoryState>
-                        <AuthState>
-                            <RouterProvider router={router} />
-                        </AuthState>
-                    </CategoryState>
-                </SidebarState>
-            </OrderState>
-        </ChartState>
-    </React.StrictMode>
+  <React.StrictMode>
+    <ToastContainer closeOnClick draggable pauseOnHover />
+    <ChartState>
+      <OutletState>
+        <OrderState>
+          <SidebarState>
+            <CategoryState>
+              <AuthState>
+                <RouterProvider router={router} />
+              </AuthState>
+            </CategoryState>
+          </SidebarState>
+        </OrderState>
+      </OutletState>
+    </ChartState>
+  </React.StrictMode>
 );

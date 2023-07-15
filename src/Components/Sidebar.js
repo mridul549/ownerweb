@@ -56,7 +56,7 @@ export default function Sidebar() {
                         <span className="tooltip">Analytics</span>
                     </li>
                     <li>
-                        <Link to="/dashboard/outlet">
+                        <Link to="/dashboard/outlet/edit">
                             <i className='bx bx-store-alt'></i>
                             <span className="links_name">Outlet</span>
                         </Link>

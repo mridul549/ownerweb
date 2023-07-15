@@ -1,56 +1,46 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Spinner from "./Spinner";
 import "../css/outletdetails.css";
+import OutletContext from "../context/outlet/outletContext";
+import { useLocation } from "react-router-dom";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Outletdetails() {
     const [days, setdays] = useState([]);
-    const [image, setImage] = useState('')
-    const inputRef = useRef(null)
-    const [loading, setLoading] = useState(false)
-    const navigate=useNavigate()
+    const [image, setImage] = useState("");
+    const inputRef = useRef(null);
+    const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
+    const location = useLocation();
+    const [checkBoxState, setCheckBoxState] = useState({
+        monday: false,
+        tuesday: false,
+        wednesday: false,
+        thursday: false,
+        friday: false,
+        saturday: false,
+        sunday: false,
+    });
+    const { formstate, setformstate } = useContext(OutletContext);
+    const [title, setTitle] = useState("");
 
     const handleImageClick = () => {
-        inputRef.current.click()
-    }
+        inputRef.current.click();
+    };
 
-    const [formstate, setformstate] = useState({
-        outletname: "",
-        addressline1: "",
-        city: "",
-        pincode: 0,
-        state: "",
-        country: "",
-        monopen: "",
-        monclose: "",
-        tueopen: "",
-        tueclose: "",
-        wedopen: "",
-        wedclose: "",
-        thuropen: "",
-        thurclose: "",
-        friopen: "",
-        friclose: "",
-        satopen: "",
-        satclose: "",
-        sunopen: "",
-        sunclose: "",
-        outletImage: null
-    });
-
-
-    const onsubmit = async(e) => {
-
+    const onsubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
         const address = {
-            addressLine1: formstate.addressline1[0],
-            city: formstate.city[0],
-            state: formstate.state[0],
-            zipCode: formstate.pincode[0],
-            country: formstate.country[0],
+            addressLine1: formstate.addressline1,
+            city: formstate.city,
+            state: formstate.state,
+            zipCode: formstate.pincode,
+            country: formstate.country,
         };
-
+        console.log(address);
         let daysopen = {
             daysOpen: {
                 monday: false,
@@ -65,75 +55,166 @@ export default function Outletdetails() {
         for (let i = 0; i < days.length; i++) {
             daysopen.daysOpen[days[i].day] = true;
         }
-        
-        let timings={
-            monday:{
-                open:formstate.monopen.length===1?formstate.monopen[0]:"",
-                close:formstate.monclose.length===1?formstate.monclose[0]:""
+
+        let timings = {
+            monday: {
+                open:
+                    formstate.monopen.length === 1 ? formstate.monopen[0] : "",
+                close:
+                    formstate.monclose.length === 1
+                        ? formstate.monclose[0]
+                        : "",
             },
-            tuesday:{
-                open:formstate.tueopen.length===1?formstate.tueopen[0]:"",
-                close:formstate.tueclose.length===1?formstate.tueclose[0]:""
+            tuesday: {
+                open:
+                    formstate.tueopen.length === 1 ? formstate.tueopen[0] : "",
+                close:
+                    formstate.tueclose.length === 1
+                        ? formstate.tueclose[0]
+                        : "",
             },
-            wednesday:{
-                open:formstate.wedopen.length===1?formstate.wedopen[0]:"",
-                close:formstate.wedclose.length===1?formstate.wedclose[0]:""
+            wednesday: {
+                open:
+                    formstate.wedopen.length === 1 ? formstate.wedopen[0] : "",
+                close:
+                    formstate.wedclose.length === 1
+                        ? formstate.wedclose[0]
+                        : "",
             },
-            thursday:{
-                open:formstate.thuropen.length===1?formstate.thuropen[0]:"",
-                close:formstate.thurclose.length===1?formstate.thurclose[0]:""
+            thursday: {
+                open:
+                    formstate.thuropen.length === 1
+                        ? formstate.thuropen[0]
+                        : "",
+                close:
+                    formstate.thurclose.length === 1
+                        ? formstate.thurclose[0]
+                        : "",
             },
-            friday:{
-                open:formstate.friopen.length===1?formstate.friopen[0]:"",
-                close:formstate.friclose.length===1?formstate.friclose[0]:""
+            friday: {
+                open:
+                    formstate.friopen.length === 1 ? formstate.friopen[0] : "",
+                close:
+                    formstate.friclose.length === 1
+                        ? formstate.friclose[0]
+                        : "",
             },
-            saturday:{
-                open:formstate.satopen.length===1?formstate.satopen[0]:"",
-                close:formstate.satclose.length===1?formstate.satclose[0]:""
+            saturday: {
+                open:
+                    formstate.satopen.length === 1 ? formstate.satopen[0] : "",
+                close:
+                    formstate.satclose.length === 1
+                        ? formstate.satclose[0]
+                        : "",
             },
-            sunday:{
-                open:formstate.sunopen.length===1?formstate.sunopen[0]:"",
-                close:formstate.sunclose.length===1?formstate.sunclose[0]:""
-            }
-        }
-        const outletFormData = new FormData()
-        outletFormData.append('outletName', formstate.outletname)
-        outletFormData.append('address',JSON.stringify(address))
-        outletFormData.append('timings',JSON.stringify(timings))
-        outletFormData.append('daysOpen',JSON.stringify(daysopen))
-        if(formstate.outletImage){
-            outletFormData.append('outletImage',formstate.outletImage)
-        } 
-        const response = await fetch(`https://flavr.tech/outlet/addOutlet`, {
-                method: "POST", 
-                headers: {
-                    "Authorization": "Bearer " + localStorage.getItem('token')
-                },
-                body: outletFormData
-            })
-            const json = await response.json()
-            setLoading(false);
-        if(json.message==="Outlet added successfully")
-        {
-            navigate('/dashboard/menu')
+            sunday: {
+                open:
+                    formstate.sunopen.length === 1 ? formstate.sunopen[0] : "",
+                close:
+                    formstate.sunclose.length === 1
+                        ? formstate.sunclose[0]
+                        : "",
+            },
+        };
+        console.log(JSON.stringify(address));
+        const outletFormData = new FormData();
+        outletFormData.append("outletName", formstate.outletname);
+        outletFormData.append("address", JSON.stringify(address));
+        outletFormData.append("timings", JSON.stringify(timings));
+        outletFormData.append("daysOpen", JSON.stringify(daysopen));
+        if (formstate.outletImage) {
+            outletFormData.append("outletImage", formstate.outletImage);
         }
 
+        const entries = outletFormData.entries();
+
+        // Iterate over the entries
+        for (let entry of entries) {
+            const [key, value] = entry;
+            console.log(`Key: ${key}, Value: ${value}`);
+        }
+        if (location.pathname === "/dashboard/outlet/edit") {
+            const response = await fetch(
+                `http://localhost:3001/outlet/updateOutlet/${localStorage.getItem(
+                    "selectedOutlet"
+                )}`,
+                {
+                    method: "PATCH",
+                    headers: {
+                        Authorization:
+                            "Bearer " + localStorage.getItem("token"),
+                    },
+                    body: outletFormData,
+                }
+            );
+            const json = await response.json();
+            setLoading(false);
+            if (json.message === "Outlet updated successfully") {
+                toast.success(json.message, {
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                });
+            }
+        } else {
+            // const response = await fetch(
+            //     `https://flavr.tech/outlet/addOutlet`,
+            //     {
+            //         method: "POST",
+            //         headers: {
+            //             Authorization:
+            //                 "Bearer " + localStorage.getItem("token"),
+            //         },
+            //         body: outletFormData,
+            //     }
+            // );
+            // const json = await response.json();
+            // setLoading(false);
+            // if (json.message === "Outlet added successfully") {
+            //     navigate("/dashboard/menu");
+            // }
+        }
     };
+
+    function convert(timeString) {
+        const [time, period] = timeString.split(" ");
+        const [hours, minutes] = time.split(":");
+
+        let convertedHours = parseInt(hours);
+
+        if (period === "PM" && convertedHours !== 12) {
+            convertedHours += 12;
+        } else if (period === "AM" && convertedHours === 12) {
+            convertedHours = 0;
+        }
+
+        const convertedTimeString = `${String(convertedHours).padStart(
+            2,
+            "0"
+        )}:${minutes}`;
+
+        return convertedTimeString;
+    }
 
     const onchange = (e) => {
         if (e.target.name === "outletImageInput") {
-            setImage(e.target.files[0])
+            setImage(e.target.files[0]);
             setformstate({ ...formstate, outletImage: e.target.files[0] });
+        } else {
+            setformstate({ ...formstate, [e.target.name]: e.target.value });
         }
-        else
-        {
-        setformstate({ ...formstate, [e.target.name]: [e.target.value] });
-        }
+        console.log(formstate.addressline1);
+        console.log(formstate.city);
+        console.log(formstate.pincode);
+        console.log(formstate.state);
+        console.log(formstate.country);
     };
 
     const checkboxOnChange = (event) => {
         const itemObtained = JSON.parse(event.target.value);
-
+        setCheckBoxState({
+            ...checkBoxState,
+            [itemObtained.day]: !checkBoxState[itemObtained.day],
+        });
         if (event.target.checked) {
             setdays((prevSelectedItems) => [
                 ...prevSelectedItems,
@@ -149,13 +230,115 @@ export default function Outletdetails() {
         console.log(days);
     };
 
+    useEffect(() => {
+        console.log(location);
+        const fetchdata = async () => {
+            if (location.pathname === "/dashboard/outlet/edit") {
+                setTitle("Update Outlet");
+                const response = await fetch(
+                    `https://flavr.tech/outlet/getOutlet?outletid=${localStorage.getItem(
+                        "selectedOutlet"
+                    )}`,
+                    {
+                        method: "GET",
+                        headers: {
+                            Authorization:
+                                "Bearer " + localStorage.getItem("token"),
+                        },
+                    }
+                );
+                const json = await response.json();
+                console.log(json.result[0]);
+                const res = json.result[0];
+                setformstate({
+                    ...formstate,
+                    outletname: res.outletName,
+                    addressline1: res.address.addressLine1,
+                    city: res.address.city,
+                    pincode: res.address.zipCode,
+                    state: res.address.state,
+                    country: res.address.country,
+                    monopen: res.timings.monday.open,
+                    monclose: res.timings.monday.close,
+                    tueopen: res.timings.tuesday.open,
+                    tueclose: res.timings.tuesday.close,
+                    wedopen: res.timings.wednesday.open,
+                    wedclose: res.timings.wednesday.close,
+                    thuropen: res.timings.thursday.open,
+                    thurclose: res.timings.thursday.close,
+                    friopen: res.timings.friday.open,
+                    friclose: res.timings.friday.close,
+                    satopen: res.timings.saturday.open,
+                    satclose: res.timings.saturday.close,
+                    sunopen: res.timings.sunday.open,
+                    sunclose: res.timings.sunday.close,
+                });
+                setCheckBoxState({
+                    monday: res.daysOpen.monday,
+                    tuesday: res.daysOpen.tuesday,
+                    wednesday: res.daysOpen.wednesday,
+                    thursday: res.daysOpen.thursday,
+                    friday: res.daysOpen.friday,
+                    saturday: res.daysOpen.saturday,
+                    sunday: res.daysOpen.sunday,
+                });
+                let array = [];
+                const allDays = [
+                    "monday",
+                    "tuesday",
+                    "wednesday",
+                    "thursday",
+                    "friday",
+                    "saturday",
+                    "sunday",
+                ];
+                for (let i = 0; i < allDays.length; i++) {
+                    const element = allDays[i];
+                    if (res.daysOpen[element]) {
+                        const object = { day: element };
+                        array.push(object);
+                    }
+                }
+                setdays(array);
+                setImage(res.outletImage.url);
+            } else {
+                setTitle("Add Outlet");
+                setformstate({
+                    outletname: "",
+                    addressline1: "",
+                    city: "",
+                    pincode: "",
+                    state: "",
+                    country: "",
+                    monopen: "",
+                    monclose: "",
+                    tueopen: "",
+                    tueclose: "",
+                    wedopen: "",
+                    wedclose: "",
+                    thuropen: "",
+                    thurclose: "",
+                    friopen: "",
+                    friclose: "",
+                    satopen: "",
+                    satclose: "",
+                    sunopen: "",
+                    sunclose: "",
+                    outletImage: null,
+                });
+                setdays([]);
+            }
+        };
+        fetchdata();
+    }, [location]);
+
     return (
         <>
             <div className="outermost-div">
                 <div className="first-div">
-                    <h1 className="form-heading">Add Outlet</h1>
+                    <h1 className="form-heading">{title}</h1>
                 </div>
-                <form onSubmit={onsubmit}> 
+                <form onSubmit={onsubmit}>
                     <div className="mb-3">
                         <label
                             htmlFor="outletName"
@@ -169,11 +352,15 @@ export default function Outletdetails() {
                             onChange={onchange}
                             name="outletname"
                             placeholder="Enter outlet name"
+                            value={formstate.outletname}
                             required
                         />
                     </div>
                     <div className="mb-3">
-                        <label htmlFor="address" className="form-label main-label">
+                        <label
+                            htmlFor="address"
+                            className="form-label main-label"
+                        >
                             Address
                         </label>
                         <div className="mb-3 row">
@@ -190,6 +377,7 @@ export default function Outletdetails() {
                                     onChange={onchange}
                                     name="addressline1"
                                     placeholder="Enter Address Line 1"
+                                    value={formstate.addressline1}
                                     required
                                 />
                             </div>
@@ -208,6 +396,7 @@ export default function Outletdetails() {
                                     onChange={onchange}
                                     name="city"
                                     placeholder="Enter City"
+                                    value={formstate.city}
                                     required
                                 />
                             </div>
@@ -221,11 +410,12 @@ export default function Outletdetails() {
                             </label>
                             <div className="col-sm-10">
                                 <input
-                                    type="number"
+                                    type="text"
                                     className="form-control shadow-sm outlet-input"
                                     onChange={onchange}
                                     name="pincode"
                                     placeholder="Enter Pincode"
+                                    value={formstate.pincode}
                                     required
                                 />
                             </div>
@@ -244,6 +434,7 @@ export default function Outletdetails() {
                                     onChange={onchange}
                                     name="state"
                                     placeholder="Enter State"
+                                    value={formstate.state}
                                     required
                                 />
                             </div>
@@ -262,13 +453,17 @@ export default function Outletdetails() {
                                     onChange={onchange}
                                     name="country"
                                     placeholder="Enter Country"
+                                    value={formstate.country}
                                     required
                                 />
                             </div>
                         </div>
                     </div>
                     <div className="mb-3">
-                        <label htmlFor="address" className="form-label main-label">
+                        <label
+                            htmlFor="address"
+                            className="form-label main-label"
+                        >
                             Timings
                         </label>
                         <div className="mb-3 row">
@@ -287,6 +482,7 @@ export default function Outletdetails() {
                                     name="monopen"
                                     onChange={onchange}
                                     className="form-control shadow-sm outlet-input"
+                                    value={convert(formstate.monopen)}
                                 />
                                 <span className="input-group-text">
                                     closing time
@@ -296,6 +492,7 @@ export default function Outletdetails() {
                                     name="monclose"
                                     onChange={onchange}
                                     className="form-control shadow-sm outlet-input"
+                                    value={convert(formstate.monclose)}
                                 />
                             </div>
                         </div>
@@ -315,6 +512,7 @@ export default function Outletdetails() {
                                     onChange={onchange}
                                     name="tueopen"
                                     className="form-control shadow-sm outlet-input"
+                                    value={convert(formstate.tueopen)}
                                 />
                                 <span className="input-group-text">
                                     closing time
@@ -324,6 +522,7 @@ export default function Outletdetails() {
                                     onChange={onchange}
                                     name="tueclose"
                                     className="form-control shadow-sm outlet-input"
+                                    value={convert(formstate.tueclose)}
                                 />
                             </div>
                         </div>
@@ -343,6 +542,7 @@ export default function Outletdetails() {
                                     onChange={onchange}
                                     name="wedopen"
                                     className="form-control shadow-sm outlet-input"
+                                    value={convert(formstate.wedopen)}
                                 />
                                 <span className="input-group-text">
                                     closing time
@@ -352,6 +552,7 @@ export default function Outletdetails() {
                                     onChange={onchange}
                                     name="wedclose"
                                     className="form-control shadow-sm outlet-input"
+                                    value={convert(formstate.wedclose)}
                                 />
                             </div>
                         </div>
@@ -371,6 +572,7 @@ export default function Outletdetails() {
                                     onChange={onchange}
                                     name="thuropen"
                                     className="form-control shadow-sm outlet-input"
+                                    value={convert(formstate.thuropen)}
                                 />
                                 <span className="input-group-text">
                                     closing time
@@ -380,6 +582,7 @@ export default function Outletdetails() {
                                     onChange={onchange}
                                     name="thurclose"
                                     className="form-control shadow-sm outlet-input"
+                                    value={convert(formstate.thurclose)}
                                 />
                             </div>
                         </div>
@@ -399,6 +602,7 @@ export default function Outletdetails() {
                                     onChange={onchange}
                                     name="friopen"
                                     className="form-control shadow-sm outlet-input"
+                                    value={convert(formstate.friopen)}
                                 />
                                 <span className="input-group-text">
                                     closing time
@@ -408,6 +612,7 @@ export default function Outletdetails() {
                                     onChange={onchange}
                                     name="friclose"
                                     className="form-control shadow-sm outlet-input"
+                                    value={convert(formstate.friclose)}
                                 />
                             </div>
                         </div>
@@ -427,6 +632,7 @@ export default function Outletdetails() {
                                     onChange={onchange}
                                     name="satopen"
                                     className="form-control shadow-sm outlet-input"
+                                    value={convert(formstate.satopen)}
                                 />
                                 <span className="input-group-text">
                                     closing time
@@ -436,6 +642,7 @@ export default function Outletdetails() {
                                     onChange={onchange}
                                     name="satclose"
                                     className="form-control shadow-sm outlet-input"
+                                    value={convert(formstate.satclose)}
                                 />
                             </div>
                         </div>
@@ -455,6 +662,7 @@ export default function Outletdetails() {
                                     onChange={onchange}
                                     name="sunopen"
                                     className="form-control shadow-sm outlet-input"
+                                    value={convert(formstate.sunopen)}
                                 />
                                 <span className="input-group-text">
                                     closing time
@@ -464,6 +672,7 @@ export default function Outletdetails() {
                                     onChange={onchange}
                                     name="sunclose"
                                     className="form-control shadow-sm outlet-input"
+                                    value={convert(formstate.sunclose)}
                                 />
                             </div>
                         </div>
@@ -484,6 +693,7 @@ export default function Outletdetails() {
                                 value={JSON.stringify({ day: "monday" })}
                                 type="checkbox"
                                 id="flexCheckDefault"
+                                checked={checkBoxState.monday}
                             />
                             <label
                                 className="form-check-label"
@@ -500,6 +710,7 @@ export default function Outletdetails() {
                                 value={JSON.stringify({ day: "tuesday" })}
                                 type="checkbox"
                                 id="flexCheckDefault"
+                                checked={checkBoxState.tuesday}
                             />
                             <label
                                 className="form-check-label"
@@ -516,6 +727,7 @@ export default function Outletdetails() {
                                 value={JSON.stringify({ day: "wednesday" })}
                                 type="checkbox"
                                 id="flexCheckDefault"
+                                checked={checkBoxState.wednesday}
                             />
                             <label
                                 className="form-check-label"
@@ -532,6 +744,7 @@ export default function Outletdetails() {
                                 value={JSON.stringify({ day: "thursday" })}
                                 type="checkbox"
                                 id="flexCheckDefault"
+                                checked={checkBoxState.thursday}
                             />
                             <label
                                 className="form-check-label"
@@ -548,6 +761,7 @@ export default function Outletdetails() {
                                 value={JSON.stringify({ day: "friday" })}
                                 type="checkbox"
                                 id="flexCheckDefault"
+                                checked={checkBoxState.friday}
                             />
                             <label
                                 className="form-check-label"
@@ -564,6 +778,7 @@ export default function Outletdetails() {
                                 value={JSON.stringify({ day: "saturday" })}
                                 type="checkbox"
                                 id="flexCheckDefault"
+                                checked={checkBoxState.saturday}
                             />
                             <label
                                 className="form-check-label"
@@ -580,6 +795,7 @@ export default function Outletdetails() {
                                 value={JSON.stringify({ day: "sunday" })}
                                 type="checkbox"
                                 id="flexCheckDefault"
+                                checked={checkBoxState.sunday}
                             />
                             <label
                                 className="form-check-label"
@@ -591,24 +807,57 @@ export default function Outletdetails() {
                     </div>
 
                     <div className="mb-3">
-                        <div className="productImage d-flex flex-column align-items-center justify-content-center" onClick={handleImageClick}>
-                            <label htmlFor="outletImageInput">{image ? image.name : "Choose an image"} </label>
-                            {image ? 
-                                (typeof image === 'string' ? 
-                                    <img className="mt-3" style={{width: "200px", height: "200px",borderRadius: "50%"}} src={image} alt="" /> : 
-                                    <img className="mt-3" style={{width: "200px", height: "200px",borderRadius: "50%"}} src={URL.createObjectURL(image)} alt="" />
-                                ) :
-                                <img className="mt-3" style={{width: "200px", height: "200px"}} src="https://cdn-icons-png.flaticon.com/512/679/679845.png" alt="" />
-                            }
-                            <input type="file" name="outletImageInput" ref={inputRef} onChange={onchange} className="productPicInput d-flex justify-content-center"/>
+                        <div
+                            className="productImage d-flex flex-column align-items-center justify-content-center"
+                            onClick={handleImageClick}
+                        >
+                            <label htmlFor="outletImageInput">
+                                {image ? image.name : "Choose an image"}{" "}
+                            </label>
+                            {image ? (
+                                typeof image === "string" ? (
+                                    <img
+                                        className="mt-3"
+                                        style={{
+                                            width: "400px",
+                                            height: "200px",
+                                            borderRadius: "10px",
+                                        }}
+                                        src={image}
+                                        alt=""
+                                    />
+                                ) : (
+                                    <img
+                                        className="mt-3"
+                                        style={{
+                                            width: "400px",
+                                            height: "200px",
+                                            borderRadius: "10px",
+                                        }}
+                                        src={URL.createObjectURL(image)}
+                                        alt=""
+                                    />
+                                )
+                            ) : (
+                                <img
+                                    className="mt-3"
+                                    style={{ width: "400px", height: "200px" }}
+                                    src="https://cdn-icons-png.flaticon.com/512/679/679845.png"
+                                    alt=""
+                                />
+                            )}
+                            <input
+                                type="file"
+                                name="outletImageInput"
+                                ref={inputRef}
+                                onChange={onchange}
+                                className="productPicInput d-flex justify-content-center"
+                            />
                         </div>
                     </div>
                     <div className="submit-div">
-                    {loading && <Spinner />}
-                        <button
-                            type="submit"
-                            className="btn submit-btn"
-                        >
+                        {loading && <Spinner />}
+                        <button type="submit" className="btn submit-btn">
                             Submit
                         </button>
                     </div>
