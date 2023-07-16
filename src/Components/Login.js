@@ -1,8 +1,10 @@
-import { React, useState } from 'react';
+import { React, useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom'
 import '../css/auth.css'
 import Spinner from "./Spinner";
 import imageLogin from '../images/Scene-27.jpg'
+import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
+import jwt_decode from 'jwt-decode'
 
 export default function SignIn() {
 
@@ -60,6 +62,29 @@ export default function SignIn() {
         setInvalidCredError({error: false, message: ''})
     }
 
+    const handleGoogleAuth = async (res) => {
+        const decodedToken = jwt_decode(res.credential)
+
+        const response = await fetch("http://localhost:3001/owner/googleAuth", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ownerName: decodedToken.name, email: decodedToken.email, profileUrl: decodedToken.picture})
+        })
+        const json = await response.json()
+
+        if(json.message === "Auth successful"){
+            localStorage.setItem('token', json.token)
+            localStorage.setItem('ownerEmail', decodedToken.email)
+            localStorage.setItem('ownerName', decodedToken.name)
+            localStorage.setItem('ownerProfilePic', decodedToken.picture)
+            navigate('/dashboard/menu')
+        } else {
+            setInvalidCredError({error: true, message: json.message})
+        }
+    }
+
     return (
         <div className="container-fluid signup">
             <div className="row">
@@ -80,7 +105,19 @@ export default function SignIn() {
                         {invalidCredError.error ? <label htmlFor="" style={{marginTop: "10px"}} className="errorLabel">{invalidCredError.message}</label> : ""}
                     </form>
                     <p>or</p>
-                    <div className="google-div"><button className="btn google-btn">Continue with <i className="fa-brands fa-google"></i></button></div>
+                    <div id='googleAuth' className="google-div d-flex justify-content-center">
+                        <GoogleOAuthProvider clientId='605715529434-5a45tj90r7kjqmuvmffg526tfiuqfv74.apps.googleusercontent.com'>
+                            <GoogleLogin
+                                onSuccess={credentialResponse => {
+                                    handleGoogleAuth(credentialResponse)
+                                }}
+                                onError={() => {
+                                    console.log('Login Failed');
+                                }}
+                                useOneTap
+                            />
+                        </GoogleOAuthProvider>
+                    </div>
                     <Link to="/signup" className="login-link">Don't have an account? Sign Up here</Link>
                 </div>
                 <div className="col-lg-8 imgCol">
