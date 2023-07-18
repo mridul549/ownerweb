@@ -4,6 +4,7 @@ import Spinner from "./Spinner";
 import "../css/outletdetails.css";
 import OutletContext from "../context/outlet/outletContext";
 import { useLocation } from "react-router-dom";
+import { Modal, Button } from "react-bootstrap";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -13,6 +14,10 @@ export default function Outletdetails() {
     const inputRef = useRef(null);
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
+    const [isConfirmModalOpen, setIsConfirmModalOpen] = useState({
+        state: false,
+    });
+
     const location = useLocation();
     const [checkBoxState, setCheckBoxState] = useState({
         monday: false,
@@ -58,62 +63,32 @@ export default function Outletdetails() {
 
         let timings = {
             monday: {
-                open:
-                    formstate.monopen.length === 1 ? formstate.monopen[0] : "",
-                close:
-                    formstate.monclose.length === 1
-                        ? formstate.monclose[0]
-                        : "",
+                open: formstate.monopen,
+                close: formstate.monclose,
             },
             tuesday: {
-                open:
-                    formstate.tueopen.length === 1 ? formstate.tueopen[0] : "",
-                close:
-                    formstate.tueclose.length === 1
-                        ? formstate.tueclose[0]
-                        : "",
+                open: formstate.tueopen,
+                close: formstate.tueclose,
             },
             wednesday: {
-                open:
-                    formstate.wedopen.length === 1 ? formstate.wedopen[0] : "",
-                close:
-                    formstate.wedclose.length === 1
-                        ? formstate.wedclose[0]
-                        : "",
+                open: formstate.wedopen,
+                close: formstate.wedclose,
             },
             thursday: {
-                open:
-                    formstate.thuropen.length === 1
-                        ? formstate.thuropen[0]
-                        : "",
-                close:
-                    formstate.thurclose.length === 1
-                        ? formstate.thurclose[0]
-                        : "",
+                open: formstate.thuropen,
+                close: formstate.thurclose,
             },
             friday: {
-                open:
-                    formstate.friopen.length === 1 ? formstate.friopen[0] : "",
-                close:
-                    formstate.friclose.length === 1
-                        ? formstate.friclose[0]
-                        : "",
+                open: formstate.friopen,
+                close: formstate.friclose,
             },
             saturday: {
-                open:
-                    formstate.satopen.length === 1 ? formstate.satopen[0] : "",
-                close:
-                    formstate.satclose.length === 1
-                        ? formstate.satclose[0]
-                        : "",
+                open: formstate.satopen,
+                close: formstate.satclose,
             },
             sunday: {
-                open:
-                    formstate.sunopen.length === 1 ? formstate.sunopen[0] : "",
-                close:
-                    formstate.sunclose.length === 1
-                        ? formstate.sunclose[0]
-                        : "",
+                open: formstate.sunopen,
+                close: formstate.sunclose,
             },
         };
         console.log(JSON.stringify(address));
@@ -135,7 +110,7 @@ export default function Outletdetails() {
         }
         if (location.pathname === "/dashboard/outlet/edit") {
             const response = await fetch(
-                `http://localhost:3001/outlet/updateOutlet/${localStorage.getItem(
+                `https://flavr.tech/outlet/updateOutlet/${localStorage.getItem(
                     "selectedOutlet"
                 )}`,
                 {
@@ -156,26 +131,27 @@ export default function Outletdetails() {
                 });
             }
         } else {
-            // const response = await fetch(
-            //     `https://flavr.tech/outlet/addOutlet`,
-            //     {
-            //         method: "POST",
-            //         headers: {
-            //             Authorization:
-            //                 "Bearer " + localStorage.getItem("token"),
-            //         },
-            //         body: outletFormData,
-            //     }
-            // );
-            // const json = await response.json();
-            // setLoading(false);
-            // if (json.message === "Outlet added successfully") {
-            //     navigate("/dashboard/menu");
-            // }
+            const response = await fetch(
+                `https://flavr.tech/outlet/addOutlet`,
+                {
+                    method: "POST",
+                    headers: {
+                        Authorization:
+                            "Bearer " + localStorage.getItem("token"),
+                    },
+                    body: outletFormData,
+                }
+            );
+            const json = await response.json();
+            setLoading(false);
+            if (json.message === "Outlet added successfully") {
+                navigate("/dashboard/menu");
+            }
         }
     };
 
     function convert(timeString) {
+        console.log(timeString);
         const [time, period] = timeString.split(" ");
         const [hours, minutes] = time.split(":");
 
@@ -202,11 +178,6 @@ export default function Outletdetails() {
         } else {
             setformstate({ ...formstate, [e.target.name]: e.target.value });
         }
-        console.log(formstate.addressline1);
-        console.log(formstate.city);
-        console.log(formstate.pincode);
-        console.log(formstate.state);
-        console.log(formstate.country);
     };
 
     const checkboxOnChange = (event) => {
@@ -332,8 +303,46 @@ export default function Outletdetails() {
         fetchdata();
     }, [location]);
 
+    const handleCloseConfirmModal = () => {
+        setIsConfirmModalOpen({ state: false });
+    };
+
+    const handleDeleteModal = () => {
+        setIsConfirmModalOpen({ state: true });
+    };
+
     return (
         <>
+            <Modal
+                show={isConfirmModalOpen.state}
+                onHide={handleCloseConfirmModal}
+            >
+                <Modal.Header className="d-flex justify-content-center">
+                    <Modal.Title style={{ textAlign: "center" }}>
+                        Delete Outlet
+                    </Modal.Title>
+                </Modal.Header>
+                <Modal.Footer className="d-flex justify-content-center">
+                    <p>Are you sure you want to delete outlet?</p>
+                    <div className="row mt-3 d-flex justify-content-center">
+                        <div className="col-lg-6">
+                            <Button
+                                className=""
+                                variant="secondary"
+                                onClick={handleCloseConfirmModal}
+                            >
+                                No
+                            </Button>
+                        </div>
+                        <div className="col-lg-6">
+                            <Button variant="btn" className="yesBtn">
+                                Yes
+                            </Button>
+                        </div>
+                    </div>
+                </Modal.Footer>
+            </Modal>
+
             <div className="outermost-div">
                 <div className="first-div">
                     <h1 className="form-heading">{title}</h1>
@@ -862,6 +871,21 @@ export default function Outletdetails() {
                         </button>
                     </div>
                 </form>
+                <div className="delete-div">
+                    <div className="d-flex justify-content-between">
+                        <div className="col delete-txt-div">
+                            <p className="delete-txt">Delete Outlet</p>
+                        </div>
+                        <div className="col delete-btn-div">
+                            <button
+                                className="btn delete-btn"
+                                onClick={handleDeleteModal}
+                            >
+                                Delete
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </>
     );

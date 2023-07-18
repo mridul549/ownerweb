@@ -46,3 +46,42 @@
     font-size: small;
     color: rgb(197, 195, 195);
 }
+
+.delete-div {
+    margin-top: 2%;
+    margin-left: 15%;
+    margin-right: 15%;
+    padding-top: 1%;
+    padding-bottom: 1%;
+    border: 1px solid red;
+    border-radius: 10px;
+}
+
+.delete-txt-div {
+    text-align: left;
+    margin-left: 2%;
+}
+
+.delete-txt {
+    margin-top: 2%;
+}
+
+.delete-btn-div {
+    text-align: right;
+    margin-right: 2%;
+}
+
+.delete-btn {
+    background-color: red;
+    color: white;
+}
+
+.submit-btn:hover {
+    background-color: #017450;
+    color: white;
+}
+
+.delete-btn:hover {
+    background-color: rgb(249, 90, 90);
+    color: white;
+}
