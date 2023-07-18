@@ -1,4 +1,4 @@
-import { React, useState, useEffect } from 'react';
+import { React, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom'
 import '../css/auth.css'
 import Spinner from "./Spinner";
@@ -65,7 +65,7 @@ export default function SignIn() {
     const handleGoogleAuth = async (res) => {
         const decodedToken = jwt_decode(res.credential)
 
-        const response = await fetch("http://localhost:3001/owner/googleAuth", {
+        const response = await fetch("https://flavr.tech/owner/googleAuth", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
