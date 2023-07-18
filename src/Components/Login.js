@@ -104,7 +104,7 @@ export default function SignIn() {
                         <div className="sign-up-div"> <button type="submit" className="btn signup-btn">Sign In</button></div>
                         {invalidCredError.error ? <label htmlFor="" style={{marginTop: "10px"}} className="errorLabel">{invalidCredError.message}</label> : ""}
                     </form>
-                    <p>or</p>
+                    <p className='mt-3'>or</p>
                     <div id='googleAuth' className="google-div d-flex justify-content-center">
                         <GoogleOAuthProvider clientId='605715529434-5a45tj90r7kjqmuvmffg526tfiuqfv74.apps.googleusercontent.com'>
                             <GoogleLogin
