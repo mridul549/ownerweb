@@ -26,8 +26,16 @@ export default function Navbar() {
             setGreetingMsg("Good Evening!");
         }
     }, [])
+    const { sidebarOpen } = useContext(SidebarContext)
+    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+    const isMobile = windowWidth <= 768;
 
     useEffect(() => {
+        const handleResize = () => {
+            setWindowWidth(window.innerWidth);
+        };
+        window.addEventListener('resize', handleResize);
+
         const currentHour = new Date().getHours();
 
         if (currentHour >= 5 && currentHour < 12) {
@@ -45,7 +53,7 @@ export default function Navbar() {
                 <div className="container-fluid">
                     <div className="greeting">
                         <h5 style={{color: '#027450'}}>{greetingMsg}</h5>
-                        <h3 style={{color: '#004932', fontSize: '25px'}}>{localStorage.getItem('ownerName')} Verma</h3>
+                        <h3 style={{color: '#004932', fontSize: '25px'}}>{localStorage.getItem('ownerName')}</h3>
                     </div>
                     <div className="row">
                         <div className="col-lg-6">   
@@ -58,7 +66,7 @@ export default function Navbar() {
                         </button>
                         <div className="collapse navbar-collapse d-flex justify-content-end" id="navbarSupportedContent">
                             <button type="button" className="btn outlet-btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                                Nescafe NITJ <i className="fa-solid fa-caret-down mx-1"></i>
+                                {localStorage.getItem('selectedOutletName').length===0?'No outlet selected':localStorage.getItem('selectedOutletName')} <i className="fa-solid fa-caret-down mx-1"></i>
                             </button>
                         </div>
                     </div>

@@ -34,7 +34,7 @@ h3 {
 }
 
 .input-field {
-    border: none;
+    border: 1px solid rgb(239, 238, 238);
     margin: 0.5rem 0;
     width: 22rem;
     height: 3.3rem;
@@ -67,6 +67,11 @@ h3 {
     width: 12rem;
     height: 2.6rem;
     border-radius: 10px;
+}
+
+.signup-btn:hover {
+    color: white;
+    background-color: #00865b;
 }
 
 .google-btn {

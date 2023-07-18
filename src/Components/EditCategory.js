@@ -392,7 +392,7 @@ export default function EditCategory(props) {
             {/* Category icon list modal */}
             <div className="modal fade" id="iconListModal" aria-labelledby="iconListModalLabel" aria-hidden="true">
                 <div className="modal-dialog">
-                    <div className="modal-content shadow-lg popup">
+                    <div className="modal-content shadow-lg popup" style={{width: "100%"}}>
                         <div className="modal-body">
                             <div className="headNClose d-flex justify-content-between">
                                 <p></p> {/* Added p tag to use flexbox properly */}
@@ -404,8 +404,8 @@ export default function EditCategory(props) {
                                     return <div className="col-lg-3 iconRow col-md-4 col-sm-4 col-6" key={categoryIcon._id}>
                                         <Category 
                                             set={iconSelected.set && iconSelected._id === categoryIcon._id} 
-                                            iconImage={categoryIcon.icon.url} 
-                                            onClick={() => handleCategoryClick(categoryIcon.icon.url, categoryIcon._id)}
+                                            iconImage={categoryIcon.icon?.url} 
+                                            onClick={() => handleCategoryClick(categoryIcon.icon?.url, categoryIcon._id)}
                                         />
                                     </div>
                                 })}
@@ -438,15 +438,15 @@ export default function EditCategory(props) {
                             </div>
                             <div className="productDetails">
                                 <label htmlFor="" className="productPic">Product Name</label>
-                                <input type="text" id="productName" value={productForm.productName} name="productName" onChange={productFormOnChange} className="productFormInput shadow-sm" placeholder="Enter product name" />
+                                <input type="text" id="productName" value={productForm.productName} autoComplete="off" name="productName" onChange={productFormOnChange} className="productFormInput shadow-sm" placeholder="Enter product name" />
                                 {errorProduct && productForm.productName.length===0 ? <label htmlFor="" className="errorLabel">Product Name can't be empty</label> : ""}  
 
                                 <label htmlFor="" className="productPic">Product Description</label>
-                                <input type="text" id="productDescription" name="productDescription" value={productForm.productDescription} onChange={productFormOnChange} className="productFormInput shadow-sm" placeholder="Enter product description" />
+                                <input type="text" id="productDescription" name="productDescription" autoComplete="off" value={productForm.productDescription} onChange={productFormOnChange} className="productFormInput shadow-sm" placeholder="Enter product description" />
                                 {errorProduct && productForm.productDescription.length===0 ? <label htmlFor="" className="errorLabel">Product Description can't be empty</label> : ""}  
 
                                 <label htmlFor="" className="productPic">Product Price</label>
-                                <input type="number" id="productPrice" name="productPrice" value={productForm.productPrice} onChange={productFormOnChange} className="productFormInput shadow-sm" placeholder="Enter product price" />
+                                <input type="number" id="productPrice" name="productPrice" autoComplete="off" value={productForm.productPrice} onChange={productFormOnChange} className="productFormInput shadow-sm" placeholder="Enter product price" />
                                 {errorProduct && productForm.productPrice===0 ? <label htmlFor="" className="errorLabel">Product price can't be 0</label> : ""}  
 
                                 <div className="vegRadio d-flex flex-row justify-content-center align-items-center">
@@ -479,10 +479,10 @@ export default function EditCategory(props) {
                                 {variantArray.map((data,i) => {
                                     return <div className="variantDetails row" key={i}>
                                         <div className="col-md-5 col-sm-5 col-5">
-                                            <input type="text" id="variantName" name="variantName" value={data.variantName || ""} onChange={e=>variantOnChange(e,i)} className="variantInput shadow-sm" placeholder="Enter variant name" />    
+                                            <input type="text" id="variantName" name="variantName" autoComplete="off" value={data.variantName || ""} onChange={e=>variantOnChange(e,i)} className="variantInput shadow-sm" placeholder="Enter variant name" />    
                                         </div>
                                         <div className="col-md-5 col-sm-5 col-5">
-                                            <input type="number" id="price" name="price" value={data.price || ""} onChange={e=>variantOnChange(e,i)} className="variantInput shadow-sm" placeholder="Enter variant price" />    
+                                            <input type="number" id="price" name="price" value={data.price || ""}  autoComplete="off" onChange={e=>variantOnChange(e,i)} className="variantInput shadow-sm" placeholder="Enter variant price" />    
                                         </div>
                                         <div className="col-md-2 col-sm-2 col-2 d-flex flex-column justify-content-center align-items-center">
                                             <i className="fa-solid fa-circle-minus fa-xl" onClick={() => handleVariantDeletion(i)} style={{color: "#FF0303"}}></i>
@@ -530,15 +530,15 @@ export default function EditCategory(props) {
                                     </div>
                                     <div className="productDetails">
                                         <label htmlFor="" className="productPic">Product Name</label>
-                                        <input type="text" id="productName" value={productForm.productName} name="productName" onChange={productFormOnChange} className="productFormInput shadow-sm" placeholder="Enter product name" />
+                                        <input type="text" id="productName" value={productForm.productName} autoComplete="off" name="productName" onChange={productFormOnChange} className="productFormInput shadow-sm" placeholder="Enter product name" />
                                         {errorProduct && productForm.productName.length===0 ? <label htmlFor="" className="errorLabel">Product Name can't be empty</label> : ""}  
 
                                         <label htmlFor="" className="productPic">Product Description</label>
-                                        <input type="text" id="productDescription" name="productDescription" value={productForm.productDescription} onChange={productFormOnChange} className="productFormInput shadow-sm" placeholder="Enter product description" />
+                                        <input type="text" id="productDescription" name="productDescription" autoComplete="off" value={productForm.productDescription} onChange={productFormOnChange} className="productFormInput shadow-sm" placeholder="Enter product description" />
                                         {errorProduct && productForm.productDescription.length===0 ? <label htmlFor="" className="errorLabel">Product Description can't be empty</label> : ""}  
 
                                         <label htmlFor="" className="productPic">Product Price</label>
-                                        <input type="number" id="productPrice" name="productPrice" value={productForm.productPrice} onChange={productFormOnChange} className="productFormInput shadow-sm" placeholder="Enter product price" />
+                                        <input type="number" id="productPrice" name="productPrice" autoComplete="off" value={productForm.productPrice} onChange={productFormOnChange} className="productFormInput shadow-sm" placeholder="Enter product price" />
                                         {errorProduct && productForm.productPrice===0 ? <label htmlFor="" className="errorLabel">Product price can't be 0</label> : ""}  
 
                                         <div className="vegRadio d-flex flex-row justify-content-center align-items-center">
@@ -571,10 +571,10 @@ export default function EditCategory(props) {
                                         {variantArray.map((data,i) => {
                                             return <div className="variantDetails row" key={i}>
                                                 <div className="col-md-5 col-sm-5 col-5">
-                                                    <input type="text" id="variantName" name="variantName" value={data.variantName || ""} onChange={e=>variantOnChange(e,i)} className="variantInput shadow-sm" placeholder="Enter variant name" />    
+                                                    <input type="text" id="variantName" name="variantName" autoComplete="off" value={data.variantName || ""} onChange={e=>variantOnChange(e,i)} className="variantInput shadow-sm" placeholder="Enter variant name" />    
                                                 </div>
                                                 <div className="col-md-5 col-sm-5 col-5">
-                                                    <input type="number" id="price" name="price" value={data.price || ""} onChange={e=>variantOnChange(e,i)} className="variantInput shadow-sm" placeholder="Enter variant price" />    
+                                                    <input type="number" id="price" name="price" value={data.price || ""} autoComplete="off" onChange={e=>variantOnChange(e,i)} className="variantInput shadow-sm" placeholder="Enter variant price" />    
                                                 </div>
                                                 <div className="col-md-2 col-sm-2 col-2 d-flex flex-column justify-content-center align-items-center">
                                                     <i className="fa-solid fa-circle-minus fa-xl" onClick={() => handleVariantDeletion(i)} style={{color: "#FF0303"}}></i>
@@ -609,6 +609,7 @@ export default function EditCategory(props) {
                                 onChange={onChange} 
                                 className="categoryNameInput shadow-sm" 
                                 placeholder="Enter category name" 
+                                autoComplete="off"
                             />
                             {error && formData.categoryName.length===0 ? <label htmlFor="" className="errorLabel">Category Name can't be empty</label> : ""}  
                         </div>
@@ -617,7 +618,7 @@ export default function EditCategory(props) {
                             <button type="button" className={categoryDetails.iconId==='' ? (iconSelected.value ? "btn categoryIconSelectedBtn" : "selectIcon") : "btn categoryIconSelectedBtn"} data-bs-toggle="modal" data-bs-target="#iconListModal">
                                 {categoryDetails.iconId==='' ? 
                                     (iconSelected.value ? 
-                                        <Category set={false} disabled={true} iconImage={iconSelected.url} /> :
+                                        <Category set={false} disabled={true} iconImage={iconSelected?.url} /> :
                                         <>
                                             <i className="fa-solid fa-circle-plus mx-1 fa-2xl" style={{color: "#ffffff", marginTop: "30px"}}></i>
                                             <p style={{marginTop: "10px", color: "#fff"}}>Add Icon</p>
@@ -656,7 +657,7 @@ export default function EditCategory(props) {
                         productArray.map((product) => {
                             return <div className="col-lg-6" key={product._id}>
                                 <MenuItem 
-                                    productImage={product.productImage.url} 
+                                    productImage={product.productImage?.url} 
                                     productName={product.productName} 
                                     productPrice={product.price} 
                                     veg={product.veg} 
@@ -665,7 +666,7 @@ export default function EditCategory(props) {
                                     productEdit={true} 
                                     productid={product._id}
                                     instock={product.inStock}
-                                    onClick={(action) => handleUpDel(action, product._id, product.productName, product.description, product.price, product.veg, product.variants, product.productImage.url)}
+                                    onClick={(action) => handleUpDel(action, product._id, product.productName, product.description, product.price, product.veg, product.variants, product.productImage?.url)}
                                 />
                             </div>
                         })

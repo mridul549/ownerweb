@@ -3,6 +3,8 @@ import { Link, useNavigate } from 'react-router-dom'
 import '../css/auth.css'
 import Spinner from "./Spinner";
 import imageLogin from '../images/Scene-27.jpg'
+import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
+import jwt_decode from 'jwt-decode'
 
 export default function SignIn() {
 
@@ -31,7 +33,7 @@ export default function SignIn() {
         if(json.message==="Auth successful"){
             // save token and redirect to dashboard
             localStorage.setItem('token', json.token)
-            const userProfile = await fetch("https://flavr.tech/owner/ownerprofile", {
+            const userProfile = await fetch(`https://flavr.tech/owner/ownerprofile?ownermail=${credentials.email}`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -39,9 +41,7 @@ export default function SignIn() {
                 }
             })
             const userProfileJson = await userProfile.json()
-            
-            localStorage.setItem('selectedOutlet', '646a5a0a51c3c24655b854e9')
-            localStorage.setItem('selectedOutletName', 'Nescafe NITJ')
+
             localStorage.setItem('ownerEmail', userProfileJson.owner[0].email)
             localStorage.setItem('ownerName', userProfileJson.owner[0].ownerName)
             localStorage.setItem('ownerProfilePic', userProfileJson.owner[0].ownerProfilePic.url)
@@ -62,11 +62,36 @@ export default function SignIn() {
         setInvalidCredError({error: false, message: ''})
     }
 
+    const handleGoogleAuth = async (res) => {
+        const decodedToken = jwt_decode(res.credential)
+
+        const response = await fetch("https://flavr.tech/owner/googleAuth", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ownerName: decodedToken.name, email: decodedToken.email, profileUrl: decodedToken.picture})
+        })
+        const json = await response.json()
+
+        if(json.message === "Auth successful"){
+            localStorage.setItem('token', json.token)
+            localStorage.setItem('ownerEmail', decodedToken.email)
+            localStorage.setItem('ownerName', decodedToken.name)
+            localStorage.setItem('ownerProfilePic', decodedToken.picture)
+            navigate('/dashboard/menu')
+        } else {
+            setInvalidCredError({error: true, message: json.message})
+        }
+    }
+
     return (
         <div className="container-fluid signup">
             <div className="row">
                 <div className="col-lg-4 form-div">
-                    <h1 className="signup-head">FlavR</h1>
+                    <div className=' d-flex justify-content-center'>
+                        <img src="https://res.cloudinary.com/dokgv4lff/image/upload/v1688365848/flavr_l4bspc.png" style={{width: "100px"}} alt="" />
+                    </div>
                     <h3>Sign In</h3>
                     <form action="" onSubmit={handleSubmit}>
                         <div>
@@ -81,8 +106,20 @@ export default function SignIn() {
                         <div className="sign-up-div"> <button type="submit" className="btn signup-btn">Sign In</button></div>
                         {invalidCredError.error ? <label htmlFor="" style={{marginTop: "10px"}} className="errorLabel">{invalidCredError.message}</label> : ""}
                     </form>
-                    <p>or</p>
-                    <div className="google-div"><button className="btn google-btn">Continue with <i className="fa-brands fa-google"></i></button></div>
+                    <p className='mt-3'>or</p>
+                    <div id='googleAuth' className="google-div d-flex justify-content-center">
+                        <GoogleOAuthProvider clientId='605715529434-5a45tj90r7kjqmuvmffg526tfiuqfv74.apps.googleusercontent.com'>
+                            <GoogleLogin
+                                onSuccess={credentialResponse => {
+                                    handleGoogleAuth(credentialResponse)
+                                }}
+                                onError={() => {
+                                    console.log('Login Failed');
+                                }}
+                                useOneTap
+                            />
+                        </GoogleOAuthProvider>
+                    </div>
                     <Link to="/signup" className="login-link">Don't have an account? Sign Up here</Link>
                 </div>
                 <div className="col-lg-8 imgCol">

@@ -27,7 +27,7 @@ export default function AddOutlet() {
             <div className="d-flex justify-content-between mt-3 p-0 header-sec">
                 <p></p>
                 <h2 className="modal-title modal-head" id="exampleModalLabel">
-                    Outlets
+                    Select Outlet
                 </h2>
                 <button
                     type="button"
@@ -51,9 +51,10 @@ export default function AddOutlet() {
                         return (
                             <div key={outlet._id}>
                                 <OutletInfo
-                                    image={outlet.outletImage.url}
+                                    image={outlet.outletImage?.url}
                                     head={outlet.outletName}
                                     address={outlet.address}
+                                    id={outlet._id}
                                 />
                             </div>
                         );

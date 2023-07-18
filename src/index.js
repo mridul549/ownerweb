@@ -11,7 +11,6 @@ import CategoryState from './context/category/categoryState';
 import Dashboard from './Components/Dashboard';
 import Menu from './Components/Menu'
 import Orders from './Components/Orders'
-import Outlet from './Components/Outlet'
 import Category from './Components/Category';
 import EditCategory from './Components/EditCategory';
 import Outletdetails from './Components/Outletdetails';
@@ -19,6 +18,10 @@ import { ToastContainer } from 'react-toastify';
 import SidebarState from './context/sidebar/sidebarState'
 import OrderItem from './Components/OrderItem';
 import OrderState from './context/orders/orderState';
+import Profile from './Components/Profile';
+import Analytics from './Components/Analytics';
+import ChartState from './context/chart/chartState';
+import OutletState from './context/outlet/outletState';
 
 const router = createBrowserRouter([
     {
@@ -58,8 +61,8 @@ const router = createBrowserRouter([
                 element:<Orders/>
             },
             {
-                path:"outlet",
-                element:<Outlet/>
+                path:"outlet/edit",
+                element:<Outletdetails/>
             },
             {
                 path: "editcategory",
@@ -73,21 +76,33 @@ const router = createBrowserRouter([
                 path: "addcategory",
                 element: <EditCategory />
             },
+            {
+                path: "profile",
+                element: <Profile />
+            },
+            {
+                path: "analytics",
+                element: <Analytics />
+            },
         ]
     }
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-    <React.StrictMode>
-        <ToastContainer closeOnClick draggable pauseOnHover/>
+  <React.StrictMode>
+    <ToastContainer closeOnClick draggable pauseOnHover />
+    <ChartState>
+      <OutletState>
         <OrderState>
-            <SidebarState>
-                <CategoryState>
-                    <AuthState>
-                        <RouterProvider router={router} />
-                    </AuthState>
-                </CategoryState>
-            </SidebarState>
+          <SidebarState>
+            <CategoryState>
+              <AuthState>
+                <RouterProvider router={router} />
+              </AuthState>
+            </CategoryState>
+          </SidebarState>
         </OrderState>
-    </React.StrictMode>
+      </OutletState>
+    </ChartState>
+  </React.StrictMode>
 );
