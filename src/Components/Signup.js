@@ -96,7 +96,9 @@ const Signup = () => {
                     <img src={imageSignup} alt="abc" className="img-fluid image-1" />
                 </div>
                 <div className="col-lg-4 form-div">
-                <h1 className="signup-head">FlavR</h1>
+                    <div className=' d-flex justify-content-center'>
+                        <img src="https://res.cloudinary.com/dokgv4lff/image/upload/v1688365848/flavr_l4bspc.png" style={{width: "100px"}} alt="" />
+                    </div>
                     <h3>Sign Up</h3>
                     <form action="" onSubmit={handleSubmit}>
                         <div>

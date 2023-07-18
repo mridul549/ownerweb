@@ -39,7 +39,6 @@ export default function Navbar() {
                     <div className="row">
                         <div className="col-lg-6">   
                             <img src="https://res.cloudinary.com/dokgv4lff/image/upload/v1688365848/flavr_l4bspc.png" style={{width: "100px"}} alt="" />
-                            {isMobile && "hi"}
                         </div>
                     </div>
                     <div>
