@@ -353,7 +353,7 @@ export default function Profile() {
                 <div className="editSection">
                     <div className="mt-3">
                         <button className="btn" onClick={handleResetPassword} style={{border: '1px solid black'}}>
-                            <i class="fa-solid fa-lock fa-md"></i> Change password
+                            <i className="fa-solid fa-lock fa-md"></i> Change password
                         </button>
                     </div>
                     <div className="saveChangesBtn">

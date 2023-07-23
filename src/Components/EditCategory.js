@@ -5,10 +5,10 @@ import Spinner from "./Spinner";
 import MenuItem from "./MenuItem";
 import {Modal, Button} from 'react-bootstrap'
 import CategoryContext from "../context/category/categoryContext";
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams, useSearchParams } from "react-router-dom";
 
 export default function EditCategory(props) {
-
+    const location = useLocation()
     const inputRef = useRef(null)
 
     // Product Modal
@@ -328,8 +328,59 @@ export default function EditCategory(props) {
         setCategoryDetails({...categoryDetails, name: e.target.value})
     }
 
+    const [searchParams] = useSearchParams()
     useEffect(() => {
-        if(categoryDetails.method===1){
+        console.log(location.pathname);
+        if(location.pathname===`/dashboard/editcategory`){
+            const fillForm = async () => {
+                const response = await fetch(`http://localhost:3001/category/getCategory?categoryid=${searchParams.get('id')}`, {
+                    method: "GET"
+                })
+                const json = await response.json()
+
+                await setCategoryDetails({
+                    id: json.category._id,
+                    name: json.category.name,
+                    iconUrl: json.category.icon.icon.url,
+                    iconId: json.category.icon._id,
+                    method: 1,
+                    productArray: json.category.products,
+                });
+
+            }
+            fillForm()
+        } else {
+            setFormData({
+                categoryName: ""
+            })
+            setIconSelected({
+                value: false, 
+                url: "", 
+                set: false, 
+                _id: ""
+            })
+            setBeforeEditCategory({
+                name: "",
+                iconId: ""
+            })
+            setProductArray([])
+        }
+
+        async function fetchData () {
+            const response = await fetch("https://flavr.tech/categoryicon/allicons", {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+            })
+            const json = await response.json()
+            setCategoryIcons(json.result)
+        }
+        fetchData()
+    }, [])
+
+    useEffect(() => {
+        if(location.pathname===`/dashboard/editcategory`){
             setFormData({
                 categoryName: categoryDetails.name
             })
@@ -345,19 +396,7 @@ export default function EditCategory(props) {
             })
             setProductArray(categoryDetails.productArray)
         }
-
-        async function fetchData () {
-            const response = await fetch("https://flavr.tech/categoryicon/allicons", {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-            })
-            const json = await response.json()
-            setCategoryIcons(json.result)
-        }
-        fetchData()
-    }, [])
+    }, [categoryDetails.productArray])
 
     return (
         <div>

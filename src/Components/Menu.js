@@ -17,9 +17,8 @@ export default function Menu() {
     const { setCategoryDetails } = useContext(CategoryContext)
     const navigate = useNavigate()
 
-    const handleEditCategory = (id,name,iconUrl,iconId,productArray) => {
-        setCategoryDetails({id: id, name: name, iconUrl: iconUrl, iconId: iconId, method: 1, productArray: productArray})
-        navigate('/dashboard/editcategory')
+    const handleEditCategory = (id) => {
+        navigate(`/dashboard/editcategory?id=${id}`)
     }
 
     const handleCategoryClick =  async (category) => {
@@ -103,7 +102,7 @@ export default function Menu() {
                         <h2 className="categoryHead my-5">{productWithCat.category}</h2>
                         <i 
                             className="fa-sharp fa-solid fa-pen icon editIcon fa-lg" 
-                            onClick={() => handleEditCategory(productWithCat.categoryid, productWithCat.category, productWithCat.iconurl, productWithCat.iconid, productWithCat.products)}>
+                            onClick={() => handleEditCategory(productWithCat.categoryid)}>
                         </i>
                     </div>
                     <div className="row">

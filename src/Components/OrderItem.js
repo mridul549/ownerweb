@@ -196,7 +196,7 @@ export default function OrderItem(props) {
                                 <div className="row reasons">
                                     <div className="col-md-2">
                                         <input 
-                                            class="form-check-input radioBtn" 
+                                            className="form-check-input radioBtn" 
                                             type="radio" 
                                             value="reason1" 
                                             name="reason1" 
@@ -210,7 +210,7 @@ export default function OrderItem(props) {
                                     </div>
                                     <div className="col-md-2">
                                         <input 
-                                            class="form-check-input radioBtn" 
+                                            className="form-check-input radioBtn" 
                                             type="radio" 
                                             value="reason2" 
                                             name="reason2" 
@@ -318,13 +318,13 @@ export default function OrderItem(props) {
                         <div className="d-flex justify-content-between">
                             <div className="">
                                 <button disabled={loadingInBtn.state && (loadingInBtn.role===0 || loadingInBtn.role===1)} className="btn actionBtns confirmBtn" onClick={confirmHandler}>
-                                    {loadingInBtn.state && loadingInBtn.role===0 && <span class="spinner-border spinner-border-sm mx-1" role="status" aria-hidden="true"></span>}
+                                    {loadingInBtn.state && loadingInBtn.role===0 && <span className="spinner-border spinner-border-sm mx-1" role="status" aria-hidden="true"></span>}
                                     Confirm
                                 </button>
                             </div>
                             <div className="">
                                 <button disabled={loadingInBtn.state && (loadingInBtn.role===0 || loadingInBtn.role===1)} className="btn actionBtns rejectBtn" onClick={rejectHandler}>
-                                    {loadingInBtn.state && loadingInBtn.role===1 && <span class="spinner-border spinner-border-sm mx-1" role="status" aria-hidden="true"></span>}
+                                    {loadingInBtn.state && loadingInBtn.role===1 && <span className="spinner-border spinner-border-sm mx-1" role="status" aria-hidden="true"></span>}
                                     Reject 
                                 </button>
                             </div>
@@ -332,14 +332,14 @@ export default function OrderItem(props) {
                         (props.action === 1 ? 
                             <div className="d-flex justify-content-center">
                                 <button disabled={loadingInBtn.state && loadingInBtn.role===2} onClick={() => readyHandler(2)} className="btn actionBtns confirmBtn" style={{width: "100%"}}>
-                                    {loadingInBtn.state && loadingInBtn.role===2 && <span class="spinner-border spinner-border-sm mx-1" role="status" aria-hidden="true"></span>}
+                                    {loadingInBtn.state && loadingInBtn.role===2 && <span className="spinner-border spinner-border-sm mx-1" role="status" aria-hidden="true"></span>}
                                     Ready to deliver
                                 </button>
                             </div> :
                             (props.action === 2 ?
                                 <div className="">
                                     <button disabled={loadingInBtn.state && loadingInBtn.role===3} onClick={() => deliverHandler(3)} className="btn actionBtns confirmBtn" style={{width: "100%"}}>
-                                        {loadingInBtn.state && loadingInBtn.role===3 && <span class="spinner-border spinner-border-sm mx-1" role="status" aria-hidden="true"></span>}
+                                        {loadingInBtn.state && loadingInBtn.role===3 && <span className="spinner-border spinner-border-sm mx-1" role="status" aria-hidden="true"></span>}
                                         Delivered
                                     </button>
                                 </div> : ''

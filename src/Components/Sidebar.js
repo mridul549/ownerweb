@@ -50,7 +50,7 @@ export default function Sidebar() {
                     </li>
                     <li>
                         <Link to="/dashboard/analytics">
-                            <i class='bx bx-line-chart'></i>
+                            <i className='bx bx-line-chart'></i>
                             <span className="links_name">Analytics</span>
                         </Link>
                         <span className="tooltip">Analytics</span>
