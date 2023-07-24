@@ -263,10 +263,13 @@ export default function Analytics() {
                         }
                     </div>
                 </div>
-                <div className="d-flex mt-2 justify-content-center">
-                    <div className="chart11 d-flex justify-content-center" style={{width: "50%"}}>
-                        <Doughnut data={data} options={options}> </Doughnut>
-                    </div>
+                <div className="d-flex mt-2 justify-content-center" style={{height: "34vh"}}>
+                    {chart2?.data?.result?.length!==0 ? 
+                        <div className="chart11 d-flex justify-content-center" style={{width: "50%"}}>
+                            <Doughnut data={data} options={options}> </Doughnut>
+                        </div> :
+                        <h6 className="" style={{color: "grey", marginTop: "10vh"}}>No data available</h6>
+                    }
                 </div>
             </div>
         </div>

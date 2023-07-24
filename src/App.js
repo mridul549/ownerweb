@@ -8,7 +8,7 @@ import MenuItem from './Components/MenuItem'
 import Category from './Components/Category'
 import EditCategory from './Components/EditCategory';
 import OrderItem from './Components/OrderItem';
-
+import ErrorPage from './Components/ErrorPage';
 
 function App() {
     return (
@@ -21,6 +21,7 @@ function App() {
                 <Route path='/otp' element={<Otp />}/>
                 <Route path='/dashboard/*' element={<Dashboard />} />
                 <Route path='/orderitem' element={<OrderItem/>} />
+                <Route path='*' element={<ErrorPage />}></Route>
             </Routes>
         </div>
 

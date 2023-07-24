@@ -80,7 +80,8 @@ export default function Profile() {
         setBeforeEditOwner({ownerName: ownerForm.ownerName, email: ownerForm.email});
         setOtpFor('signup');
         setEmailVerifiedModal({...emailVerifiedModal, state: false});
-        if(emailVerifiedModal.method==="email"){
+
+        if(emailVerifiedModal.method==='email'){
             handleProfileFormWithoutCheck()
         } else {
             console.log("to reset");

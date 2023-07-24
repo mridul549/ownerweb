@@ -2,33 +2,31 @@
 <html>
     <head>
         <meta charset="utf-8" />
-        <title>FlavR</title>
-        <script type="text/javascript">
-            var pathSegmentsToKeep = 1;
-
-            var l = window.location;
-            l.replace(
-                l.protocol +
-                    "//" +
-                    l.hostname +
-                    (l.port ? ":" + l.port : "") +
-                    l.pathname
-                        .split("/")
-                        .slice(0, 1 + pathSegmentsToKeep)
-                        .join("/") +
-                    "/?/" +
-                    l.pathname
-                        .slice(1)
-                        .split("/")
-                        .slice(pathSegmentsToKeep)
-                        .join("/")
-                        .replace(/&/g, "~and~") +
-                    (l.search
-                        ? "&" + l.search.slice(1).replace(/&/g, "~and~")
-                        : "") +
-                    l.hash
-            );
-        </script>
+        <title>Flavr | 404 Not found</title>
+        <style src="../src/css/errorPage.css"></style>
     </head>
-    <body></body>
+    <body>
+        <section class="page_404">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-12 ">
+                        <div class="col-sm-10 col-sm-offset-1  text-center">
+                            <div class="four_zero_four_bg">
+                                <h1 class="text-center ">404</h1>
+                            </div>
+
+                            <div class="contant_box_404">
+                                <h3 class="h2">Look like you're lost</h3>
+
+                                <p>
+                                    The page you are looking for is not avaible!
+                                </p>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </body>
 </html>

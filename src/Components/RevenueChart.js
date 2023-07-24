@@ -192,7 +192,7 @@ export default function Analytics() {
                         }
                     </div>
                 </div>
-                <div className="chart11">
+                <div className="chart11" style={{height: "34vh"}}>
                     <Line
                         data={data}
                         options={options}

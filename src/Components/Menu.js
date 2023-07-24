@@ -18,7 +18,7 @@ export default function Menu() {
     const navigate = useNavigate()
 
     const handleEditCategory = (id) => {
-        navigate(`/dashboard/editcategory?id=${id}`)
+        navigate(`/dashboard/editcategory/${id}`)
     }
 
     const handleCategoryClick =  async (category) => {
@@ -96,7 +96,7 @@ export default function Menu() {
                 <h2 className="categoryHead my-2" style={{paddingTop: "50px"}}>Products </h2>
             </div>
             {loadingPro && <Spinner />}
-            {!loadingPro&&productArray.map((productWithCat) => {
+            {!loadingPro && productArray.length!==0 ? productArray.map((productWithCat) => {
                 return <>
                     <div className="categoryName d-flex flex-row justify-content-start align-items-center" key={productWithCat.categoryid}>
                         <h2 className="categoryHead my-5">{productWithCat.category}</h2>
@@ -126,7 +126,11 @@ export default function Menu() {
                         }
                     </div>
                 </>
-            })}
+            }):
+                <div className="d-flex justify-content-center mt-5" style={{color: 'grey'}}>
+                    <h6>{!loadingPro && "No products found" }</h6>
+                </div>
+            }
 
         </div>
         </>

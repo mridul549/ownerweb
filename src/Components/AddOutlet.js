@@ -25,7 +25,7 @@ export default function AddOutlet() {
     return (
         <>
             <div className="d-flex justify-content-between mt-3 p-0 header-sec">
-                <p></p>
+                <p className="p-margin"></p>
                 <h2 className="modal-title modal-head" id="exampleModalLabel">
                     Select Outlet
                 </h2>
@@ -36,7 +36,7 @@ export default function AddOutlet() {
                     aria-label="Close"
                 ></button>
             </div>
-            <div className="outer-div">
+            <div className="outer-div d-flex flex-column align-items-center justify-content-center">
                 <Link to="/dashboard/outletdetails">
                     <button
                         className="btn add-new"

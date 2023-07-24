@@ -85,3 +85,15 @@
     background-color: rgb(249, 90, 90);
     color: white;
 }
+
+.no-outlet {
+    text-align: center;
+}
+
+.img-outlet {
+    width: 50%;
+}
+
+.no-outlet-text {
+    color: #004932;
+}

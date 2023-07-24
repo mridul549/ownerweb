@@ -22,6 +22,7 @@ import Profile from './Components/Profile';
 import Analytics from './Components/Analytics';
 import ChartState from './context/chart/chartState';
 import OutletState from './context/outlet/outletState';
+import ErrorPage from './Components/ErrorPage';
 
 const router = createBrowserRouter([
     {
@@ -65,7 +66,7 @@ const router = createBrowserRouter([
                 element:<Outletdetails/>
             },
             {
-                path: "editcategory",
+                path: "editcategory/:id",
                 element: <EditCategory />
             },
             {
@@ -84,8 +85,16 @@ const router = createBrowserRouter([
                 path: "analytics",
                 element: <Analytics />
             },
+            {
+                path: "*",
+                element: <ErrorPage />
+            },
         ]
-    }
+    },
+    {
+        path: "*",
+        element: <ErrorPage />
+    },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(

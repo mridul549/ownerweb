@@ -5,11 +5,13 @@ import Spinner from "./Spinner";
 import MenuItem from "./MenuItem";
 import {Modal, Button} from 'react-bootstrap'
 import CategoryContext from "../context/category/categoryContext";
-import { useLocation, useParams, useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams, useSearchParams } from "react-router-dom";
+import ErrorPage from "./ErrorPage";
 
 export default function EditCategory(props) {
     const location = useLocation()
     const inputRef = useRef(null)
+    const navigate = useNavigate()
 
     // Product Modal
     const [productForm, setProductForm] = useState({productName: '', productDescription: '', productPrice: 0, vegRadio: true, productImage: null})
@@ -42,6 +44,10 @@ export default function EditCategory(props) {
     
     // Products Component
     const [productArray, setProductArray] = useState([])
+
+    // Loading 
+    const [startLoading, setStartLoading] = useState(false)
+    const [errorPage, setErrorPage] = useState(false)
 
     const handleOpenProductModal = () => {
         setImage('')
@@ -328,25 +334,30 @@ export default function EditCategory(props) {
         setCategoryDetails({...categoryDetails, name: e.target.value})
     }
 
-    const [searchParams] = useSearchParams()
+    const { id } = useParams()
     useEffect(() => {
-        console.log(location.pathname);
-        if(location.pathname===`/dashboard/editcategory`){
+        console.log(id);
+        if(location.pathname===`/dashboard/editcategory/${id}`){
             const fillForm = async () => {
-                const response = await fetch(`http://localhost:3001/category/getCategory?categoryid=${searchParams.get('id')}`, {
+                setStartLoading(true)
+                const response = await fetch(`http://localhost:3001/category/getCategory?categoryid=${id}`, {
                     method: "GET"
                 })
                 const json = await response.json()
-
-                await setCategoryDetails({
-                    id: json.category._id,
-                    name: json.category.name,
-                    iconUrl: json.category.icon.icon.url,
-                    iconId: json.category.icon._id,
-                    method: 1,
-                    productArray: json.category.products,
-                });
-
+                setStartLoading(false)
+                if(json.message==="category not found" || json.error?.kind==="ObjectId"){
+                    navigate('*')
+                    return
+                } else {
+                    await setCategoryDetails({
+                        id: json.category._id,
+                        name: json.category.name,
+                        iconUrl: json.category.icon.icon.url,
+                        iconId: json.category.icon._id,
+                        method: 1,
+                        productArray: json.category.products,
+                    });
+                }
             }
             fillForm()
         } else {
@@ -377,10 +388,10 @@ export default function EditCategory(props) {
             setCategoryIcons(json.result)
         }
         fetchData()
-    }, [])
+    }, [location.pathname])
 
     useEffect(() => {
-        if(location.pathname===`/dashboard/editcategory`){
+        if(location.pathname===`/dashboard/editcategory/${id}`){
             setFormData({
                 categoryName: categoryDetails.name
             })
@@ -399,159 +410,72 @@ export default function EditCategory(props) {
     }, [categoryDetails.productArray])
 
     return (
-        <div>
-            {/* Product Updel modal */}
-            <Modal show={isConfirmModalOpen.state} onHide={handleCloseConfirmModal}>
-                <Modal.Header>
-                    <Modal.Title style={{textAlign: 'center'}}>{isConfirmModalOpen.title}</Modal.Title>
-                </Modal.Header>
-                <Modal.Footer className="d-flex justify-content-center">
-                    <div>
-                        <div className="d-flex justify-content-center" style={{marginTop: "-20px"}}>
-                            {loadingUpdelProduct && <Spinner />}
-                            {successLabelUpdel.value ? <label htmlFor="" className="successLabel">{successLabelUpdel.message}</label> : ""}
-                            {apiErrorUpdel.state ? <label htmlFor="" className="errorLabel">{apiErrorUpdel.message}</label> : ""}
-                        </div>
-                        <div className="row mt-3 d-flex justify-content-center">
-                            <div className="col-lg-6">
-                                <Button className="" disabled={loadingUpdelProduct} variant="secondary" onClick={handleCloseConfirmModal}>
-                                    No
-                                </Button>
-                            </div>
-                            <div className="col-lg-6">
-                                <Button disabled={loadingUpdelProduct} variant="btn" className="yesBtn" onClick={deleteProduct}>
-                                    Yes
-                                </Button>
-                            </div>
-                        </div>
-                    </div>
-                </Modal.Footer>
-            </Modal>
-
-            {/* Category icon list modal */}
-            <div className="modal fade" id="iconListModal" aria-labelledby="iconListModalLabel" aria-hidden="true">
-                <div className="modal-dialog">
-                    <div className="modal-content shadow-lg popup" style={{width: "100%"}}>
-                        <div className="modal-body">
-                            <div className="headNClose d-flex justify-content-between">
-                                <p></p> {/* Added p tag to use flexbox properly */}
-                                <h2 className="modal-title" id="iconListModalLabel">Select Category Icon</h2>
-                                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div className="iconRow row">
-                                {categoryIcons.slice(1).map((categoryIcon) => {
-                                    return <div className="col-lg-3 iconRow col-md-4 col-sm-4 col-6" key={categoryIcon._id}>
-                                        <Category 
-                                            set={iconSelected.set && iconSelected._id === categoryIcon._id} 
-                                            iconImage={categoryIcon.icon?.url} 
-                                            onClick={() => handleCategoryClick(categoryIcon.icon?.url, categoryIcon._id)}
-                                        />
+        <>
+            {startLoading ? 
+                <div style={{marginTop: "40vh"}}>
+                    <Spinner /> 
+                </div> :
+                <div>
+                    {/* Product Updel modal */}
+                    <Modal show={isConfirmModalOpen.state} onHide={handleCloseConfirmModal}>
+                        <Modal.Header>
+                            <Modal.Title style={{textAlign: 'center'}}>{isConfirmModalOpen.title}</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Footer className="d-flex justify-content-center">
+                            <div>
+                                <div className="d-flex justify-content-center" style={{marginTop: "-20px"}}>
+                                    {loadingUpdelProduct && <Spinner />}
+                                    {successLabelUpdel.value ? <label htmlFor="" className="successLabel">{successLabelUpdel.message}</label> : ""}
+                                    {apiErrorUpdel.state ? <label htmlFor="" className="errorLabel">{apiErrorUpdel.message}</label> : ""}
+                                </div>
+                                <div className="row mt-3 d-flex justify-content-center">
+                                    <div className="col-lg-6">
+                                        <Button className="" disabled={loadingUpdelProduct} variant="secondary" onClick={handleCloseConfirmModal}>
+                                            No
+                                        </Button>
                                     </div>
-                                })}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <Modal show={isProductModalOpen.state} onHide={handleCloseProductModal} className="shadow-xl" style={{borderRadius: "30px"}}>
-                <Modal.Body >
-                    <div className="headNClose d-flex justify-content-between">
-                        <p></p> {/* Added p tag to use flexbox properly */}
-                        <h2 className="modal-title" id="iconListModalLabel"> {isProductModalOpen.title} </h2>
-                        <button type="button" className="btn-close" onClick={handleCloseProductModal}></button>
-                    </div>
-                    <div className="form d-flex flex-column justify-content-start align-items-start">
-                        <form action="">
-                            <label htmlFor="" className="productPic">Product Picture</label>
-                            <div className="productImage d-flex flex-column align-items-center justify-content-center" onClick={handleImageClick}>
-                                <label htmlFor="productImageInput">{image ? image.name : "Choose an image"} </label>
-                                {image ? 
-                                    (typeof image === 'string' ? 
-                                        <img className="mt-1" style={{width: "150px", borderRadius: "10px"}} src={image} alt="" /> : 
-                                        <img className="mt-1" style={{width: "150px", borderRadius: "10px"}} src={URL.createObjectURL(image)} alt="" />
-                                    ) :
-                                    <img className="mt-1" style={{width: "150px", borderRadius: "10px"}} src="https://res.cloudinary.com/dokgv4lff/image/upload/v1688220885/no_image_frvfpb.jpg" alt="" />
-                                }
-                                <input type="file" name="productImageInput" ref={inputRef} onChange={productFormOnChange} className="productPicInput d-flex justify-content-center"/>
-                            </div>
-                            <div className="productDetails">
-                                <label htmlFor="" className="productPic">Product Name</label>
-                                <input type="text" id="productName" value={productForm.productName} autoComplete="off" name="productName" onChange={productFormOnChange} className="productFormInput shadow-sm" placeholder="Enter product name" />
-                                {errorProduct && productForm.productName.length===0 ? <label htmlFor="" className="errorLabel">Product Name can't be empty</label> : ""}  
-
-                                <label htmlFor="" className="productPic">Product Description</label>
-                                <input type="text" id="productDescription" name="productDescription" autoComplete="off" value={productForm.productDescription} onChange={productFormOnChange} className="productFormInput shadow-sm" placeholder="Enter product description" />
-                                {errorProduct && productForm.productDescription.length===0 ? <label htmlFor="" className="errorLabel">Product Description can't be empty</label> : ""}  
-
-                                <label htmlFor="" className="productPic">Product Price</label>
-                                <input type="number" id="productPrice" name="productPrice" autoComplete="off" value={productForm.productPrice} onChange={productFormOnChange} className="productFormInput shadow-sm" placeholder="Enter product price" />
-                                {errorProduct && productForm.productPrice===0 ? <label htmlFor="" className="errorLabel">Product price can't be 0</label> : ""}  
-
-                                <div className="vegRadio d-flex flex-row justify-content-center align-items-center">
-                                    {productForm.vegRadio ? 
-                                        (<>
-                                            <div className="vegDiv">
-                                                <input className="form-check-input radioBtn" type="radio" id="veg" onChange={productFormOnChange} checked name="vegRadio" value={true}/>
-                                                <label htmlFor="veg">Veg</label>
-                                            </div>
-                                            <div className="vegDiv">
-                                                <input className="form-check-input radioBtn" type="radio" onChange={productFormOnChange} id="nonVeg" name="vegRadio" value={false}/>
-                                                <label htmlFor="nonVeg">Non-Veg</label>
-                                            </div>
-                                        </>) :
-                                        (<>
-                                            <div className="vegDiv">
-                                                <input className="form-check-input radioBtn" type="radio" id="veg" onChange={productFormOnChange}  name="vegRadio" value={true}/>
-                                                <label htmlFor="veg">Veg</label>
-                                            </div>
-                                            <div className="vegDiv">
-                                                <input className="form-check-input radioBtn" type="radio" onChange={productFormOnChange} checked id="nonVeg" name="vegRadio" value={false}/>
-                                                <label htmlFor="nonVeg">Non-Veg</label>
-                                            </div>
-                                        </>) 
-                                    }
+                                    <div className="col-lg-6">
+                                        <Button disabled={loadingUpdelProduct} variant="btn" className="yesBtn" onClick={deleteProduct}>
+                                            Yes
+                                        </Button>
+                                    </div>
                                 </div>
                             </div>
-                            <div className="variants d-flex flex-column justify-content-start align-items-start">
-                                <label htmlFor="" className="productPic">Variants <i className="fa-solid fa-circle-plus mx-1 fa-xl" onClick={handleVariantAddition} style={{color: "#004932"}}></i></label>
-                                {variantArray.map((data,i) => {
-                                    return <div className="variantDetails row" key={i}>
-                                        <div className="col-md-5 col-sm-5 col-5">
-                                            <input type="text" id="variantName" name="variantName" autoComplete="off" value={data.variantName || ""} onChange={e=>variantOnChange(e,i)} className="variantInput shadow-sm" placeholder="Enter variant name" />    
-                                        </div>
-                                        <div className="col-md-5 col-sm-5 col-5">
-                                            <input type="number" id="price" name="price" value={data.price || ""}  autoComplete="off" onChange={e=>variantOnChange(e,i)} className="variantInput shadow-sm" placeholder="Enter variant price" />    
-                                        </div>
-                                        <div className="col-md-2 col-sm-2 col-2 d-flex flex-column justify-content-center align-items-center">
-                                            <i className="fa-solid fa-circle-minus fa-xl" onClick={() => handleVariantDeletion(i)} style={{color: "#FF0303"}}></i>
-                                        </div>
-                                    </div>
-                                })}
-                            </div>
-                            <div className="submitProduct d-flex flex-column justify-content-center align-items-center">
-                                {loadingProduct ? <Spinner /> : ""}
-                                {successLabelProduct.value ? <label htmlFor="" className="successLabel">{successLabelProduct.message}</label> : ""}
-                                {apiErrorProduct.state ? <label htmlFor="" className="errorLabel">{apiErrorProduct.message}</label> : ""}
-                                {isProductModalOpen.action==="add" ? 
-                                    <button type="submit" onClick={handleProductForm} className="btn addProductSubmit mt-4">Submit</button>  :
-                                    <button type="submit" onClick={handleProductForm} className="btn addProductSubmit mt-4">Save Changes</button>  
-                                }
-                            </div>
-                        </form>
-                    </div>
-                </Modal.Body>               
-            </Modal>
+                        </Modal.Footer>
+                    </Modal>
 
-            {/* Add product modal */}
-            <div className="modal fade" id="addProductModal" aria-labelledby="addProductModalLabel" aria-hidden="true">
-                <div className="modal-dialog modal-dialog-scrollable">
-                    <div className="modal-content shadow-lg popup">
-                        <div className="modal-body">
+                    {/* Category icon list modal */}
+                    <div className="modal fade" id="iconListModal" aria-labelledby="iconListModalLabel" aria-hidden="true">
+                        <div className="modal-dialog">
+                            <div className="modal-content shadow-lg popup" style={{width: "100%"}}>
+                                <div className="modal-body">
+                                    <div className="headNClose d-flex justify-content-between">
+                                        <p></p> {/* Added p tag to use flexbox properly */}
+                                        <h2 className="modal-title" id="iconListModalLabel">Select Category Icon</h2>
+                                        <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div className="iconRow row">
+                                        {categoryIcons.slice(1).map((categoryIcon) => {
+                                            return <div className="col-lg-3 iconRow col-md-4 col-sm-4 col-6" key={categoryIcon._id}>
+                                                <Category 
+                                                    set={iconSelected.set && iconSelected._id === categoryIcon._id} 
+                                                    iconImage={categoryIcon.icon?.url} 
+                                                    onClick={() => handleCategoryClick(categoryIcon.icon?.url, categoryIcon._id)}
+                                                />
+                                            </div>
+                                        })}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <Modal show={isProductModalOpen.state} onHide={handleCloseProductModal} className="shadow-xl" style={{borderRadius: "30px"}}>
+                        <Modal.Body >
                             <div className="headNClose d-flex justify-content-between">
                                 <p></p> {/* Added p tag to use flexbox properly */}
-                                <h2 className="modal-title" id="iconListModalLabel">Add Product</h2>
-                                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                <h2 className="modal-title" id="iconListModalLabel"> {isProductModalOpen.title} </h2>
+                                <button type="button" className="btn-close" onClick={handleCloseProductModal}></button>
                             </div>
                             <div className="form d-flex flex-column justify-content-start align-items-start">
                                 <form action="">
@@ -613,7 +537,7 @@ export default function EditCategory(props) {
                                                     <input type="text" id="variantName" name="variantName" autoComplete="off" value={data.variantName || ""} onChange={e=>variantOnChange(e,i)} className="variantInput shadow-sm" placeholder="Enter variant name" />    
                                                 </div>
                                                 <div className="col-md-5 col-sm-5 col-5">
-                                                    <input type="number" id="price" name="price" value={data.price || ""} autoComplete="off" onChange={e=>variantOnChange(e,i)} className="variantInput shadow-sm" placeholder="Enter variant price" />    
+                                                    <input type="number" id="price" name="price" value={data.price || ""}  autoComplete="off" onChange={e=>variantOnChange(e,i)} className="variantInput shadow-sm" placeholder="Enter variant price" />    
                                                 </div>
                                                 <div className="col-md-2 col-sm-2 col-2 d-flex flex-column justify-content-center align-items-center">
                                                     <i className="fa-solid fa-circle-minus fa-xl" onClick={() => handleVariantDeletion(i)} style={{color: "#FF0303"}}></i>
@@ -621,97 +545,191 @@ export default function EditCategory(props) {
                                             </div>
                                         })}
                                     </div>
-                                    {loadingProduct ? <Spinner /> : ""}
-                                    {successLabelProduct.value ? <label htmlFor="" className="successLabel">{successLabelProduct.message}</label> : ""}
-                                    {apiErrorProduct.state ? <label htmlFor="" className="errorLabel">{apiErrorProduct.message}</label> : ""}
                                     <div className="submitProduct d-flex flex-column justify-content-center align-items-center">
-                                        <button type="submit" onClick={handleProductForm} className="btn addProductSubmit mt-4">Submit</button>  
+                                        {loadingProduct ? <Spinner /> : ""}
+                                        {successLabelProduct.value ? <label htmlFor="" className="successLabel">{successLabelProduct.message}</label> : ""}
+                                        {apiErrorProduct.state ? <label htmlFor="" className="errorLabel">{apiErrorProduct.message}</label> : ""}
+                                        {isProductModalOpen.action==="add" ? 
+                                            <button type="submit" onClick={handleProductForm} className="btn addProductSubmit mt-4">Submit</button>  :
+                                            <button type="submit" onClick={handleProductForm} className="btn addProductSubmit mt-4">Save Changes</button>  
+                                        }
                                     </div>
                                 </form>
                             </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                        </Modal.Body>               
+                    </Modal>
 
-            {/* Rest of the component */}
-            <form onSubmit={handleCategoryForm}>
-                <div className="container categoryForm">
-                    <div className="row catNameAndIcon">
-                        <div className="col-lg-6 categoryNameForm">
-                            <h4 className="heading my-4">Category Name</h4>
-                            <input 
-                                type="text" 
-                                id="categoryName" 
-                                name="categoryName" 
-                                value={categoryDetails.name.length>0 ? categoryDetails.name : ""} 
-                                onChange={onChange} 
-                                className="categoryNameInput shadow-sm" 
-                                placeholder="Enter category name" 
-                                autoComplete="off"
-                            />
-                            {error && formData.categoryName.length===0 ? <label htmlFor="" className="errorLabel">Category Name can't be empty</label> : ""}  
-                        </div>
-                        <div className="col-lg-6 iconChoose d-flex flex-column justify-content-start align-items-start">
-                            <h4 className="heading my-4">Category Icon</h4>
-                            <button type="button" className={categoryDetails.iconId==='' ? (iconSelected.value ? "btn categoryIconSelectedBtn" : "selectIcon") : "btn categoryIconSelectedBtn"} data-bs-toggle="modal" data-bs-target="#iconListModal">
-                                {categoryDetails.iconId==='' ? 
-                                    (iconSelected.value ? 
-                                        <Category set={false} disabled={true} iconImage={iconSelected?.url} /> :
-                                        <>
-                                            <i className="fa-solid fa-circle-plus mx-1 fa-2xl" style={{color: "#ffffff", marginTop: "30px"}}></i>
-                                            <p style={{marginTop: "10px", color: "#fff"}}>Add Icon</p>
-                                        </>
-                                    ) : <Category set={false} disabled={true} iconImage={categoryDetails.iconUrl} />
-                                }
-                            </button>
-                            {error && iconSelected._id==='' ? <label htmlFor="" className="errorLabel">No category icon selected</label> : ""}  
-                        </div>
-                        <div className="catSave d-flex flex-column justify-content-center align-items-center">
-                            {loading ? <Spinner /> : ""} 
-                            {successLabel.value ? <label htmlFor="" className="successLabel">{successLabel.message}</label> : ""}
-                            {apiError.state ? <label htmlFor="" className="errorLabel">{apiError.message}</label> : ""}
-                            {categoryDetails.method===0 ? 
-                                <button type="submit" className="btn catSaveButton my-4">Add Category</button> :
-                                <button 
-                                    type="button" 
-                                    disabled={categoryDetails.name===beforeEditCategory.name && categoryDetails.iconId===beforeEditCategory.iconId} 
-                                    onClick={handleUpdateCategory}
-                                    className="btn catSaveButton my-4"
-                                >Save Changes</button> 
-                            }
-                        </div>
-                    </div>
-                </div>
-            </form>
+                    {/* Add product modal */}
+                    <div className="modal fade" id="addProductModal" aria-labelledby="addProductModalLabel" aria-hidden="true">
+                        <div className="modal-dialog modal-dialog-scrollable">
+                            <div className="modal-content shadow-lg popup">
+                                <div className="modal-body">
+                                    <div className="headNClose d-flex justify-content-between">
+                                        <p></p> {/* Added p tag to use flexbox properly */}
+                                        <h2 className="modal-title" id="iconListModalLabel">Add Product</h2>
+                                        <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div className="form d-flex flex-column justify-content-start align-items-start">
+                                        <form action="">
+                                            <label htmlFor="" className="productPic">Product Picture</label>
+                                            <div className="productImage d-flex flex-column align-items-center justify-content-center" onClick={handleImageClick}>
+                                                <label htmlFor="productImageInput">{image ? image.name : "Choose an image"} </label>
+                                                {image ? 
+                                                    (typeof image === 'string' ? 
+                                                        <img className="mt-1" style={{width: "150px", borderRadius: "10px"}} src={image} alt="" /> : 
+                                                        <img className="mt-1" style={{width: "150px", borderRadius: "10px"}} src={URL.createObjectURL(image)} alt="" />
+                                                    ) :
+                                                    <img className="mt-1" style={{width: "150px", borderRadius: "10px"}} src="https://res.cloudinary.com/dokgv4lff/image/upload/v1688220885/no_image_frvfpb.jpg" alt="" />
+                                                }
+                                                <input type="file" name="productImageInput" ref={inputRef} onChange={productFormOnChange} className="productPicInput d-flex justify-content-center"/>
+                                            </div>
+                                            <div className="productDetails">
+                                                <label htmlFor="" className="productPic">Product Name</label>
+                                                <input type="text" id="productName" value={productForm.productName} autoComplete="off" name="productName" onChange={productFormOnChange} className="productFormInput shadow-sm" placeholder="Enter product name" />
+                                                {errorProduct && productForm.productName.length===0 ? <label htmlFor="" className="errorLabel">Product Name can't be empty</label> : ""}  
 
-            {/* Add products section */}
-            <div className="products">
-                <h4 className="heading my-4">Products</h4>
-                {/* <button disabled={categoryDetails.id===''} type="button" className="btn addProductButton" data-bs-toggle="modal" data-bs-target="#addProductModal">Add New Product <i className="fa-solid fa-circle-plus mx-1 fa-xl" style={{color: "#ffffff"}}></i></button> */}
-                <button disabled={categoryDetails.id===''} type="button" className="btn addProductButton" onClick={handleOpenProductModal}>Add New Product <i className="fa-solid fa-circle-plus mx-1 fa-xl" style={{color: "#ffffff"}}></i></button>
-                <div className="allCategoryProducts row">
-                    {productArray.length===0 ? 
-                        <p className="noProductLabel d-flex justify-content-center">No products Added</p> : 
-                        productArray.map((product) => {
-                            return <div className="col-lg-6" key={product._id}>
-                                <MenuItem 
-                                    productImage={product.productImage?.url} 
-                                    productName={product.productName} 
-                                    productPrice={product.price} 
-                                    veg={product.veg} 
-                                    description={product.description} 
-                                    variants={product.variants}  
-                                    productEdit={true} 
-                                    productid={product._id}
-                                    instock={product.inStock}
-                                    onClick={(action) => handleUpDel(action, product._id, product.productName, product.description, product.price, product.veg, product.variants, product.productImage?.url)}
-                                />
+                                                <label htmlFor="" className="productPic">Product Description</label>
+                                                <input type="text" id="productDescription" name="productDescription" autoComplete="off" value={productForm.productDescription} onChange={productFormOnChange} className="productFormInput shadow-sm" placeholder="Enter product description" />
+                                                {errorProduct && productForm.productDescription.length===0 ? <label htmlFor="" className="errorLabel">Product Description can't be empty</label> : ""}  
+
+                                                <label htmlFor="" className="productPic">Product Price</label>
+                                                <input type="number" id="productPrice" name="productPrice" autoComplete="off" value={productForm.productPrice} onChange={productFormOnChange} className="productFormInput shadow-sm" placeholder="Enter product price" />
+                                                {errorProduct && productForm.productPrice===0 ? <label htmlFor="" className="errorLabel">Product price can't be 0</label> : ""}  
+
+                                                <div className="vegRadio d-flex flex-row justify-content-center align-items-center">
+                                                    {productForm.vegRadio ? 
+                                                        (<>
+                                                            <div className="vegDiv">
+                                                                <input className="form-check-input radioBtn" type="radio" id="veg" onChange={productFormOnChange} checked name="vegRadio" value={true}/>
+                                                                <label htmlFor="veg">Veg</label>
+                                                            </div>
+                                                            <div className="vegDiv">
+                                                                <input className="form-check-input radioBtn" type="radio" onChange={productFormOnChange} id="nonVeg" name="vegRadio" value={false}/>
+                                                                <label htmlFor="nonVeg">Non-Veg</label>
+                                                            </div>
+                                                        </>) :
+                                                        (<>
+                                                            <div className="vegDiv">
+                                                                <input className="form-check-input radioBtn" type="radio" id="veg" onChange={productFormOnChange}  name="vegRadio" value={true}/>
+                                                                <label htmlFor="veg">Veg</label>
+                                                            </div>
+                                                            <div className="vegDiv">
+                                                                <input className="form-check-input radioBtn" type="radio" onChange={productFormOnChange} checked id="nonVeg" name="vegRadio" value={false}/>
+                                                                <label htmlFor="nonVeg">Non-Veg</label>
+                                                            </div>
+                                                        </>) 
+                                                    }
+                                                </div>
+                                            </div>
+                                            <div className="variants d-flex flex-column justify-content-start align-items-start">
+                                                <label htmlFor="" className="productPic">Variants <i className="fa-solid fa-circle-plus mx-1 fa-xl" onClick={handleVariantAddition} style={{color: "#004932"}}></i></label>
+                                                {variantArray.map((data,i) => {
+                                                    return <div className="variantDetails row" key={i}>
+                                                        <div className="col-md-5 col-sm-5 col-5">
+                                                            <input type="text" id="variantName" name="variantName" autoComplete="off" value={data.variantName || ""} onChange={e=>variantOnChange(e,i)} className="variantInput shadow-sm" placeholder="Enter variant name" />    
+                                                        </div>
+                                                        <div className="col-md-5 col-sm-5 col-5">
+                                                            <input type="number" id="price" name="price" value={data.price || ""} autoComplete="off" onChange={e=>variantOnChange(e,i)} className="variantInput shadow-sm" placeholder="Enter variant price" />    
+                                                        </div>
+                                                        <div className="col-md-2 col-sm-2 col-2 d-flex flex-column justify-content-center align-items-center">
+                                                            <i className="fa-solid fa-circle-minus fa-xl" onClick={() => handleVariantDeletion(i)} style={{color: "#FF0303"}}></i>
+                                                        </div>
+                                                    </div>
+                                                })}
+                                            </div>
+                                            {loadingProduct ? <Spinner /> : ""}
+                                            {successLabelProduct.value ? <label htmlFor="" className="successLabel">{successLabelProduct.message}</label> : ""}
+                                            {apiErrorProduct.state ? <label htmlFor="" className="errorLabel">{apiErrorProduct.message}</label> : ""}
+                                            <div className="submitProduct d-flex flex-column justify-content-center align-items-center">
+                                                <button type="submit" onClick={handleProductForm} className="btn addProductSubmit mt-4">Submit</button>  
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
                             </div>
-                        })
-                    }     
-                </div>
-            </div>
-        </div>
+                        </div>
+                    </div>
+
+                    {/* Rest of the component */}
+                    <form onSubmit={handleCategoryForm}>
+                        <div className="container categoryForm">
+                            <div className="row catNameAndIcon">
+                                <div className="col-lg-6 categoryNameForm">
+                                    <h4 className="heading my-4">Category Name</h4>
+                                    <input 
+                                        type="text" 
+                                        id="categoryName" 
+                                        name="categoryName" 
+                                        value={categoryDetails.name.length>0 ? categoryDetails.name : ""} 
+                                        onChange={onChange} 
+                                        className="categoryNameInput shadow-sm" 
+                                        placeholder="Enter category name" 
+                                        autoComplete="off"
+                                    />
+                                    {error && formData.categoryName.length===0 ? <label htmlFor="" className="errorLabel">Category Name can't be empty</label> : ""}  
+                                </div>
+                                <div className="col-lg-6 iconChoose d-flex flex-column justify-content-start align-items-start">
+                                    <h4 className="heading my-4">Category Icon</h4>
+                                    <button type="button" className={categoryDetails.iconId==='' ? (iconSelected.value ? "btn categoryIconSelectedBtn" : "selectIcon") : "btn categoryIconSelectedBtn"} data-bs-toggle="modal" data-bs-target="#iconListModal">
+                                        {categoryDetails.iconId==='' ? 
+                                            (iconSelected.value ? 
+                                                <Category set={false} disabled={true} iconImage={iconSelected?.url} /> :
+                                                <>
+                                                    <i className="fa-solid fa-circle-plus mx-1 fa-2xl" style={{color: "#ffffff", marginTop: "30px"}}></i>
+                                                    <p style={{marginTop: "10px", color: "#fff"}}>Add Icon</p>
+                                                </>
+                                            ) : <Category set={false} disabled={true} iconImage={categoryDetails.iconUrl} />
+                                        }
+                                    </button>
+                                    {error && iconSelected._id==='' ? <label htmlFor="" className="errorLabel">No category icon selected</label> : ""}  
+                                </div>
+                                <div className="catSave d-flex flex-column justify-content-center align-items-center">
+                                    {loading ? <Spinner /> : ""} 
+                                    {successLabel.value ? <label htmlFor="" className="successLabel">{successLabel.message}</label> : ""}
+                                    {apiError.state ? <label htmlFor="" className="errorLabel">{apiError.message}</label> : ""}
+                                    {categoryDetails.method===0 ? 
+                                        <button type="submit" className="btn catSaveButton my-4">Add Category</button> :
+                                        <button 
+                                            type="button" 
+                                            disabled={categoryDetails.name===beforeEditCategory.name && categoryDetails.iconId===beforeEditCategory.iconId} 
+                                            onClick={handleUpdateCategory}
+                                            className="btn catSaveButton my-4"
+                                        >Save Changes</button> 
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+                    {/* Add products section */}
+                    <div className="products">
+                        <h4 className="heading my-4">Products</h4>
+                        {/* <button disabled={categoryDetails.id===''} type="button" className="btn addProductButton" data-bs-toggle="modal" data-bs-target="#addProductModal">Add New Product <i className="fa-solid fa-circle-plus mx-1 fa-xl" style={{color: "#ffffff"}}></i></button> */}
+                        <button disabled={categoryDetails.id===''} type="button" className="btn addProductButton" onClick={handleOpenProductModal}>Add New Product <i className="fa-solid fa-circle-plus mx-1 fa-xl" style={{color: "#ffffff"}}></i></button>
+                        <div className="allCategoryProducts row">
+                            {productArray.length===0 ? 
+                                <p className="noProductLabel d-flex justify-content-center">No products Added</p> : 
+                                productArray.map((product) => {
+                                    return <div className="col-lg-6" key={product._id}>
+                                        <MenuItem 
+                                            productImage={product.productImage?.url} 
+                                            productName={product.productName} 
+                                            productPrice={product.price} 
+                                            veg={product.veg} 
+                                            description={product.description} 
+                                            variants={product.variants}  
+                                            productEdit={true} 
+                                            productid={product._id}
+                                            instock={product.inStock}
+                                            onClick={(action) => handleUpDel(action, product._id, product.productName, product.description, product.price, product.veg, product.variants, product.productImage?.url)}
+                                        />
+                                    </div>
+                                })
+                            }     
+                        </div>
+                    </div>
+                </div> 
+            } 
+        </>
     );
 }

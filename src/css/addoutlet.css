@@ -15,3 +15,16 @@
 .modal-head {
     font-weight: 600;
 }
+
+.add-new:hover {
+    background-color: #017450;
+    color: white;
+}
+
+.p-margin {
+    margin-right: 25px;
+}
+
+.outer-div {
+    padding-top: 5%;
+}
