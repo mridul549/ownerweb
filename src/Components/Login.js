@@ -28,7 +28,7 @@ export default function SignIn() {
         event.preventDefault()
 
         toast.promise(
-            fetch(`http://localhost:3001/mail/passwordreset`, {
+            fetch(`https://flavr.tech/mail/passwordreset`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

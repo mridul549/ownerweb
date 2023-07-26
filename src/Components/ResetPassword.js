@@ -16,7 +16,7 @@ export default function ResetPassword() {
 
         console.log(searchParams.get('token'));
         toast.promise(
-            fetch(`http://localhost:3001/owner/forgetPassword`, {
+            fetch(`https://flavr.tech/owner/forgetPassword`, {
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json",

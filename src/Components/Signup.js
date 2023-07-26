@@ -69,7 +69,7 @@ const Signup = () => {
     const handleGoogleAuth = async (res) => {
         const decodedToken = jwt_decode(res.credential)
 
-        const response = await fetch("http://localhost:3001/owner/googleAuth", {
+        const response = await fetch("https://flavr.tech/owner/googleAuth", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
