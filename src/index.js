@@ -23,6 +23,7 @@ import Analytics from './Components/Analytics';
 import ChartState from './context/chart/chartState';
 import OutletState from './context/outlet/outletState';
 import ErrorPage from './Components/ErrorPage';
+import ResetPassword from './Components/ResetPassword';
 
 const router = createBrowserRouter([
     {
@@ -48,6 +49,10 @@ const router = createBrowserRouter([
     {
         path: "/orderitem",
         element: <OrderItem />
+    },
+    {
+        path: "/resetpassword",
+        element: <ResetPassword />
     },
     {
         path: '/dashboard',

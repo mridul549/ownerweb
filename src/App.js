@@ -4,11 +4,9 @@ import Home from './Components/Home';
 import Login from './Components/Login'
 import Otp from './Components/Otp'
 import Dashboard from './Components/Dashboard';
-import MenuItem from './Components/MenuItem'
-import Category from './Components/Category'
-import EditCategory from './Components/EditCategory';
 import OrderItem from './Components/OrderItem';
 import ErrorPage from './Components/ErrorPage';
+import ResetPassword from './Components/ResetPassword';
 
 function App() {
     return (
@@ -19,6 +17,7 @@ function App() {
                 <Route path='/signup' element={<Signup /> }/>
                 <Route path='/login' element={<Login />} />
                 <Route path='/otp' element={<Otp />}/>
+                <Route path='/resetpassword' element={<ResetPassword />}/>
                 <Route path='/dashboard/*' element={<Dashboard />} />
                 <Route path='/orderitem' element={<OrderItem/>} />
                 <Route path='*' element={<ErrorPage />}></Route>

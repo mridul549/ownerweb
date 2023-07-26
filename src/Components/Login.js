@@ -1,4 +1,4 @@
-import { React, useState, useContext } from 'react';
+import { React, useState, useContext, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom'
 import '../css/auth.css'
 import Spinner from "./Spinner";
@@ -20,20 +20,20 @@ export default function SignIn() {
     const [verificationModal, setVerificationModal] = useState(false)
     const {setEmail,setOtpFor} = useContext(AuthContext)
     const [passRestModal, setPassResetModal] = useState(false)
-    const [passResetForm, setPassResetForm] = useState({emailPass: '', newPass: '', confirmNewPass: ''})
-    const [passError, setPassError] = useState(false)
+    const [passResetForm, setPassResetForm] = useState({emailPass: ''})
+
     let navigate = useNavigate()
 
-    const resetPassword = () => {
-        console.log(passResetForm.oldPass + " " + passResetForm.newPass);
+    const resetPassword = (event) => {
+        event.preventDefault()
+
         toast.promise(
-            fetch(`http://localhost:3001/owner/forgetPassword`, {
-                method: "PATCH",
+            fetch(`http://localhost:3001/mail/passwordreset`, {
+                method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    "Authorization": "Bearer " + localStorage.getItem("token")
                 },
-                body: JSON.stringify(({oldPassword: passResetForm.oldPass, newPassword: passResetForm.newPass}))
+                body: JSON.stringify(({email: passResetForm.emailPass}))
             }).then((response) => response.json()),
             {
                 pending: {
@@ -55,17 +55,11 @@ export default function SignIn() {
                 }
             }
         );
+
     }
 
     const passOnChange = (e) => {
         setPassResetForm({...passResetForm, [e.target.name]: e.target.value})
-        if(e.target.name==="confirmNewPass" && 
-            (passResetForm.confirmNewPass!==passResetForm.newPass || 
-             passResetForm.confirmNewPass.length>=passResetForm.newPass.length)){
-            setPassError(true)
-        } else {
-            setPassError(false)
-        }
     }
 
     const handleClosePassResetModal = () => {
@@ -221,6 +215,10 @@ export default function SignIn() {
         }
     }
 
+    useEffect(() =>{
+        document.title = 'FlavR | Login'
+    }, [])
+
     return (
         <>
             {/* Password reset modal */}
@@ -235,19 +233,13 @@ export default function SignIn() {
                     </div>
                 </Modal.Header>
                 <Modal.Body>
-                    <div className="mt-4">
+                    <div className="mt-2">
                         <form onSubmit={resetPassword}>
+                            <div className="d-flex justify-content-center mt-3">
+                                <p style={{textAlign: 'center'}}>Enter the email whose password you want to reset.</p>
+                            </div>
                             <div className="d-flex flex-column align-items-start justify-content-center" >
-                                <label className="mt-3" htmlFor="">Email<span style={{color: 'red'}}>*</span> </label>
-                                <input type="text" name="emailPass" onChange={passOnChange} className="inputText shadow-sm" placeholder="Enter your email"/>
-                                
-                                <label className="mt-3" htmlFor="">New Password<span style={{color: 'red'}}>*</span> </label>
-                                <input type="password" name="newPass" onChange={passOnChange} className="inputText shadow-sm" placeholder="Enter your new password"/>
-
-                                <label className="mt-3" htmlFor="">Confirm new Password<span style={{color: 'red'}}>*</span> </label>
-                                <input type="password" name="confirmNewPass" onChange={passOnChange} className="inputText shadow-sm" placeholder="Confirm new password"/>
-                                {passError&& (passResetForm.confirmNewPass!==passResetForm.newPass) &&
-                                <label className="errorLabelPass">Passwords do not match</label> }
+                                <input autoComplete='off' required type="email" name="emailPass" onChange={passOnChange} className="inputText shadow-sm" placeholder="Enter your email"/>
                             </div>
                             <div className="d-flex justify-content-center mt-3">
                                 <button className="btn saveChanges">Submit</button>

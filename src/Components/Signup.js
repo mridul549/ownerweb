@@ -1,4 +1,4 @@
-import {React, useState, useContext} from "react";
+import {React, useState, useContext, useEffect } from "react";
 import '../css/auth.css'
 import {Link, useNavigate} from 'react-router-dom'
 import Spinner from "./Spinner";
@@ -89,6 +89,10 @@ const Signup = () => {
         }
     }
 
+    useEffect(() =>{
+        document.title = 'FlavR | Sign Up'
+    }, [])
+
     return (
         <div className="container-fluid signup">
             <div className="row">
@@ -137,7 +141,7 @@ const Signup = () => {
                             />
                         </GoogleOAuthProvider>
                     </div>
-                    <Link to="/login" className="login-link">Already have an account? Log in here</Link>
+                    <Link to="/login" className="login-link mt-3">Already have an account? Log in here</Link>
                     </div>
             </div>
         </div>
