@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import RevenueChart from './RevenueChart'
 import Dropdown from 'react-bootstrap/Dropdown';
 import ChartContext from "../context/chart/chartContext";
@@ -7,7 +7,9 @@ import CompareChart from './CompareChart'
 import ProductChart from './ProductChart'
 
 export default function Analytics() {
-    
+    useEffect(() => {
+        document.title = "FlavR | Analytics"
+    })
     return (
         <div className="analyticsContainer" >
             <div className="d-flex flex-row justify-content-between" style={{width: "100%"}}>

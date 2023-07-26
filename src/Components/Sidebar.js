@@ -68,7 +68,7 @@ export default function Sidebar() {
                                 <img src={localStorage.getItem('ownerProfilePic')!=="null" ? localStorage.getItem('ownerProfilePic') : "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"} alt="profileImg" />
                             </div>
                             <div className="name_job">
-                                <div className="name">{localStorage.getItem('ownerName')} </div>
+                                <div className="name">{localStorage.getItem('ownerName').substring(0,15)} </div>
                                 <div className="job">Owner</div>
                             </div>
                         </div>

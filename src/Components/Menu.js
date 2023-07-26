@@ -64,6 +64,7 @@ export default function Menu() {
         }
         if(localStorage.getItem('selectedOutlet')!==null&&localStorage.getItem('selectedOutlet')!==undefined&&localStorage.getItem('selectedOutlet').length!==0)
         {
+            document.title = "FlavR | Menu"
             fetchData()
         }
     },[])

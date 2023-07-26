@@ -338,9 +338,10 @@ export default function EditCategory(props) {
     useEffect(() => {
         console.log(id);
         if(location.pathname===`/dashboard/editcategory/${id}`){
+            document.title = "FlavR | Edit Category"
             const fillForm = async () => {
                 setStartLoading(true)
-                const response = await fetch(`http://localhost:3001/category/getCategory?categoryid=${id}`, {
+                const response = await fetch(`https://flavr.tech/category/getCategory?categoryid=${id}`, {
                     method: "GET"
                 })
                 const json = await response.json()
@@ -361,6 +362,7 @@ export default function EditCategory(props) {
             }
             fillForm()
         } else {
+            document.title = "FlavR | Add Category"
             setFormData({
                 categoryName: ""
             })

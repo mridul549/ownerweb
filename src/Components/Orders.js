@@ -127,6 +127,7 @@ export default function Orders() {
     }
     
     useEffect(() => {
+        document.title = "FlavR | Orders"
         getTime()
         orders()
         startQ1Interval()

@@ -68,6 +68,7 @@ export default function Profile() {
     }
 
     const handleResetPassword = () => {
+        localStorage.setItem('profileModal', "pass")
         setEmailVerifiedModal({...emailVerifiedModal, method: "pass"})
         handleVerifyEmail()
     }
@@ -81,10 +82,9 @@ export default function Profile() {
         setOtpFor('signup');
         setEmailVerifiedModal({...emailVerifiedModal, state: false});
 
-        if(emailVerifiedModal.method==='email'){
+        if(localStorage.getItem('profileModal')==='email'){
             handleProfileFormWithoutCheck()
         } else {
-            console.log("to reset");
             setPassResetModal(true)
         }
     };
@@ -177,6 +177,7 @@ export default function Profile() {
                     success: {
                         render({ data }) {
                             if(data.error === "Owner not found"){
+                                localStorage.setItem("profileModal", "email")
                                 setEmailVerifiedModal({...emailVerifiedModal, method: 'email'})
                                 handleVerifyEmail()
                                 return "Email not found"
@@ -248,6 +249,7 @@ export default function Profile() {
     }
 
     useEffect(() => {
+        document.title = "FlavR | Owner Profile"
         setImage(localStorage.getItem('ownerProfilePic')!=="null" ? localStorage.getItem('ownerProfilePic') : "https://cdn-icons-png.flaticon.com/512/3135/3135715.png")
         setBeforeEditOwner({
             ownerName: localStorage.getItem('ownerName'),
@@ -347,13 +349,13 @@ export default function Profile() {
                             <h5 style={{textAlign: 'center'}}>Email</h5>
                         </div>
                         <div className="col-lg-9">
-                            <input type="email" className="inputText shadow-sm" name="email" value={ownerForm.email} onChange={ownerFormOnChange} placeholder="Enter your email here"/>
+                            <input type="email" disabled={localStorage.getItem('loginMethod')!=='regular'} className="inputText shadow-sm" name="email" value={ownerForm.email} onChange={ownerFormOnChange} placeholder="Enter your email here"/>
                         </div>
                     </div>
                 </div>
                 <div className="editSection">
                     <div className="mt-3">
-                        <button className="btn" onClick={handleResetPassword} style={{border: '1px solid black'}}>
+                        <button disabled={localStorage.getItem('loginMethod')!=='regular'} className="btn" onClick={handleResetPassword} style={{border: '1px solid black'}}>
                             <i className="fa-solid fa-lock fa-md"></i> Change password
                         </button>
                     </div>

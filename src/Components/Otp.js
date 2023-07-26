@@ -38,7 +38,7 @@ const Otp = (props) => {
         if(json.message==="OTP Verified, you can log in now.") {    
             setOtpVerified(true)
             if(otpFor === 'signup'){
-                navigate('/');
+                navigate('/login');
             } else {
                 props.afterVerify()
             }

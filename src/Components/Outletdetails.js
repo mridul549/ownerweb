@@ -38,7 +38,7 @@ export default function Outletdetails() {
     });
     const { formstate, setformstate } = useContext(OutletContext);
     const [title, setTitle] = useState("");
-
+    const [mainLoading, setMainLoading] = useState(false)
     const handleImageClick = () => {
         inputRef.current.click();
     };
@@ -210,9 +210,10 @@ export default function Outletdetails() {
     };
 
     useEffect(() => {
-        console.log(location);
+
         const fetchdata = async () => {
             if (location.pathname === "/dashboard/outlet/edit") {
+                setMainLoading(true)
                 if (
                     localStorage.getItem("selectedOutlet") === "" ||
                     localStorage.getItem("selectedOutlet") === undefined ||
@@ -221,6 +222,7 @@ export default function Outletdetails() {
                     setNotSelected(true);
                     return;
                 }
+                document.title = "FlavR | Update Outlet"
                 setTitle("Update Outlet");
                 const response = await fetch(
                     `https://flavr.tech/outlet/getOutlet?outletid=${localStorage.getItem(
@@ -235,7 +237,7 @@ export default function Outletdetails() {
                     }
                 );
                 const json = await response.json();
-                console.log(json.result[0]);
+                setMainLoading(false)
                 const res = json.result[0];
                 setformstate({
                     ...formstate,
@@ -260,7 +262,7 @@ export default function Outletdetails() {
                     sunopen: res.timings.sunday.open,
                     sunclose: res.timings.sunday.close,
                 });
-                console.log(res.daysOpen);
+
                 setCheckBoxState({
                     monday: res.daysOpen.monday,
                     tuesday: res.daysOpen.tuesday,
@@ -290,6 +292,7 @@ export default function Outletdetails() {
                 setdays(array);
                 setImage(res.outletImage.url);
             } else {
+                document.title = "FlavR | Add Outlet"
                 setTitle("Add Outlet");
                 setformstate({
                     outletname: "",
@@ -472,564 +475,569 @@ export default function Outletdetails() {
             </Modal>
 
             {!notselected ? (
-                <div className="outermost-div">
-                    <div className="first-div">
-                        <h1 className="form-heading">{title}</h1>
-                    </div>
-                    <form onSubmit={onsubmit}>
-                        <div className="mb-3">
-                            <label
-                                htmlFor="outletName"
-                                className="form-label main-label required"
-                            >
-                                Outlet Name
-                            </label>
-                            <input
-                                type="text"
-                                className="form-control shadow-sm outlet-input"
-                                onChange={onchange}
-                                name="outletname"
-                                placeholder="Enter outlet name"
-                                value={formstate.outletname}
-                                required
-                            />
+                (mainLoading ?
+                    <div style={{marginTop: "40vh"}}>
+                        <Spinner /> 
+                    </div> :
+                    <div className="outermost-div">
+                        <div className="first-div">
+                            <h1 className="form-heading">{title}</h1>
                         </div>
-                        <div className="mb-3">
-                            <label
-                                htmlFor="address"
-                                className="form-label main-label"
-                            >
-                                Address
-                            </label>
-                            <div className="mb-3 row">
+                        <form onSubmit={onsubmit}>
+                            <div className="mb-3">
                                 <label
-                                    htmlFor="addressline1"
-                                    className="col-sm-2 col-form-label required"
+                                    htmlFor="outletName"
+                                    className="form-label main-label required"
                                 >
-                                    Address Line 1
+                                    Outlet Name
                                 </label>
-                                <div className="col-sm-10">
-                                    <input
-                                        type="text"
-                                        className="form-control shadow-sm outlet-input"
-                                        onChange={onchange}
-                                        name="addressline1"
-                                        placeholder="Enter Address Line 1"
-                                        value={formstate.addressline1}
-                                        required
-                                    />
+                                <input
+                                    type="text"
+                                    className="form-control shadow-sm outlet-input"
+                                    onChange={onchange}
+                                    name="outletname"
+                                    placeholder="Enter outlet name"
+                                    value={formstate.outletname}
+                                    required
+                                />
+                            </div>
+                            <div className="mb-3">
+                                <label
+                                    htmlFor="address"
+                                    className="form-label main-label"
+                                >
+                                    Address
+                                </label>
+                                <div className="mb-3 row">
+                                    <label
+                                        htmlFor="addressline1"
+                                        className="col-sm-2 col-form-label required"
+                                    >
+                                        Address Line 1
+                                    </label>
+                                    <div className="col-sm-10">
+                                        <input
+                                            type="text"
+                                            className="form-control shadow-sm outlet-input"
+                                            onChange={onchange}
+                                            name="addressline1"
+                                            placeholder="Enter Address Line 1"
+                                            value={formstate.addressline1}
+                                            required
+                                        />
+                                    </div>
+                                </div>
+                                <div className="mb-3 row">
+                                    <label
+                                        htmlFor="City"
+                                        className="col-sm-2 col-form-label required"
+                                    >
+                                        City
+                                    </label>
+                                    <div className="col-sm-10">
+                                        <input
+                                            type="text"
+                                            className="form-control shadow-sm outlet-input"
+                                            onChange={onchange}
+                                            name="city"
+                                            placeholder="Enter City"
+                                            value={formstate.city}
+                                            required
+                                        />
+                                    </div>
+                                </div>
+                                <div className="mb-3 row">
+                                    <label
+                                        htmlFor="Pincode"
+                                        className="col-sm-2 col-form-label required"
+                                    >
+                                        Pincode
+                                    </label>
+                                    <div className="col-sm-10">
+                                        <input
+                                            type="text"
+                                            className="form-control shadow-sm outlet-input"
+                                            onChange={onchange}
+                                            name="pincode"
+                                            placeholder="Enter Pincode"
+                                            value={formstate.pincode}
+                                            required
+                                        />
+                                    </div>
+                                </div>
+                                <div className="mb-3 row">
+                                    <label
+                                        htmlFor="state"
+                                        className="col-sm-2 col-form-label required"
+                                    >
+                                        State
+                                    </label>
+                                    <div className="col-sm-10">
+                                        <input
+                                            type="text"
+                                            className="form-control shadow-sm outlet-input"
+                                            onChange={onchange}
+                                            name="state"
+                                            placeholder="Enter State"
+                                            value={formstate.state}
+                                            required
+                                        />
+                                    </div>
+                                </div>
+                                <div className="mb-3 row">
+                                    <label
+                                        htmlFor="country"
+                                        className="col-sm-2 col-form-label required"
+                                    >
+                                        Country
+                                    </label>
+                                    <div className="col-sm-10">
+                                        <input
+                                            type="text"
+                                            className="form-control shadow-sm outlet-input"
+                                            onChange={onchange}
+                                            name="country"
+                                            placeholder="Enter Country"
+                                            value={formstate.country}
+                                            required
+                                        />
+                                    </div>
                                 </div>
                             </div>
-                            <div className="mb-3 row">
+                            <div className="mb-3">
                                 <label
-                                    htmlFor="City"
-                                    className="col-sm-2 col-form-label required"
+                                    htmlFor="address"
+                                    className="form-label main-label"
                                 >
-                                    City
+                                    Timings
                                 </label>
-                                <div className="col-sm-10">
-                                    <input
-                                        type="text"
-                                        className="form-control shadow-sm outlet-input"
-                                        onChange={onchange}
-                                        name="city"
-                                        placeholder="Enter City"
-                                        value={formstate.city}
-                                        required
-                                    />
+                                <div className="mb-3 row">
+                                    <label
+                                        htmlFor="Monday"
+                                        className="col-sm-2 col-form-label"
+                                    >
+                                        Monday
+                                    </label>
+                                    <div className="input-group">
+                                        <span className="input-group-text">
+                                            opening time
+                                        </span>
+                                        <input
+                                            type="time"
+                                            name="monopen"
+                                            onChange={onchange}
+                                            className="form-control shadow-sm outlet-input"
+                                            value={convert(formstate.monopen)}
+                                        />
+                                        <span className="input-group-text">
+                                            closing time
+                                        </span>
+                                        <input
+                                            type="time"
+                                            name="monclose"
+                                            onChange={onchange}
+                                            className="form-control shadow-sm outlet-input"
+                                            value={convert(formstate.monclose)}
+                                        />
+                                    </div>
+                                </div>
+                                <div className="mb-3 row">
+                                    <label
+                                        htmlFor="Tuesday"
+                                        className="col-sm-2 col-form-label"
+                                    >
+                                        Tuesday
+                                    </label>
+                                    <div className="input-group">
+                                        <span className="input-group-text">
+                                            opening time
+                                        </span>
+                                        <input
+                                            type="time"
+                                            onChange={onchange}
+                                            name="tueopen"
+                                            className="form-control shadow-sm outlet-input"
+                                            value={convert(formstate.tueopen)}
+                                        />
+                                        <span className="input-group-text">
+                                            closing time
+                                        </span>
+                                        <input
+                                            type="time"
+                                            onChange={onchange}
+                                            name="tueclose"
+                                            className="form-control shadow-sm outlet-input"
+                                            value={convert(formstate.tueclose)}
+                                        />
+                                    </div>
+                                </div>
+                                <div className="mb-3 row">
+                                    <label
+                                        htmlFor="Wednesday"
+                                        className="col-sm-2 col-form-label"
+                                    >
+                                        Wednesday
+                                    </label>
+                                    <div className="input-group">
+                                        <span className="input-group-text">
+                                            opening time
+                                        </span>
+                                        <input
+                                            type="time"
+                                            onChange={onchange}
+                                            name="wedopen"
+                                            className="form-control shadow-sm outlet-input"
+                                            value={convert(formstate.wedopen)}
+                                        />
+                                        <span className="input-group-text">
+                                            closing time
+                                        </span>
+                                        <input
+                                            type="time"
+                                            onChange={onchange}
+                                            name="wedclose"
+                                            className="form-control shadow-sm outlet-input"
+                                            value={convert(formstate.wedclose)}
+                                        />
+                                    </div>
+                                </div>
+                                <div className="mb-3 row">
+                                    <label
+                                        htmlFor="Thursday"
+                                        className="col-sm-2 col-form-label"
+                                    >
+                                        Thursday
+                                    </label>
+                                    <div className="input-group">
+                                        <span className="input-group-text">
+                                            opening time
+                                        </span>
+                                        <input
+                                            type="time"
+                                            onChange={onchange}
+                                            name="thuropen"
+                                            className="form-control shadow-sm outlet-input"
+                                            value={convert(formstate.thuropen)}
+                                        />
+                                        <span className="input-group-text">
+                                            closing time
+                                        </span>
+                                        <input
+                                            type="time"
+                                            onChange={onchange}
+                                            name="thurclose"
+                                            className="form-control shadow-sm outlet-input"
+                                            value={convert(formstate.thurclose)}
+                                        />
+                                    </div>
+                                </div>
+                                <div className="mb-3 row">
+                                    <label
+                                        htmlFor="Friday"
+                                        className="col-sm-2 col-form-label"
+                                    >
+                                        Friday
+                                    </label>
+                                    <div className="input-group">
+                                        <span className="input-group-text">
+                                            opening time
+                                        </span>
+                                        <input
+                                            type="time"
+                                            onChange={onchange}
+                                            name="friopen"
+                                            className="form-control shadow-sm outlet-input"
+                                            value={convert(formstate.friopen)}
+                                        />
+                                        <span className="input-group-text">
+                                            closing time
+                                        </span>
+                                        <input
+                                            type="time"
+                                            onChange={onchange}
+                                            name="friclose"
+                                            className="form-control shadow-sm outlet-input"
+                                            value={convert(formstate.friclose)}
+                                        />
+                                    </div>
+                                </div>
+                                <div className="mb-3 row">
+                                    <label
+                                        htmlFor="Saturday"
+                                        className="col-sm-2 col-form-label"
+                                    >
+                                        Saturday
+                                    </label>
+                                    <div className="input-group">
+                                        <span className="input-group-text">
+                                            opening time
+                                        </span>
+                                        <input
+                                            type="time"
+                                            onChange={onchange}
+                                            name="satopen"
+                                            className="form-control shadow-sm outlet-input"
+                                            value={convert(formstate.satopen)}
+                                        />
+                                        <span className="input-group-text">
+                                            closing time
+                                        </span>
+                                        <input
+                                            type="time"
+                                            onChange={onchange}
+                                            name="satclose"
+                                            className="form-control shadow-sm outlet-input"
+                                            value={convert(formstate.satclose)}
+                                        />
+                                    </div>
+                                </div>
+                                <div className="mb-3 row">
+                                    <label
+                                        htmlFor="Sunday"
+                                        className="col-sm-2 col-form-label"
+                                    >
+                                        Sunday
+                                    </label>
+                                    <div className="input-group">
+                                        <span className="input-group-text">
+                                            opening time
+                                        </span>
+                                        <input
+                                            type="time"
+                                            onChange={onchange}
+                                            name="sunopen"
+                                            className="form-control shadow-sm outlet-input"
+                                            value={convert(formstate.sunopen)}
+                                        />
+                                        <span className="input-group-text">
+                                            closing time
+                                        </span>
+                                        <input
+                                            type="time"
+                                            onChange={onchange}
+                                            name="sunclose"
+                                            className="form-control shadow-sm outlet-input"
+                                            value={convert(formstate.sunclose)}
+                                        />
+                                    </div>
                                 </div>
                             </div>
-                            <div className="mb-3 row">
-                                <label
-                                    htmlFor="Pincode"
-                                    className="col-sm-2 col-form-label required"
-                                >
-                                    Pincode
-                                </label>
-                                <div className="col-sm-10">
-                                    <input
-                                        type="text"
-                                        className="form-control shadow-sm outlet-input"
-                                        onChange={onchange}
-                                        name="pincode"
-                                        placeholder="Enter Pincode"
-                                        value={formstate.pincode}
-                                        required
-                                    />
-                                </div>
-                            </div>
-                            <div className="mb-3 row">
-                                <label
-                                    htmlFor="state"
-                                    className="col-sm-2 col-form-label required"
-                                >
-                                    State
-                                </label>
-                                <div className="col-sm-10">
-                                    <input
-                                        type="text"
-                                        className="form-control shadow-sm outlet-input"
-                                        onChange={onchange}
-                                        name="state"
-                                        placeholder="Enter State"
-                                        value={formstate.state}
-                                        required
-                                    />
-                                </div>
-                            </div>
-                            <div className="mb-3 row">
-                                <label
-                                    htmlFor="country"
-                                    className="col-sm-2 col-form-label required"
-                                >
-                                    Country
-                                </label>
-                                <div className="col-sm-10">
-                                    <input
-                                        type="text"
-                                        className="form-control shadow-sm outlet-input"
-                                        onChange={onchange}
-                                        name="country"
-                                        placeholder="Enter Country"
-                                        value={formstate.country}
-                                        required
-                                    />
-                                </div>
-                            </div>
-                        </div>
-                        <div className="mb-3">
-                            <label
-                                htmlFor="address"
-                                className="form-label main-label"
-                            >
-                                Timings
-                            </label>
-                            <div className="mb-3 row">
-                                <label
-                                    htmlFor="Monday"
-                                    className="col-sm-2 col-form-label"
-                                >
-                                    Monday
-                                </label>
-                                <div className="input-group">
-                                    <span className="input-group-text">
-                                        opening time
-                                    </span>
-                                    <input
-                                        type="time"
-                                        name="monopen"
-                                        onChange={onchange}
-                                        className="form-control shadow-sm outlet-input"
-                                        value={convert(formstate.monopen)}
-                                    />
-                                    <span className="input-group-text">
-                                        closing time
-                                    </span>
-                                    <input
-                                        type="time"
-                                        name="monclose"
-                                        onChange={onchange}
-                                        className="form-control shadow-sm outlet-input"
-                                        value={convert(formstate.monclose)}
-                                    />
-                                </div>
-                            </div>
-                            <div className="mb-3 row">
-                                <label
-                                    htmlFor="Tuesday"
-                                    className="col-sm-2 col-form-label"
-                                >
-                                    Tuesday
-                                </label>
-                                <div className="input-group">
-                                    <span className="input-group-text">
-                                        opening time
-                                    </span>
-                                    <input
-                                        type="time"
-                                        onChange={onchange}
-                                        name="tueopen"
-                                        className="form-control shadow-sm outlet-input"
-                                        value={convert(formstate.tueopen)}
-                                    />
-                                    <span className="input-group-text">
-                                        closing time
-                                    </span>
-                                    <input
-                                        type="time"
-                                        onChange={onchange}
-                                        name="tueclose"
-                                        className="form-control shadow-sm outlet-input"
-                                        value={convert(formstate.tueclose)}
-                                    />
-                                </div>
-                            </div>
-                            <div className="mb-3 row">
-                                <label
-                                    htmlFor="Wednesday"
-                                    className="col-sm-2 col-form-label"
-                                >
-                                    Wednesday
-                                </label>
-                                <div className="input-group">
-                                    <span className="input-group-text">
-                                        opening time
-                                    </span>
-                                    <input
-                                        type="time"
-                                        onChange={onchange}
-                                        name="wedopen"
-                                        className="form-control shadow-sm outlet-input"
-                                        value={convert(formstate.wedopen)}
-                                    />
-                                    <span className="input-group-text">
-                                        closing time
-                                    </span>
-                                    <input
-                                        type="time"
-                                        onChange={onchange}
-                                        name="wedclose"
-                                        className="form-control shadow-sm outlet-input"
-                                        value={convert(formstate.wedclose)}
-                                    />
-                                </div>
-                            </div>
-                            <div className="mb-3 row">
-                                <label
-                                    htmlFor="Thursday"
-                                    className="col-sm-2 col-form-label"
-                                >
-                                    Thursday
-                                </label>
-                                <div className="input-group">
-                                    <span className="input-group-text">
-                                        opening time
-                                    </span>
-                                    <input
-                                        type="time"
-                                        onChange={onchange}
-                                        name="thuropen"
-                                        className="form-control shadow-sm outlet-input"
-                                        value={convert(formstate.thuropen)}
-                                    />
-                                    <span className="input-group-text">
-                                        closing time
-                                    </span>
-                                    <input
-                                        type="time"
-                                        onChange={onchange}
-                                        name="thurclose"
-                                        className="form-control shadow-sm outlet-input"
-                                        value={convert(formstate.thurclose)}
-                                    />
-                                </div>
-                            </div>
-                            <div className="mb-3 row">
-                                <label
-                                    htmlFor="Friday"
-                                    className="col-sm-2 col-form-label"
-                                >
-                                    Friday
-                                </label>
-                                <div className="input-group">
-                                    <span className="input-group-text">
-                                        opening time
-                                    </span>
-                                    <input
-                                        type="time"
-                                        onChange={onchange}
-                                        name="friopen"
-                                        className="form-control shadow-sm outlet-input"
-                                        value={convert(formstate.friopen)}
-                                    />
-                                    <span className="input-group-text">
-                                        closing time
-                                    </span>
-                                    <input
-                                        type="time"
-                                        onChange={onchange}
-                                        name="friclose"
-                                        className="form-control shadow-sm outlet-input"
-                                        value={convert(formstate.friclose)}
-                                    />
-                                </div>
-                            </div>
-                            <div className="mb-3 row">
-                                <label
-                                    htmlFor="Saturday"
-                                    className="col-sm-2 col-form-label"
-                                >
-                                    Saturday
-                                </label>
-                                <div className="input-group">
-                                    <span className="input-group-text">
-                                        opening time
-                                    </span>
-                                    <input
-                                        type="time"
-                                        onChange={onchange}
-                                        name="satopen"
-                                        className="form-control shadow-sm outlet-input"
-                                        value={convert(formstate.satopen)}
-                                    />
-                                    <span className="input-group-text">
-                                        closing time
-                                    </span>
-                                    <input
-                                        type="time"
-                                        onChange={onchange}
-                                        name="satclose"
-                                        className="form-control shadow-sm outlet-input"
-                                        value={convert(formstate.satclose)}
-                                    />
-                                </div>
-                            </div>
-                            <div className="mb-3 row">
-                                <label
-                                    htmlFor="Sunday"
-                                    className="col-sm-2 col-form-label"
-                                >
-                                    Sunday
-                                </label>
-                                <div className="input-group">
-                                    <span className="input-group-text">
-                                        opening time
-                                    </span>
-                                    <input
-                                        type="time"
-                                        onChange={onchange}
-                                        name="sunopen"
-                                        className="form-control shadow-sm outlet-input"
-                                        value={convert(formstate.sunopen)}
-                                    />
-                                    <span className="input-group-text">
-                                        closing time
-                                    </span>
-                                    <input
-                                        type="time"
-                                        onChange={onchange}
-                                        name="sunclose"
-                                        className="form-control shadow-sm outlet-input"
-                                        value={convert(formstate.sunclose)}
-                                    />
-                                </div>
-                            </div>
-                        </div>
 
-                        <div className="mb-3">
-                            <label
-                                htmlFor="outletName"
-                                className="form-label main-label"
-                            >
-                                Days Open
-                            </label>
-                            <div className="form-check">
-                                <input
-                                    className="form-check-input "
-                                    onChange={checkboxOnChange}
-                                    name="monday"
-                                    value={JSON.stringify({ day: "monday" })}
-                                    type="checkbox"
-                                    id="flexCheckDefault"
-                                    checked={checkBoxState.monday}
-                                />
+                            <div className="mb-3">
                                 <label
-                                    className="form-check-label"
-                                    htmlFor="flexCheckDefault"
+                                    htmlFor="outletName"
+                                    className="form-label main-label"
                                 >
-                                    Monday
+                                    Days Open
                                 </label>
+                                <div className="form-check">
+                                    <input
+                                        className="form-check-input "
+                                        onChange={checkboxOnChange}
+                                        name="monday"
+                                        value={JSON.stringify({ day: "monday" })}
+                                        type="checkbox"
+                                        id="flexCheckDefault"
+                                        checked={checkBoxState.monday}
+                                    />
+                                    <label
+                                        className="form-check-label"
+                                        htmlFor="flexCheckDefault"
+                                    >
+                                        Monday
+                                    </label>
+                                </div>
+                                <div className="form-check">
+                                    <input
+                                        className="form-check-input "
+                                        onChange={checkboxOnChange}
+                                        name="tuesday"
+                                        value={JSON.stringify({ day: "tuesday" })}
+                                        type="checkbox"
+                                        id="flexCheckDefault"
+                                        checked={checkBoxState.tuesday}
+                                    />
+                                    <label
+                                        className="form-check-label"
+                                        htmlFor="flexCheckDefault"
+                                    >
+                                        Tuesday
+                                    </label>
+                                </div>
+                                <div className="form-check">
+                                    <input
+                                        className="form-check-input"
+                                        onChange={checkboxOnChange}
+                                        name="wednesday"
+                                        value={JSON.stringify({ day: "wednesday" })}
+                                        type="checkbox"
+                                        id="flexCheckDefault"
+                                        checked={checkBoxState.wednesday}
+                                    />
+                                    <label
+                                        className="form-check-label"
+                                        htmlFor="flexCheckDefault"
+                                    >
+                                        Wednesday
+                                    </label>
+                                </div>
+                                <div className="form-check">
+                                    <input
+                                        className="form-check-input"
+                                        onChange={checkboxOnChange}
+                                        name="thursday"
+                                        value={JSON.stringify({ day: "thursday" })}
+                                        type="checkbox"
+                                        id="flexCheckDefault"
+                                        checked={checkBoxState.thursday}
+                                    />
+                                    <label
+                                        className="form-check-label"
+                                        htmlFor="flexCheckDefault"
+                                    >
+                                        Thursday
+                                    </label>
+                                </div>
+                                <div className="form-check">
+                                    <input
+                                        className="form-check-input"
+                                        onChange={checkboxOnChange}
+                                        name="friday"
+                                        value={JSON.stringify({ day: "friday" })}
+                                        type="checkbox"
+                                        id="flexCheckDefault"
+                                        checked={checkBoxState.friday}
+                                    />
+                                    <label
+                                        className="form-check-label"
+                                        htmlFor="flexCheckDefault"
+                                    >
+                                        Friday
+                                    </label>
+                                </div>
+                                <div className="form-check">
+                                    <input
+                                        className="form-check-input"
+                                        onChange={checkboxOnChange}
+                                        name="saturday"
+                                        value={JSON.stringify({ day: "saturday" })}
+                                        type="checkbox"
+                                        id="flexCheckDefault"
+                                        checked={checkBoxState.saturday}
+                                    />
+                                    <label
+                                        className="form-check-label"
+                                        htmlFor="flexCheckDefault"
+                                    >
+                                        Saturday
+                                    </label>
+                                </div>
+                                <div className="form-check">
+                                    <input
+                                        className="form-check-input"
+                                        onChange={checkboxOnChange}
+                                        name="sunday"
+                                        value={JSON.stringify({ day: "sunday" })}
+                                        type="checkbox"
+                                        id="flexCheckDefault"
+                                        checked={checkBoxState.sunday}
+                                    />
+                                    <label
+                                        className="form-check-label"
+                                        htmlFor="flexCheckDefault"
+                                    >
+                                        Sunday
+                                    </label>
+                                </div>
                             </div>
-                            <div className="form-check">
-                                <input
-                                    className="form-check-input "
-                                    onChange={checkboxOnChange}
-                                    name="tuesday"
-                                    value={JSON.stringify({ day: "tuesday" })}
-                                    type="checkbox"
-                                    id="flexCheckDefault"
-                                    checked={checkBoxState.tuesday}
-                                />
-                                <label
-                                    className="form-check-label"
-                                    htmlFor="flexCheckDefault"
-                                >
-                                    Tuesday
-                                </label>
-                            </div>
-                            <div className="form-check">
-                                <input
-                                    className="form-check-input"
-                                    onChange={checkboxOnChange}
-                                    name="wednesday"
-                                    value={JSON.stringify({ day: "wednesday" })}
-                                    type="checkbox"
-                                    id="flexCheckDefault"
-                                    checked={checkBoxState.wednesday}
-                                />
-                                <label
-                                    className="form-check-label"
-                                    htmlFor="flexCheckDefault"
-                                >
-                                    Wednesday
-                                </label>
-                            </div>
-                            <div className="form-check">
-                                <input
-                                    className="form-check-input"
-                                    onChange={checkboxOnChange}
-                                    name="thursday"
-                                    value={JSON.stringify({ day: "thursday" })}
-                                    type="checkbox"
-                                    id="flexCheckDefault"
-                                    checked={checkBoxState.thursday}
-                                />
-                                <label
-                                    className="form-check-label"
-                                    htmlFor="flexCheckDefault"
-                                >
-                                    Thursday
-                                </label>
-                            </div>
-                            <div className="form-check">
-                                <input
-                                    className="form-check-input"
-                                    onChange={checkboxOnChange}
-                                    name="friday"
-                                    value={JSON.stringify({ day: "friday" })}
-                                    type="checkbox"
-                                    id="flexCheckDefault"
-                                    checked={checkBoxState.friday}
-                                />
-                                <label
-                                    className="form-check-label"
-                                    htmlFor="flexCheckDefault"
-                                >
-                                    Friday
-                                </label>
-                            </div>
-                            <div className="form-check">
-                                <input
-                                    className="form-check-input"
-                                    onChange={checkboxOnChange}
-                                    name="saturday"
-                                    value={JSON.stringify({ day: "saturday" })}
-                                    type="checkbox"
-                                    id="flexCheckDefault"
-                                    checked={checkBoxState.saturday}
-                                />
-                                <label
-                                    className="form-check-label"
-                                    htmlFor="flexCheckDefault"
-                                >
-                                    Saturday
-                                </label>
-                            </div>
-                            <div className="form-check">
-                                <input
-                                    className="form-check-input"
-                                    onChange={checkboxOnChange}
-                                    name="sunday"
-                                    value={JSON.stringify({ day: "sunday" })}
-                                    type="checkbox"
-                                    id="flexCheckDefault"
-                                    checked={checkBoxState.sunday}
-                                />
-                                <label
-                                    className="form-check-label"
-                                    htmlFor="flexCheckDefault"
-                                >
-                                    Sunday
-                                </label>
-                            </div>
-                        </div>
 
-                        <div className="mb-3">
-                            <div
-                                className="productImage d-flex flex-column align-items-center justify-content-center"
-                                onClick={handleImageClick}
-                            >
-                                <label htmlFor="outletImageInput">
-                                    {image ? image.name : "Choose an image"}{" "}
-                                </label>
-                                {image ? (
-                                    typeof image === "string" ? (
-                                        image!=="null" ?
-                                        <img
-                                            className="mt-3"
-                                            style={{
-                                                width: "400px",
-                                                height: "200px",
-                                                borderRadius: "10px",
-                                            }}
-                                            src={image}
-                                            alt=""
-                                        /> :
-                                        <img
-                                            className="mt-3"
-                                            style={{
-                                                width: "400px",
-                                                height: "200px",
-                                                borderRadius: "10px",
-                                            }}
-                                            src="https://res.cloudinary.com/dokgv4lff/image/upload/v1688220885/no_image_frvfpb.jpg"
-                                            alt=""
-                                        /> 
+                            <div className="mb-3">
+                                <div
+                                    className="productImage d-flex flex-column align-items-center justify-content-center"
+                                    onClick={handleImageClick}
+                                >
+                                    <label htmlFor="outletImageInput">
+                                        {image ? image.name : "Choose an image"}{" "}
+                                    </label>
+                                    {image ? (
+                                        typeof image === "string" ? (
+                                            image!=="null" ?
+                                            <img
+                                                className="mt-3"
+                                                style={{
+                                                    width: "400px",
+                                                    height: "200px",
+                                                    borderRadius: "10px",
+                                                }}
+                                                src={image}
+                                                alt=""
+                                            /> :
+                                            <img
+                                                className="mt-3"
+                                                style={{
+                                                    width: "400px",
+                                                    height: "200px",
+                                                    borderRadius: "10px",
+                                                }}
+                                                src="https://res.cloudinary.com/dokgv4lff/image/upload/v1688220885/no_image_frvfpb.jpg"
+                                                alt=""
+                                            /> 
+                                        ) : (
+                                            <img
+                                                className="mt-3"
+                                                style={{
+                                                    width: "400px",
+                                                    height: "200px",
+                                                    borderRadius: "10px",
+                                                }}
+                                                src={URL.createObjectURL(image)}
+                                                alt=""
+                                            />
+                                        )
                                     ) : (
                                         <img
                                             className="mt-3"
                                             style={{
                                                 width: "400px",
                                                 height: "200px",
-                                                borderRadius: "10px",
                                             }}
-                                            src={URL.createObjectURL(image)}
+                                            src="https://cdn-icons-png.flaticon.com/512/679/679845.png"
                                             alt=""
                                         />
-                                    )
-                                ) : (
-                                    <img
-                                        className="mt-3"
-                                        style={{
-                                            width: "400px",
-                                            height: "200px",
-                                        }}
-                                        src="https://cdn-icons-png.flaticon.com/512/679/679845.png"
-                                        alt=""
+                                    )}
+                                    <input
+                                        type="file"
+                                        name="outletImageInput"
+                                        ref={inputRef}
+                                        onChange={onchange}
+                                        className="productPicInput d-flex justify-content-center"
                                     />
-                                )}
-                                <input
-                                    type="file"
-                                    name="outletImageInput"
-                                    ref={inputRef}
-                                    onChange={onchange}
-                                    className="productPicInput d-flex justify-content-center"
-                                />
+                                </div>
                             </div>
-                        </div>
-                        <div className="submit-div">
-                            {loading && <Spinner />}
-                            <button type="submit" className="btn submit-btn">
-                                Submit
-                            </button>
-                        </div>
-                    </form>
-                    <div className="delete-div">
-                        <div className="d-flex justify-content-between">
-                            <div className="col delete-txt-div">
-                                <h5 className="delete-txt">Delete Outlet</h5>
-                            </div>
-                            <div className="col delete-btn-div">
-                                <button
-                                    className="btn delete-btn"
-                                    onClick={handleDeleteModal}
-                                >
-                                    Delete
+                            <div className="submit-div">
+                                {loading && <Spinner />}
+                                <button type="submit" className="btn submit-btn">
+                                    Submit
                                 </button>
+                            </div>
+                        </form>
+                        <div className="delete-div">
+                            <div className="d-flex justify-content-between">
+                                <div className="col delete-txt-div">
+                                    <h5 className="delete-txt">Delete Outlet</h5>
+                                </div>
+                                <div className="col delete-btn-div">
+                                    <button
+                                        className="btn delete-btn"
+                                        onClick={handleDeleteModal}
+                                    >
+                                        Delete
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                )
             ) : (
                 <div className="container-fluid no-outlet mt-5">
                     <h1 className="no-outlet-text">No outlet selected</h1>

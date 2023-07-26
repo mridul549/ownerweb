@@ -92,10 +92,6 @@ h3 {
     padding-top: 0rem;
 }
 
-.login-link {
-    padding-top: 1rem;
-}
-
 .login-link:hover {
     color: rgb(81, 81, 81);
 }
@@ -115,4 +111,16 @@ a {
     color: red;
     font-size: 15px;
     margin-top: 20px;
+}
+
+.forgotPassword {
+    color: red;
+    border: none;
+    outline: none;
+    box-shadow: 0 0 0 0;
+    background-color: transparent;
+}
+
+.forgotPassword:hover {
+    color: rgb(255, 81, 81);
 }
