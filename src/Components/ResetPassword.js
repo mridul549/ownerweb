@@ -71,8 +71,9 @@ export default function ResetPassword() {
 
     return (
         <>
-            <div className="d-flex align-items-center flex-column justify-content-center mt-5 mainDiv">
-                <div>
+            <div className="d-flex align-items-center flex-column justify-content-center mainDiv">
+                <div className="d-flex align-items-center flex-column justify-content-cente">
+                    <img src="https://res.cloudinary.com/dokgv4lff/image/upload/v1688365848/flavr_l4bspc.png" style={{width: '125px'}} alt="" />
                     <h1>Reset Password</h1>
                 </div>
                 <div className="formDiv d-flex justify-content-center">
