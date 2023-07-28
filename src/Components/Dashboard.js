@@ -10,6 +10,8 @@ import SidebarContext from "../context/sidebar/sidebarContext";
 import Profile from "./Profile";
 import Analytics from "./Analytics";
 import ErrorPage from "./ErrorPage";
+import OrderHistory from "./OrderHistory";
+import AllOrders from './AllOrders'
 
 export default function Dashboard() {
     const { sidebarOpen } = useContext(SidebarContext)
@@ -24,7 +26,9 @@ export default function Dashboard() {
                     <Routes>
                         <Route path="/" element={<Menu />} />
                         <Route path="/menu" element={<Menu />} />
-                        <Route path="/orders" element={<Orders />} />
+                        <Route path="/orders/handling" element={<Orders />} />
+                        <Route path="/orders/history" element={<OrderHistory />} />
+                        <Route path="/orders/allorders" element={<AllOrders />} />
                         <Route path="/outlet/edit" element={<Outletdetails/>} />
                         <Route path="/editcategory/:id" element={<EditCategory />} />
                         <Route path="/outletdetails" element={<Outletdetails/>}/>

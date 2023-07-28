@@ -24,6 +24,8 @@ import ChartState from './context/chart/chartState';
 import OutletState from './context/outlet/outletState';
 import ErrorPage from './Components/ErrorPage';
 import ResetPassword from './Components/ResetPassword';
+import OrderHistory from './Components/OrderHistory';
+import AllOrders from './Components/AllOrders'
 
 const router = createBrowserRouter([
     {
@@ -63,8 +65,16 @@ const router = createBrowserRouter([
                 element:<Menu/>
             },
             {
-                path:"orders",
+                path:"orders/handling",
                 element:<Orders/>
+            },
+            {
+                path:"orders/history",
+                element:<OrderHistory/>
+            },
+            {
+                path:"orders/allorders",
+                element:<AllOrders/>
             },
             {
                 path:"outlet/edit",

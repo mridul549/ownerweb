@@ -5,10 +5,15 @@ import SidebarContext from "../context/sidebar/sidebarContext";
 
 export default function Sidebar() {
     const { sidebarOpen, setSidebarOpen } = useContext(SidebarContext)
+    const [dropdown, setDropdown] = useState(false)
 
     const navigate = useNavigate()
     const handleOwnerProfile = () => {
         navigate('/dashboard/profile')
+    }
+
+    const dropDownHandle = () => {
+        setDropdown(!dropdown)
     }
 
     const handleMenuBtnClick = () => {
@@ -42,10 +47,20 @@ export default function Sidebar() {
                         <span className="tooltip">Menu</span>
                     </li>
                     <li>
-                        <Link to="/dashboard/orders">
+                        <Link onClick={dropDownHandle} data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
                             <i className="bx bx-cart-alt"></i>
                             <span className="links_name">Orders</span>
+                            {sidebarOpen && <i className={`bx bxs-chevron-down arrow ${dropdown && 'arrow-up'}`} style={{marginLeft: '30%'}}></i>}
                         </Link>
+                        {sidebarOpen && 
+                            <div class="collapse mb-3" id="collapseExample">
+                                <ul>
+                                    <li className="dropdown-item-list"><Link class="dropdown-item" to="/dashboard/orders/allorders">All Orders</Link></li>
+                                    <li className="dropdown-item-list"><Link class="dropdown-item" to="/dashboard/orders/handling">Order Handling</Link></li>
+                                    <li className="dropdown-item-list"><Link class="dropdown-item" to="/dashboard/orders/history">Order history</Link></li>
+                                </ul>
+                            </div>
+                        }
                         <span className="tooltip">Orders</span>
                     </li>
                     <li>

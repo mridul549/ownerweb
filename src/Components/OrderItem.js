@@ -285,7 +285,7 @@ export default function OrderItem(props) {
                             if(i<=2) {
                                 return (<>
                                     <div className="col-lg-10" key={product.productName}>
-                                        <h5>{product.productName} {product.variant !== 'default' && `(${product.variant})`}</h5>
+                                        <h5>{product.productName===undefined ? "N/A" : product.productName} <span style={{color: 'green'}}>{product.variant !== 'default' && `(${product.variant})`}</span> </h5>
                                     </div>
                                     <div className="col-lg-2">
                                         <h5 style={{textAlign: 'center'}}>x {product.quantity} </h5>

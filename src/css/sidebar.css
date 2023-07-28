@@ -188,6 +188,27 @@ main {
     transition: all 0.5s ease;
     color: #ffffff;
 }
+.arrow {
+    transition: transform 0.5s;
+    transform: rotate(0deg); /* This is the base state */
+}
+.arrow-up {
+    transition: transform 0.5s; 
+    transform: rotate(180deg);
+}
+.dropdown-item-list{
+    height: 2rem;
+    border-radius: 10px;
+    background-color: transparent;
+}
+.dropdown-item:focus, .dropdown-item:active {
+    background-color: transparent;
+    border-radius: 10px;
+}
+.dropdown-item:hover {
+    color: white;
+    border-radius: 10px;
+}
 .sidebar li i {
     height: 50px;
     line-height: 50px;
