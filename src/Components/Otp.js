@@ -58,6 +58,7 @@ const Otp = (props) => {
         const json = await response.json()
         if(json.action==="OTP Sent") {
             setError({error: true, message: json.action + json.message})
+            setCounter(120)
             setTimeout(() => {
                 setError({error: false, message: ''})
             }, 5000)
