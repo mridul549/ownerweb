@@ -79,7 +79,7 @@ export default function OrderHistory() {
         const fetchData = async () => {
             setLoading(true)
 
-            const response = await fetch(`http://localhost:3001/orders/getHistory/completed?outletid=${localStorage.getItem('selectedOutlet')}&date=${filter.date+2}&month=${filter.month}&year=${filter.year}`, {
+            const response = await fetch(`https://flavr.tech/orders/getHistory/completed?outletid=${localStorage.getItem('selectedOutlet')}&date=${filter.date+2}&month=${filter.month}&year=${filter.year}`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -96,7 +96,7 @@ export default function OrderHistory() {
     useEffect(() => {
         const fetchData = async () => {
             setLoading(true)
-            const response = await fetch(`http://localhost:3001/orders/getHistory/completed?outletid=${localStorage.getItem('selectedOutlet')}&date=${Number(filter.date)+2}&month=${Number(filter.month)}&year=${Number(filter.year)}`, {
+            const response = await fetch(`https://flavr.tech/orders/getHistory/completed?outletid=${localStorage.getItem('selectedOutlet')}&date=${Number(filter.date)+2}&month=${Number(filter.month)}&year=${Number(filter.year)}`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",

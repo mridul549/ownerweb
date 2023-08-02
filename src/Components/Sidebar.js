@@ -53,11 +53,11 @@ export default function Sidebar() {
                             {sidebarOpen && <i className={`bx bxs-chevron-down arrow ${dropdown && 'arrow-up'}`} style={{marginLeft: '30%'}}></i>}
                         </Link>
                         {sidebarOpen && 
-                            <div class="collapse mb-3" id="collapseExample">
+                            <div className="collapse mb-3" id="collapseExample">
                                 <ul>
-                                    <li className="dropdown-item-list"><Link class="dropdown-item" to="/dashboard/orders/allorders">All Orders</Link></li>
-                                    <li className="dropdown-item-list"><Link class="dropdown-item" to="/dashboard/orders/handling">Order Handling</Link></li>
-                                    <li className="dropdown-item-list"><Link class="dropdown-item" to="/dashboard/orders/history">Order history</Link></li>
+                                    <li className="dropdown-item-list"><Link className="dropdown-item" to="/dashboard/orders/allorders">All Orders</Link></li>
+                                    <li className="dropdown-item-list"><Link className="dropdown-item" to="/dashboard/orders/handling">Order Handling</Link></li>
+                                    <li className="dropdown-item-list"><Link className="dropdown-item" to="/dashboard/orders/history">Order history</Link></li>
                                 </ul>
                             </div>
                         }
