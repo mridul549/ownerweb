@@ -10,7 +10,7 @@ const onclick=()=>{
 }  
 
 return (
-    <div className="card mb-3 shadow-sm" style={{maxWidth: "500px"}} onClick={onclick}> 
+    <div className="card outletCard mb-3 shadow-sm" style={{maxWidth: "500px"}} onClick={onclick}> 
             <div className="row g-0">
                 <div className="col-md-4">
                     <img src={props.image==="null"?"https://i.imgur.com/6IVCvt5.jpg":props.image} style={{height: "100%", width: "100%", margin: 0}} className="img-fluid rounded-start" alt=".."/>
