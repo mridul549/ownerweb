@@ -14,3 +14,13 @@
 .select-items {
     border: none;
 }
+
+.containerCards {
+    columns: 3;
+    column-gap: 10px;
+}
+
+.box {
+    margin-bottom: 10px;
+    break-inside: avoid;
+}
