@@ -69,7 +69,6 @@ export default function OrderHistory() {
 
     const dayClick = (e) => {
         setFilter({...filter, date: e.target.value})
-        console.log(e.target.value);
     }
 
     useEffect(() => {
@@ -79,7 +78,7 @@ export default function OrderHistory() {
         const fetchData = async () => {
             setLoading(true)
 
-            const response = await fetch(`https://flavr.tech/orders/getHistory/completed?outletid=${localStorage.getItem('selectedOutlet')}&date=${filter.date+2}&month=${filter.month}&year=${filter.year}`, {
+            const response = await fetch(`https://flavr.tech/orders/getHistory/completed?outletid=${localStorage.getItem('selectedOutlet')}&date=${filter.date+1}&month=${filter.month}&year=${filter.year}`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -96,7 +95,7 @@ export default function OrderHistory() {
     useEffect(() => {
         const fetchData = async () => {
             setLoading(true)
-            const response = await fetch(`https://flavr.tech/orders/getHistory/completed?outletid=${localStorage.getItem('selectedOutlet')}&date=${Number(filter.date)+2}&month=${Number(filter.month)}&year=${Number(filter.year)}`, {
+            const response = await fetch(`https://flavr.tech/orders/getHistory/completed?outletid=${localStorage.getItem('selectedOutlet')}&date=${Number(filter.date)+1}&month=${Number(filter.month)}&year=${Number(filter.year)}`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -174,13 +173,13 @@ export default function OrderHistory() {
                         <h2 style={{fontWeight: '600', color: '#004932'}}>Completed Orders</h2>
                     </div>
 
-                    <div className="row">
+                    <div className="containerCards mt-3">
                         {filter.data.length===0 ?
                             <div className="d-flex justify-content-center" style={{marginTop: '30vh'}}>
                                 <p>No orders for this date</p> 
                             </div> :
                             filter.data.map((item) => {
-                                return <div className="col-lg-4 my-2">
+                                return <div className="box">
                                     <OrderItem 
                                         orderNumber={item.orderNumber} 
                                         createdAt={item.createdAt}
