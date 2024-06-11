@@ -51,7 +51,7 @@ export default function OrderItem(props) {
             }
         }
 
-        const response = await fetch("https://flavr.tech/orders/orderconfrej", {
+        const response = await fetch("https://flavrapi.onrender.com/orders/orderconfrej", {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json",
@@ -122,7 +122,7 @@ export default function OrderItem(props) {
         q2Listener()
         q3Listener()
 
-        const response = await fetch("https://flavr.tech/orders/orderconfrej", {
+        const response = await fetch("https://flavrapi.onrender.com/orders/orderconfrej", {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json",
@@ -142,7 +142,7 @@ export default function OrderItem(props) {
         q2Listener()
         q3Listener()
 
-        const response = await fetch("https://flavr.tech/orders/orderReady", {
+        const response = await fetch("https://flavrapi.onrender.com/orders/orderReady", {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json",
@@ -161,7 +161,7 @@ export default function OrderItem(props) {
         setLoadingInBtn({state: true, role: role})
         q3Listener()
 
-        const response = await fetch("https://flavr.tech/orders/deliverOrder", {
+        const response = await fetch("https://flavrapi.onrender.com/orders/deliverOrder", {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json",

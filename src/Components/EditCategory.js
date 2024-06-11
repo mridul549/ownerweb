@@ -67,7 +67,7 @@ export default function EditCategory(props) {
     const deleteProduct = async () => {
         setLoadingUpdelProduct(true)
 
-        const response = await fetch("https://flavr.tech/products/deleteProduct", {
+        const response = await fetch("https://flavrapi.onrender.com/products/deleteProduct", {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json",
@@ -154,7 +154,7 @@ export default function EditCategory(props) {
     }
 
     const fetchProducts = async () => {
-        const response = await fetch(`https://flavr.tech/products/getProductsByCategory?categoryName=${categoryDetails.name}&outletid=${localStorage.getItem('selectedOutlet')}`, {
+        const response = await fetch(`https://flavrapi.onrender.com/products/getProductsByCategory?categoryName=${categoryDetails.name}&outletid=${localStorage.getItem('selectedOutlet')}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json"
@@ -201,7 +201,7 @@ export default function EditCategory(props) {
             ProductFormData.append('outletid', localStorage.getItem('selectedOutlet'))
             ProductFormData.append('categoryid', categoryDetails.id)
 
-            const response = await fetch("https://flavr.tech/products/addProduct", {
+            const response = await fetch("https://flavrapi.onrender.com/products/addProduct", {
                 method: "POST", 
                 headers: {
                     "Authorization": "Bearer " + localStorage.getItem('token')
@@ -228,7 +228,7 @@ export default function EditCategory(props) {
             console.log("hi from edit req to api");
 
         } else {
-            const response = await fetch(`https://flavr.tech/products/updateProduct/${isProductModalOpen.productid}`, {
+            const response = await fetch(`https://flavrapi.onrender.com/products/updateProduct/${isProductModalOpen.productid}`, {
                 method: "PATCH", 
                 headers: {
                     "Authorization": "Bearer " + localStorage.getItem('token')
@@ -267,7 +267,7 @@ export default function EditCategory(props) {
 
     const handleUpdateCategory = async () => {
         setLoading(true)
-        const response = await fetch(`https://flavr.tech/category/updateCategory?categoryid=${categoryDetails.id}&outletid=${localStorage.getItem('selectedOutlet')}`, {
+        const response = await fetch(`https://flavrapi.onrender.com/category/updateCategory?categoryid=${categoryDetails.id}&outletid=${localStorage.getItem('selectedOutlet')}`, {
             method: "PATCH", 
             headers: {
                 "Content-Type": "application/json"
@@ -298,7 +298,7 @@ export default function EditCategory(props) {
         }
 
         setLoading(true)
-        const response = await fetch("https://flavr.tech/category/addCategory", {
+        const response = await fetch("https://flavrapi.onrender.com/category/addCategory", {
             method: "POST", 
             headers: {
                 "Content-Type": "application/json"
@@ -341,7 +341,7 @@ export default function EditCategory(props) {
             document.title = "FlavR | Edit Category"
             const fillForm = async () => {
                 setStartLoading(true)
-                const response = await fetch(`https://flavr.tech/category/getCategory?categoryid=${id}`, {
+                const response = await fetch(`https://flavrapi.onrender.com/category/getCategory?categoryid=${id}`, {
                     method: "GET"
                 })
                 const json = await response.json()
@@ -380,7 +380,7 @@ export default function EditCategory(props) {
         }
 
         async function fetchData () {
-            const response = await fetch("https://flavr.tech/categoryicon/allicons", {
+            const response = await fetch("https://flavrapi.onrender.com/categoryicon/allicons", {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json"

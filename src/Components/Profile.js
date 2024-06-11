@@ -22,7 +22,7 @@ export default function Profile() {
     const resetPassword = () => {
         console.log(passResetForm.oldPass + " " + passResetForm.newPass);
         toast.promise(
-            fetch(`https://flavr.tech/owner/resetpassword`, {
+            fetch(`https://flavrapi.onrender.com/owner/resetpassword`, {
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json",
@@ -93,7 +93,7 @@ export default function Profile() {
         setOtpFor('profile')
 
         toast.promise(
-            fetch(`https://flavr.tech/mail/resendotp`, {
+            fetch(`https://flavrapi.onrender.com/mail/resendotp`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -126,7 +126,7 @@ export default function Profile() {
 
     const handleProfileFormWithoutCheck = async () => {
         toast.promise(
-            fetch("https://flavr.tech/owner/updateowner/", {
+            fetch("https://flavrapi.onrender.com/owner/updateowner/", {
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json",
@@ -164,7 +164,7 @@ export default function Profile() {
     const handleProfileFormWithCheck = async () => {
         if(ownerForm.email!==beforeEditOwner.email) {
             toast.promise(
-                fetch(`https://flavr.tech/owner/ownerprofile?ownermail=${ownerForm.email}`, {
+                fetch(`https://flavrapi.onrender.com/owner/ownerprofile?ownermail=${ownerForm.email}`, {
                     method: "GET",
                 }).then((response) => response.json()),
                 {
@@ -203,7 +203,7 @@ export default function Profile() {
         imageForm.append('newOwnerImage', image)
         
         toast.promise(
-            fetch("https://flavr.tech/owner/updateImage/", {
+            fetch("https://flavrapi.onrender.com/owner/updateImage/", {
                 method: "PATCH",
                 headers: {
                     "Authorization": "Bearer " + localStorage.getItem("token")

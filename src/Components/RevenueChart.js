@@ -79,14 +79,14 @@ export default function Analytics() {
 
             switch (chart1.getBy) {
                 case 0:
-                    const response = await fetch(`https://flavr.tech/outlet/chart/revenue/day?outletid=${localStorage.getItem('selectedOutlet')}&month=${chart1.month}&year=${chart1.year}`, {
+                    const response = await fetch(`https://flavrapi.onrender.com/outlet/chart/revenue/day?outletid=${localStorage.getItem('selectedOutlet')}&month=${chart1.month}&year=${chart1.year}`, {
                         method: "GET",
                     })
                     const json = await response.json()
                     setChart1({...chart1, data: json})
                     break;
                 case 1:
-                    const response1 = await fetch(`https://flavr.tech/outlet/chart/revenue/month?outletid=${localStorage.getItem('selectedOutlet')}&year=${chart1.year}`, {
+                    const response1 = await fetch(`https://flavrapi.onrender.com/outlet/chart/revenue/month?outletid=${localStorage.getItem('selectedOutlet')}&year=${chart1.year}`, {
                         method: "GET",
                     })
                     const json1 = await response1.json()
@@ -94,7 +94,7 @@ export default function Analytics() {
                     break;
                 
                 case 2:
-                    const response2 = await fetch(`https://flavr.tech/outlet/chart/revenue/year?outletid=${localStorage.getItem('selectedOutlet')}`, {
+                    const response2 = await fetch(`https://flavrapi.onrender.com/outlet/chart/revenue/year?outletid=${localStorage.getItem('selectedOutlet')}`, {
                         method: "GET",
                     })
                     const json2 = await response2.json()

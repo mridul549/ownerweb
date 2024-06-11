@@ -25,7 +25,7 @@ export default function Menu() {
         // Add your logic here
         setLoadingPro(true);
         setSelectedCategory(category);
-        const response1 = await fetch(`https://flavr.tech/products/getProductsByCategory?categoryName=${category}&outletid=${localStorage.getItem('selectedOutlet')}`, {
+        const response1 = await fetch(`https://flavrapi.onrender.com/products/getProductsByCategory?categoryName=${category}&outletid=${localStorage.getItem('selectedOutlet')}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json"
@@ -41,7 +41,7 @@ export default function Menu() {
             setCategoryDetails({id: '', name: '', iconUrl: '', iconId: '', method: 0, productArray: []})
             setLoadingCat(true);
             setLoadingPro(true);
-            const response = await fetch(`https://flavr.tech/products/getAllCategories?outletid=${localStorage.getItem('selectedOutlet')}`, {
+            const response = await fetch(`https://flavrapi.onrender.com/products/getAllCategories?outletid=${localStorage.getItem('selectedOutlet')}`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json"
@@ -52,7 +52,7 @@ export default function Menu() {
             setSelectedCategory("All")
             setCategoryArray(json.categories)
 
-            const response1 = await fetch(`https://flavr.tech/products/getProductsByCategory?categoryName=All&outletid=${localStorage.getItem('selectedOutlet')}`, {
+            const response1 = await fetch(`https://flavrapi.onrender.com/products/getProductsByCategory?categoryName=All&outletid=${localStorage.getItem('selectedOutlet')}`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json"

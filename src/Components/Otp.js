@@ -26,7 +26,7 @@ const Otp = (props) => {
 
     const handleOTP = async () => {
         setLoading(true)
-        const response = await fetch("https://flavr.tech/mail/verifyotp", {
+        const response = await fetch("https://flavrapi.onrender.com/mail/verifyotp", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -48,7 +48,7 @@ const Otp = (props) => {
     } 
 
     const handleReSend = async () => {
-        const response = await fetch("https://flavr.tech/mail/resendotp", {
+        const response = await fetch("https://flavrapi.onrender.com/mail/resendotp", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

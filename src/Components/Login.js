@@ -10,6 +10,7 @@ import Otp from './Otp'
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import AuthContext from "../context/auth/authContext";
+import { ERRORS } from '../common-componenet/staticOptions'
 
 export default function SignIn() {
 
@@ -28,7 +29,7 @@ export default function SignIn() {
         event.preventDefault()
 
         toast.promise(
-            fetch(`https://flavr.tech/mail/passwordreset`, {
+            fetch(`https://flavrapi.onrender.com/mail/passwordreset`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -38,7 +39,7 @@ export default function SignIn() {
             {
                 pending: {
                     render() {
-                        return `Please wait...`;
+                        return ERRORS.PleaseWaitMessage;
                     },
                     icon: true,
                 },
@@ -49,8 +50,8 @@ export default function SignIn() {
                     },
                 },
                 error: {
-                    render({ data }) {
-                        return "Internal server error";
+                    render() {
+                        return ERRORS.InternalError;
                     },
                 }
             }
@@ -77,7 +78,7 @@ export default function SignIn() {
     const afterVerify = () => {
         setVerificationModal(false)
         toast.promise(
-            fetch(`https://flavr.tech/owner/verifyowner`, {
+            fetch(`https://flavrapi.onrender.com/owner/verifyowner`, {
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json",
@@ -99,7 +100,7 @@ export default function SignIn() {
                 },
                 error: {
                     render({ data }) {
-                        return "Internal server error";
+                        return ERRORS.InternalError;
                     },
                 }
             }
@@ -108,7 +109,7 @@ export default function SignIn() {
 
     const sendOTP = async () => {
         toast.promise(
-            fetch(`https://flavr.tech/mail/resendotp`, {
+            fetch(`https://flavrapi.onrender.com/mail/resendotp`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -131,7 +132,7 @@ export default function SignIn() {
                 },
                 error: {
                     render({ data }) {
-                        return "Internal server error";
+                        return ERRORS.InternalError;
                     },
                 }
             }
@@ -147,7 +148,7 @@ export default function SignIn() {
             return;
         }
         setLoading(true);
-        const response = await fetch("https://flavr.tech/owner/login", {
+        const response = await fetch("https://flavrapi.onrender.com/owner/login", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -159,7 +160,7 @@ export default function SignIn() {
         if(json.message==="Auth successful"){
             // save token and redirect to dashboard
             localStorage.setItem('token', json.token)
-            const userProfile = await fetch(`https://flavr.tech/owner/ownerprofile?ownermail=${credentials.email}`, {
+            const userProfile = await fetch(`https://flavrapi.onrender.com/owner/ownerprofile?ownermail=${credentials.email}`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -167,6 +168,11 @@ export default function SignIn() {
                 }
             })
             const userProfileJson = await userProfile.json()
+
+            if (!userProfileJson) {
+                return
+            }
+
             localStorage.setItem('loginMethod', 'regular')
             localStorage.setItem('ownerEmail', userProfileJson.owner[0].email)
             localStorage.setItem('ownerName', userProfileJson.owner[0].ownerName)
@@ -194,7 +200,7 @@ export default function SignIn() {
     const handleGoogleAuth = async (res) => {
         const decodedToken = jwt_decode(res.credential)
 
-        const response = await fetch("https://flavr.tech/owner/googleAuth", {
+        const response = await fetch("https://flavrapi.onrender.com/owner/googleAuth", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
