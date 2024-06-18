@@ -16,7 +16,7 @@ export default function ResetPassword() {
 
         console.log(searchParams.get('token'));
         toast.promise(
-            fetch(`https://flavrapi.onrender.com/owner/forgetPassword`, {
+            fetch(`https://theflavr.in/owner/forgetPassword`, {
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json",

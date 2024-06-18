@@ -8,7 +8,7 @@ export default function AddOutlet() {
 
     useEffect(() => {
         async function fetchData() {
-            const response = await fetch("https://flavrapi.onrender.com/owner/getOutlets", {
+            const response = await fetch("https://theflavr.in/owner/getOutlets", {
                     method: "GET",
                     headers: {
                         "Content-Type": "application/json",

@@ -118,7 +118,7 @@ export default function Outletdetails() {
         }
         if (location.pathname === "/dashboard/outlet/edit") {
             const response = await fetch(
-                `https://flavrapi.onrender.com/outlet/updateOutlet/${localStorage.getItem(
+                `https://theflavr.in/outlet/updateOutlet/${localStorage.getItem(
                     "selectedOutlet"
                 )}`,
                 {
@@ -140,7 +140,7 @@ export default function Outletdetails() {
             }
         } else {
             const response = await fetch(
-                `https://flavrapi.onrender.com/outlet/addOutlet`,
+                `https://theflavr.in/outlet/addOutlet`,
                 {
                     method: "POST",
                     headers: {
@@ -225,7 +225,7 @@ export default function Outletdetails() {
                 document.title = "FlavR | Update Outlet"
                 setTitle("Update Outlet");
                 const response = await fetch(
-                    `https://flavrapi.onrender.com/outlet/getOutlet?outletid=${localStorage.getItem(
+                    `https://theflavr.in/outlet/getOutlet?outletid=${localStorage.getItem(
                         "selectedOutlet"
                     )}`,
                     {
@@ -349,7 +349,7 @@ export default function Outletdetails() {
         setOtpFor("delete");
 
         toast.promise(
-            fetch(`https://flavrapi.onrender.com/mail/resendotp`, {
+            fetch(`https://theflavr.in/mail/resendotp`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -386,7 +386,7 @@ export default function Outletdetails() {
 
     const afterVerify = () => {
         toast.promise(
-            fetch(`https://flavrapi.onrender.com/outlet/deleteOutlet`, {
+            fetch(`https://theflavr.in/outlet/deleteOutlet`, {
                 method: "DELETE",
                 headers: {
                     "Content-Type": "application/json",

@@ -15,7 +15,7 @@ export default function MenuItem(props) {
     const checkedToggle = async (e, productid) => {
         setIsChecked(!isChecked)
 
-        // const response = await fetch("https://flavrapi.onrender.com/products/instock", {
+        // const response = await fetch("https://theflavr.in/products/instock", {
         //     method: "PATCH", 
         //     headers: {
         //         "Content-Type": "application/json",
@@ -31,7 +31,7 @@ export default function MenuItem(props) {
         // })
 
         toast.promise(
-            fetch("https://flavrapi.onrender.com/products/instock", {
+            fetch("https://theflavr.in/products/instock", {
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json",

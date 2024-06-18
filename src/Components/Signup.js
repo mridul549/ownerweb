@@ -33,7 +33,7 @@ const Signup = () => {
         setLoading(true)
         setInvalidCredError({error: false})
         const {ownerName,email,password}=credentials;
-        const response = await fetch("https://flavrapi.onrender.com/owner/signup", {
+        const response = await fetch("https://theflavr.in/owner/signup", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -69,7 +69,7 @@ const Signup = () => {
     const handleGoogleAuth = async (res) => {
         const decodedToken = jwt_decode(res.credential)
 
-        const response = await fetch("https://flavrapi.onrender.com/owner/googleAuth", {
+        const response = await fetch("https://theflavr.in/owner/googleAuth", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

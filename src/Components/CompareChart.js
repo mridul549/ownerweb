@@ -83,7 +83,7 @@ export default function Analytics() {
 
             switch (chart2.getBy) {
                 case 0:
-                    const response = await fetch(`https://flavrapi.onrender.com/outlet/chart/compare/day?month=${chart2.month}&year=${chart2.year}&date=${chart2.date+2}`, {
+                    const response = await fetch(`https://theflavr.in/outlet/chart/compare/day?month=${chart2.month}&year=${chart2.year}&date=${chart2.date+2}`, {
                         method: "GET",
                         headers: {
                             "Authorization": "Bearer " + localStorage.getItem('token')
@@ -93,7 +93,7 @@ export default function Analytics() {
                     setChart2({...chart2, data: json})
                     break;
                 case 1:
-                    const response1 = await fetch(`https://flavrapi.onrender.com/outlet/chart/compare/month?year=${chart2.year}&month=${chart2.month}`, {
+                    const response1 = await fetch(`https://theflavr.in/outlet/chart/compare/month?year=${chart2.year}&month=${chart2.month}`, {
                         method: "GET",
                         headers: {
                             "Authorization": "Bearer " + localStorage.getItem('token')
@@ -104,7 +104,7 @@ export default function Analytics() {
                     break;
                 
                 case 2:
-                    const response2 = await fetch(`https://flavrapi.onrender.com/outlet/chart/compare/year?year=${chart2.year}`, {
+                    const response2 = await fetch(`https://theflavr.in/outlet/chart/compare/year?year=${chart2.year}`, {
                         method: "GET",
                         headers: {
                             "Authorization": "Bearer " + localStorage.getItem('token')
